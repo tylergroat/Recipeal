@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'homepage.dart';
 
 void main() {
   //function used to run function
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                 //TODO: We will redirect users to home page upon log in
               },
               child: Text(
-                'Forgot Password',
+                'Forgot Password?',
                 style: TextStyle(color: Colors.red, fontSize: 15),
               ),
             ),
@@ -112,15 +113,4 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class HomePage extends StatelessWidget {
-  //placeholder so we can mock linking on line 87 -- need to create a seperate dart file for homepage
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Login Page"),
-      ),
-    );
-  }
-}
+// class HomePage extends StatelessWidget {
