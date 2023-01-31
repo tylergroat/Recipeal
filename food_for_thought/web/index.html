@@ -36,6 +36,32 @@
     // The value below is injected by flutter build, do not touch.
     var serviceWorkerVersion = null;
   </script>
+
+  <script>
+   // Import the functions you need from the SDKs you need
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+    
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyC3DNyAfOtjI6qbrEKb9AnY8QD0cx0DrXc",
+      authDomain: "food-for-thought-c59ea.firebaseapp.com",
+      projectId: "food-for-thought-c59ea",
+      storageBucket: "food-for-thought-c59ea.appspot.com",
+      messagingSenderId: "191690373750",
+      appId: "1:191690373750:web:dc8114bde4ca31e81ebd57",
+      measurementId: "G-J5P1M0SLRS"
+    };
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    </script>
+
+  
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
