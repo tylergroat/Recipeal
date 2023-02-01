@@ -9,6 +9,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const enterEmailMessage = SnackBar(
+    content: Text('Please enter an email'),
+  );
+  static const enterPasswordMessage = SnackBar(
+    content: Text('Please enter a password'),
+  );
+  static const userDNEMessage = SnackBar(
+    content:
+        Text('No user exists with these credentials, please register first'),
+  );
+  static const emailFormatMessage = SnackBar(
+    content: Text('Please enter a valid email'),
+  );
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -17,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white, //main scaffold
       appBar: AppBar(
+        leading: Icon(Icons.food_bank),
         backgroundColor: Colors.red,
         title: Text("Login Page - Food for Thought"),
       ),
@@ -25,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Center(
                 child: Container(
                     width: 200,
@@ -35,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
                         )),
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
@@ -43,11 +57,11 @@ class _LoginPageState extends State<LoginPage> {
                 //Text Field for username/email
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
+                    icon: Icon(Icons.mail),
                     labelText: 'Email',
                     hintText: 'example@gmail.com'),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, top: 15, bottom: 0),
@@ -57,13 +71,13 @@ class _LoginPageState extends State<LoginPage> {
                 //Text Field for password
                 obscureText: true, //to hide text (password field)
                 decoration: InputDecoration(
+                    icon: Icon(Icons.lock),
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText:
                         'Password must contain between 8-16 alphanumeric characters'),
               ),
             ),
-
             TextButton(
               onPressed: () {},
               child: Text(
@@ -71,7 +85,6 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(color: Colors.red, fontSize: 15),
               ),
             ),
-
             Container(
               height: 50,
               width: 250,
@@ -80,24 +93,29 @@ class _LoginPageState extends State<LoginPage> {
               child: TextButton(
                 onPressed: () async {
                   if (emailController.text.isEmpty) {
-                    print('Please enter an email');
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(enterEmailMessage);
                     return;
                   } else if (passwordController.text.isEmpty) {
-                    print("Please enter a password");
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(enterPasswordMessage);
                     return;
                   } else {
                     User? user = await signInWithEmailPassword(
                         emailController.text.toString(),
                         passwordController.text.toString());
-                    print(user);
+
                     if (user != null) {
+                      print(user);
                       // ignore: use_build_context_synchronously
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => HomePage()));
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(userDNEMessage);
                     }
                   }
-                  // Navigator.push(
-                  //     context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
                 child: Text(
                   'Login',
@@ -105,7 +123,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, top: 10, bottom: 0),
@@ -126,10 +143,13 @@ class _LoginPageState extends State<LoginPage> {
                       User? user = await registerWithEmailPassword(
                           emailController.text.toString(),
                           passwordController.text.toString());
-                      print(user);
                       if (user != null) {
+                        print(user);
                         // ignore: use_build_context_synchronously
                         print('Successfully Registered');
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(emailFormatMessage);
                       }
                     }
                   },
@@ -140,26 +160,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-
-            // Container(
-            //   height: 50,
-            //   width: 250,
-            //   decoration: BoxDecoration(
-            //       color: Colors.red, borderRadius: BorderRadius.circular(20)),
-            //   child: TextButton(
-            //     onPressed: () {
-            //       registerWithEmailPassword(emailController.text.toString(),
-            //           passwordController.text.toString());
-            //       // Navigator.push(
-            //       //     context, MaterialPageRoute(builder: (_) => HomePage()));
-            //     },
-            //     child: Text(
-            //       'Register',
-            //       style: TextStyle(color: Colors.white, fontSize: 25),
-            //     ),
-            //   ),
-            // ),
-
             SizedBox(
               height: 130,
             ),

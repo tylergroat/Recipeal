@@ -29,7 +29,7 @@ Future<User?> registerWithEmailPassword(String email, String password) async {
       uid = user.uid;
       userEmail = user.email;
 
-      print('Successful Login');
+      print('Successfully Registered');
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
@@ -40,7 +40,6 @@ Future<User?> registerWithEmailPassword(String email, String password) async {
   } catch (e) {
     print(e);
   }
-  print('User $userEmail Successfully Created');
   return user;
 }
 
@@ -71,7 +70,6 @@ Future<User?> signInWithEmailPassword(String email, String password) async {
       print('Wrong password provided.');
     }
   }
-
   return user;
 }
 
