@@ -28,6 +28,8 @@ Future<User?> registerWithEmailPassword(String email, String password) async {
     if (user != null) {
       uid = user.uid;
       userEmail = user.email;
+
+      print('Successful Login');
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
@@ -38,6 +40,8 @@ Future<User?> registerWithEmailPassword(String email, String password) async {
   } catch (e) {
     print(e);
   }
+  print('User $userEmail Successfully Created');
+  return user;
 }
 
 Future<User?> signInWithEmailPassword(String email, String password) async {
@@ -57,6 +61,8 @@ Future<User?> signInWithEmailPassword(String email, String password) async {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('auth', true);
+
+      print('Successful Login');
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {

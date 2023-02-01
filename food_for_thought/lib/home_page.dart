@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/authentification.dart';
+import 'package:food_for_thought/login_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -38,7 +40,12 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(
           icon: Icon(Icons.logout),
           tooltip: 'Logout',
-          onPressed: () {/*Code for logging out goes here*/},
+          onPressed: () {
+            signOut();
+            print('User Logged Out');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => LoginPage()));
+          },
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.red,

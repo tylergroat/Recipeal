@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "191690373750",
-    "project_id": "food-for-thought-c59ea",
-    "storage_bucket": "food-for-thought-c59ea.appspot.com"
+    "project_number": "287987514435",
+    "project_id": "food-for-thought-wsu",
+    "storage_bucket": "food-for-thought-wsu.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:191690373750:android:5811f56388a820cc1ebd57",
+        "mobilesdk_app_id": "1:287987514435:android:9dbfbcf8d33d0fbe26e8f6",
         "android_client_info": {
           "package_name": "com.example.food_for_thought"
         }
       },
       "oauth_client": [
         {
-          "client_id": "191690373750-m5ppmfe50up8akreu1n01ffmnc41n232.apps.googleusercontent.com",
+          "client_id": "287987514435-bhcc9b2b8t98botnkn4d00ui32hjj6vj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD-FnQSsbmu5JVYs99cjhpCM8vP-JDJTBo"
+          "current_key": "AIzaSyD5xSt_ja6jXfBR_Av5fXWyqHVDwL43bkk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "191690373750-m5ppmfe50up8akreu1n01ffmnc41n232.apps.googleusercontent.com",
+              "client_id": "287987514435-bhcc9b2b8t98botnkn4d00ui32hjj6vj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

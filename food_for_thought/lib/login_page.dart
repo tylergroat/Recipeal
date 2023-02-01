@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
 import 'home_page.dart';
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.red,
         title: Text("Login Page - Food for Thought"),
       ),
+
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -33,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                         )),
               ),
             ),
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
@@ -44,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'example@gmail.com'),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, top: 15, bottom: 0),
@@ -59,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                         'Password must contain between 8-16 alphanumeric characters'),
               ),
             ),
+
             TextButton(
               onPressed: () {},
               child: Text(
@@ -66,16 +71,31 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(color: Colors.red, fontSize: 15),
               ),
             ),
+
             Container(
               height: 50,
               width: 250,
               decoration: BoxDecoration(
                   color: Colors.red, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
-                onPressed: () {
-                  signInWithEmailPassword(emailController.text.toString(),
-                      passwordController.text.toString());
-
+                onPressed: () async {
+                  if (emailController.text.isEmpty) {
+                    print('Please enter an email');
+                    return;
+                  } else if (passwordController.text.isEmpty) {
+                    print("Please enter a password");
+                    return;
+                  } else {
+                    User? user = await signInWithEmailPassword(
+                        emailController.text.toString(),
+                        passwordController.text.toString());
+                    print(user);
+                    if (user != null) {
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => HomePage()));
+                    }
+                  }
                   // Navigator.push(
                   //     context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
@@ -85,18 +105,63 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 40.0, right: 40.0, top: 10, bottom: 0),
+              child: Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                  onPressed: () async {
+                    if (emailController.text.isEmpty) {
+                      print('Please enter an email');
+                      return;
+                    } else if (passwordController.text.isEmpty) {
+                      print("Please enter a password");
+                      return;
+                    } else {
+                      User? user = await registerWithEmailPassword(
+                          emailController.text.toString(),
+                          passwordController.text.toString());
+                      print(user);
+                      if (user != null) {
+                        // ignore: use_build_context_synchronously
+                        print('Successfully Registered');
+                      }
+                    }
+                  },
+                  child: Text(
+                    'Register',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+            ),
+
+            // Container(
+            //   height: 50,
+            //   width: 250,
+            //   decoration: BoxDecoration(
+            //       color: Colors.red, borderRadius: BorderRadius.circular(20)),
+            //   child: TextButton(
+            //     onPressed: () {
+            //       registerWithEmailPassword(emailController.text.toString(),
+            //           passwordController.text.toString());
+            //       // Navigator.push(
+            //       //     context, MaterialPageRoute(builder: (_) => HomePage()));
+            //     },
+            //     child: Text(
+            //       'Register',
+            //       style: TextStyle(color: Colors.white, fontSize: 25),
+            //     ),
+            //   ),
+            // ),
+
             SizedBox(
               height: 130,
-            ),
-            TextButton(
-              onPressed: () {
-                //TODO: we will redirect users to a reset password screen upon clicking this button
-              },
-              style: TextButton.styleFrom(fixedSize: Size(200, 80)),
-              child: Text(
-                'New User? Create Account',
-                style: TextStyle(color: Colors.red, fontSize: 15),
-              ),
             ),
           ],
         ),
