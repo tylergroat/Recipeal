@@ -176,30 +176,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  google_sign_in:
-    dependency: "direct main"
-    description:
-      name: google_sign_in
-      sha256: "4195705b3427e2faefbfdb4ea121aea15efa7949b06bb3eb9f91d2d3b7ea5f3a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.1"
-  google_sign_in_platform_interface:
-    dependency: transitive
-    description:
-      name: google_sign_in_platform_interface
-      sha256: "61306213c76bb8170c3aa20017df296c0131c24d7f6c0cc7e2eeaeac34c9f457"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
-  google_sign_in_web:
-    dependency: transitive
-    description:
-      name: google_sign_in_web
-      sha256: "75cc41ebc53b1756320ee14d9c3018ad3e6cea298147dbcd86e9d0c8d6720b40"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.2+1"
   http_parser:
     dependency: transitive
     description:
@@ -312,14 +288,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.4"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -462,5 +430,5 @@ packages:
     source: hosted
     version: "0.2.0+3"
 sdks:
-  dart: ">=2.18.6 <4.0.0"
+  dart: ">=2.18.6 <3.0.0"
   flutter: ">=3.0.0"
