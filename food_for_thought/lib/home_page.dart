@@ -37,16 +37,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.logout),
-          tooltip: 'Logout',
-          onPressed: () {
-            signOut();
-            print('User Logged Out');
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => LoginPage()));
-          },
-        ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              icon: Icon(Icons.logout),
+              tooltip: 'Logout',
+              onPressed: () {
+                signOut();
+                print('User Logged Out');
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => LoginPage()));
+              },
+            ),
+          ),
+        ],
         automaticallyImplyLeading: false,
         backgroundColor: Colors.red,
         title: const Text('Welcome!'),
