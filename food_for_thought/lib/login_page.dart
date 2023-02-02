@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
+import 'package:food_for_thought/registration_page.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -28,6 +29,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isHidden = true;
+
+    void togglePasswordView() {
+      setState(() {
+        isHidden = !isHidden;
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.white, //main scaffold
       appBar: AppBar(
@@ -69,13 +78,16 @@ class _LoginPageState extends State<LoginPage> {
               child: TextField(
                 controller: passwordController,
                 //Text Field for password
-                obscureText: true, //to hide text (password field)
+                obscureText: isHidden, //to hide text (password field)
                 decoration: InputDecoration(
-                    icon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText:
-                        'Password must contain between 8-16 alphanumeric characters'),
+                  icon: Icon(Icons.lock),
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                  hintText:
+                      'Password must have at least 6 alphanumeric characters',
+                  suffix: InkWell(
+                      onTap: togglePasswordView, child: Icon(Icons.visibility)),
+                ),
               ),
             ),
             TextButton(
@@ -132,26 +144,9 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(
                     color: Colors.red, borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  onPressed: () async {
-                    if (emailController.text.isEmpty) {
-                      print('Please enter an email');
-                      return;
-                    } else if (passwordController.text.isEmpty) {
-                      print("Please enter a password");
-                      return;
-                    } else {
-                      User? user = await registerWithEmailPassword(
-                          emailController.text.toString(),
-                          passwordController.text.toString());
-                      if (user != null) {
-                        print(user);
-                        // ignore: use_build_context_synchronously
-                        print('Successfully Registered');
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(emailFormatMessage);
-                      }
-                    }
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => RegistrationPage()));
                   },
                   child: Text(
                     'Register',
