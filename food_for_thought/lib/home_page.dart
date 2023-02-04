@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
 import 'package:food_for_thought/login_page.dart';
@@ -8,6 +10,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final user = FirebaseAuth.instance.currentUser;
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -37,7 +41,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Text("Signed in as: ${user?.email!}"),
         actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 15.0, top: 20, bottom: 10),
+            child: Text("${user?.email!}"),
+          ),
           Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: IconButton(
