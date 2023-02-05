@@ -41,11 +41,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Text("Signed in as: ${user?.email!}"),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 15.0, top: 20, bottom: 10),
-            child: Text("${user?.email!}"),
+            child: Text(
+              "${user?.email!}",
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(right: 20.0),

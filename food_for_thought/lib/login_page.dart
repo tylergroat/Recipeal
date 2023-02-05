@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         isHidden = !isHidden;
       });
+      print(isHidden);
     }
 
     return Scaffold(
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         leading: Icon(Icons.food_bank),
         backgroundColor: Colors.red,
-        title: Text("Login Page - Food for Thought"),
+        title: Text("Food for Thought"),
       ),
 
       body: SingleChildScrollView(
@@ -86,7 +87,12 @@ class _LoginPageState extends State<LoginPage> {
                   hintText:
                       'Password must have at least 6 alphanumeric characters',
                   suffix: InkWell(
-                      onTap: togglePasswordView, child: Icon(Icons.visibility)),
+                      onTap: togglePasswordView,
+                      child: Icon(
+                        Icons.visibility,
+                        color: Colors.grey,
+                        size: 20,
+                      )),
                 ),
               ),
             ),
