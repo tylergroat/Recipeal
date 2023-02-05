@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
+import 'package:food_for_thought/forgot_password.dart';
 import 'package:food_for_thought/registration_page.dart';
 import 'home_page.dart';
 
@@ -91,7 +92,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => ForgotPasswordPage()));
+              },
               child: Text(
                 'Forgot Password?',
                 style: TextStyle(color: Colors.red, fontSize: 15),
