@@ -29,15 +29,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isHidden = true;
-
-    void togglePasswordView() {
-      setState(() {
-        isHidden = !isHidden;
-      });
-      print(isHidden);
-    }
-
     return Scaffold(
       backgroundColor: Colors.white, //main scaffold
       appBar: AppBar(
@@ -79,20 +70,13 @@ class _LoginPageState extends State<LoginPage> {
               child: TextField(
                 controller: passwordController,
                 //Text Field for password
-                obscureText: isHidden, //to hide text (password field)
+                obscureText: true, //to hide text (password field)
                 decoration: InputDecoration(
                   icon: Icon(Icons.lock),
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                   hintText:
                       'Password must have at least 6 alphanumeric characters',
-                  suffix: InkWell(
-                      onTap: togglePasswordView,
-                      child: Icon(
-                        Icons.visibility,
-                        color: Colors.grey,
-                        size: 20,
-                      )),
                 ),
               ),
             ),

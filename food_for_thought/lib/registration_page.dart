@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'authentification.dart';
 import 'login_page.dart';
 
@@ -10,6 +9,7 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+  TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -41,14 +41,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isHidden = true;
-
-    void togglePasswordView() {
-      setState(() {
-        isHidden = !isHidden;
-      });
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -78,7 +70,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 0),
+              child: TextField(
+                controller: usernameController,
+                //Text Field for username/email
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.person),
+                  labelText: 'Username',
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 0),
               child: TextField(
                 controller: emailController,
                 //Text Field for username/email
@@ -102,8 +106,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   labelText: 'Password',
                   hintText:
                       'Password must have at least 6 alphanumeric characters',
-                  suffix: InkWell(
-                      onTap: togglePasswordView, child: Icon(Icons.visibility)),
                 ),
               ),
             ),
@@ -113,15 +115,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
               child: TextField(
                 controller: confirmPasswordController,
                 //Text Field for password
-                obscureText: isHidden, //to hide text (password field)
+                obscureText: true, //to hide text (password field)
                 decoration: InputDecoration(
                   icon: Icon(Icons.lock),
                   border: OutlineInputBorder(),
                   labelText: 'Confirm Password',
                   hintText:
                       'Password must have at least 6 alphanumeric characters',
-                  suffix: InkWell(
-                      onTap: togglePasswordView, child: Icon(Icons.visibility)),
                 ),
               ),
             ),
