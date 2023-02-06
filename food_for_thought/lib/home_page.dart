@@ -11,10 +11,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser;
-
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  final screens = [
+    Center(
+      child: Text('Home', style: optionStyle),
+    ),
+    Center(
+      child: Text('Feed', style: optionStyle),
+    ),
+    Center(
+      child: Text('Create', style: optionStyle),
+    ),
+    Center(
+      child: Text('', style: optionStyle),
+    )
+  ];
+
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Home Page',
@@ -70,26 +85,28 @@ class _HomePageState extends State<HomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.red,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        showUnselectedLabels: false,
+        showSelectedLabels: true,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.feed),
             label: 'Feed',
-            backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.create),
             label: 'Create',
-            backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
-            backgroundColor: Colors.red,
           ),
         ],
         currentIndex: _selectedIndex,
