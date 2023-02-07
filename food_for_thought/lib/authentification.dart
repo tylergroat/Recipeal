@@ -2,13 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 String? uid;
 String? userEmail;
 
-Future<User?> registerWithEmailPassword(String email, String password) async {
+Future<User?> registerWithEmailPassword(String firstName, String lastName,
+    String userName, String email, String password) async {
   // Initialize Firebase
   await Firebase.initializeApp();
   User? user;
@@ -25,6 +27,8 @@ Future<User?> registerWithEmailPassword(String email, String password) async {
       uid = user.uid;
       userEmail = user.email;
 
+      addUserDetails(firstName, lastName, userName, email);
+
       print('Successfully Registered');
     }
   } on FirebaseAuthException catch (e) {
@@ -37,6 +41,16 @@ Future<User?> registerWithEmailPassword(String email, String password) async {
     print(e);
   }
   return user;
+}
+
+Future addUserDetails(
+    String firstName, String lastName, String userName, String email) async {
+  await FirebaseFirestore.instance.collection('users').add({
+    'first name': firstName,
+    'last name': lastName,
+    'user name': userName,
+    'email': email,
+  });
 }
 
 Future<User?> signInWithEmailPassword(String email, String password) async {
