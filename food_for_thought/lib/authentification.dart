@@ -50,6 +50,7 @@ Future addUserDetails(
     'last name': lastName,
     'user name': userName,
     'email': email,
+    'uid': uid
   });
 }
 
