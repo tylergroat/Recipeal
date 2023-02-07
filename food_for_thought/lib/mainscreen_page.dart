@@ -1,33 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
+import 'package:food_for_thought/feed_page.dart';
 import 'package:food_for_thought/login_page.dart';
+import 'package:food_for_thought/profile_page.dart';
+import 'package:food_for_thought/recipecreation_page.dart';
 
-class HomePage extends StatefulWidget {
+class MainScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainScreenState extends State<MainScreen> {
   final user = FirebaseAuth.instance.currentUser;
-  int _selectedIndex = 0;
+  int selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   final screens = [
-    Center(
-      child: Text('Home', style: optionStyle),
-    ),
-    Center(
-      child: Text('Feed', style: optionStyle),
-    ),
-    Center(
-      child: Text('Create', style: optionStyle),
-    ),
-    Center(
-      child: Text('', style: optionStyle),
-    )
+    FeedPage(), //placeholder
+    FeedPage(),
+    RecipeCreation(),
+    ProfilePage(),
   ];
 
   static const List<Widget> _widgetOptions = <Widget>[
@@ -48,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
     });
   }
 
@@ -82,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Welcome!'),
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: screens[selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -109,7 +103,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Profile',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         onTap: _onItemTapped,
       ),
     );
