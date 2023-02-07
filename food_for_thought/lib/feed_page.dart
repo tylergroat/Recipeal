@@ -6,12 +6,18 @@ import 'package:food_for_thought/login_page.dart';
 
 class FeedPage extends StatefulWidget {
   @override
-  _FeedPageState createState() => _FeedPageState();
+  FeedPageState createState() => FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Feed'),
+        backgroundColor: Colors.red,
+        automaticallyImplyLeading: false,
+      ),
+    );
   }
 }

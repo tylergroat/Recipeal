@@ -6,10 +6,10 @@ import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  ProfilePageState createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

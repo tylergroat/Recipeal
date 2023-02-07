@@ -2,14 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
 import 'package:food_for_thought/registration_page.dart';
-import 'mainscreen_page.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   static const enterEmailMessage = SnackBar(
     content: Text('Please enter an email'),
   );
@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                       print(user);
                       // ignore: use_build_context_synchronously
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => MainScreen()));
+                          MaterialPageRoute(builder: (_) => HomePage()));
                     } else {
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context)

@@ -4,10 +4,11 @@ import 'dart:io';
 
 class RecipeCreation extends StatefulWidget {
   @override
-  _RecipeCreationState createState() => _RecipeCreationState();
+  RecipeCreationState createState() => RecipeCreationState();
 }
 
-class _RecipeCreationState extends State<RecipeCreation> {
+class RecipeCreationState extends State<RecipeCreation> {
+  TextEditingController recipeTitle = TextEditingController();
   XFile? image;
   final ImagePicker picker = ImagePicker();
 
@@ -32,7 +33,7 @@ class _RecipeCreationState extends State<RecipeCreation> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -49,7 +50,7 @@ class _RecipeCreationState extends State<RecipeCreation> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -71,10 +72,6 @@ class _RecipeCreationState extends State<RecipeCreation> {
           );
         });
   }
-
-  TextEditingController recipeTitle = TextEditingController();
-  TextEditingController recipe = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +116,7 @@ class _RecipeCreationState extends State<RecipeCreation> {
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(2),
                       child: Image.file(
                         //to show image, you type like this.
                         File(image!.path),

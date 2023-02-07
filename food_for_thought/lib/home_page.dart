@@ -6,38 +6,21 @@ import 'package:food_for_thought/login_page.dart';
 import 'package:food_for_thought/profile_page.dart';
 import 'package:food_for_thought/recipecreation_page.dart';
 
-class MainScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _MainScreenState createState() => _MainScreenState();
+  HomePageState createState() => HomePageState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser;
-  int selectedIndex = 0;
+  int selectedIndex = 1;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   final screens = [
-    FeedPage(), //placeholder
-    FeedPage(),
     RecipeCreation(),
+    FeedPage(),
     ProfilePage(),
-  ];
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home Page',
-      style: optionStyle,
-    ),
-    Text(
-      'Recipe Feed',
-      style: optionStyle,
-    ),
-    Text('Create Recipe', style: optionStyle),
-    Text(
-      'Profile Screen',
-      style: optionStyle,
-    ),
   ];
 
   void _onItemTapped(int index) {
@@ -50,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(Icons.food_bank),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 15.0, top: 20, bottom: 10),
@@ -73,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
         ],
         automaticallyImplyLeading: false,
         backgroundColor: Colors.red,
-        title: const Text('Welcome!'),
+        title: const Text('Food for Thought'),
       ),
       body: Center(
         child: screens[selectedIndex],
@@ -87,16 +71,12 @@ class _MainScreenState extends State<MainScreen> {
         showSelectedLabels: true,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.create),
+            label: 'Create',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.feed),
             label: 'Feed',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.create),
-            label: 'Create',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

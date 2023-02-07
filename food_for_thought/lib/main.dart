@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'mainscreen_page.dart';
+import 'home_page.dart';
 import 'login_page.dart';
 import 'registration_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'registration_page': (context) => RegistrationPage(),
         'login_page': (context) => LoginPage(),
-        'home_page': (context) => MainScreen()
+        'home_page': (context) => HomePage()
       },
     );
   }

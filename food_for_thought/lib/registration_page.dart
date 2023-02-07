@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'authentification.dart';
 import 'login_page.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
-  _RegistrationPageState createState() => _RegistrationPageState();
+  RegistrationPageState createState() => RegistrationPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class RegistrationPageState extends State<RegistrationPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
