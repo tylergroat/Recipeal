@@ -15,12 +15,23 @@ class ForgotPasswordPage extends StatelessWidget {
           .sendPasswordResetEmail(email: _emailController.text.trim());
     } on FirebaseAuthException catch (e) {
       print(e);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(e.message.toString()),
+            );
+          });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('forget password'),
+        backgroundColor: Colors.red,
+      ),
       backgroundColor: Colors.red,
       body: Form(
         child: Padding(
