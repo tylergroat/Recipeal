@@ -14,8 +14,13 @@ class FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.white,
+        toolbarHeight: 35,
+        centerTitle: true,
+        title: Text(
+          'Feed',
+          style: TextStyle(color: Colors.red),
+        ),
         automaticallyImplyLeading: false,
       ),
     );

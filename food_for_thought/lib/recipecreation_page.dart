@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
-import 'authentification.dart';
-import 'login_page.dart';
-
 
 class RecipeCreation extends StatefulWidget {
   @override
@@ -14,6 +9,13 @@ class RecipeCreation extends StatefulWidget {
 
 class RecipeCreationState extends State<RecipeCreation> {
   TextEditingController recipeTitle = TextEditingController();
+  TextEditingController recipe = TextEditingController();
+  TextEditingController timeCook = TextEditingController();
+  TextEditingController servings = TextEditingController();
+
+  final List<TextEditingController> ingredients = [];
+  List<TextField> fields = [];
+
   XFile? image;
   final ImagePicker picker = ImagePicker();
 
@@ -23,6 +25,14 @@ class RecipeCreationState extends State<RecipeCreation> {
     setState(() {
       image = img;
     });
+  }
+
+  @override
+  void dispose() {
+    for (final controller in ingredients) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   void displayImageChoice() {
@@ -78,12 +88,59 @@ class RecipeCreationState extends State<RecipeCreation> {
         });
   }
 
+  Widget listView() {
+    return ListView.builder(
+      itemCount: fields.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.all(5),
+          child: fields[index],
+        );
+      },
+    );
+  }
+
+  Widget addIngredient() {
+    return ListTile(
+      title: SizedBox(
+        width: 20.0,
+        height: 50.0,
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: Text(
+              'Add Ingredient',
+              style: TextStyle(fontSize: 20),
+            ),
+            onPressed: () {
+              final ingredientController = TextEditingController();
+              final field = TextField(
+                controller: ingredientController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Ingredient ${ingredients.length + 1}",
+                ),
+              );
+
+              setState(() {
+                ingredients.add(ingredientController);
+                fields.add(field);
+              });
+            }),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Your Recipe'),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.white,
+        toolbarHeight: 35,
+        centerTitle: true,
+        title: Text(
+          'Create a Recipe',
+          style: TextStyle(color: Colors.red),
+        ),
         automaticallyImplyLeading: false,
       ),
       body: Center(
@@ -91,19 +148,17 @@ class RecipeCreationState extends State<RecipeCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
               child: TextField(
                 controller: recipeTitle,
                 //Text Field for username/email
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    icon: Icon(Icons.title),
-                    labelText: 'Title'),
+                    border: OutlineInputBorder(), labelText: 'Recipe Title'),
               ),
             ),
 
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 1),
               child: ElevatedButton(
                 onPressed: () {
                   displayImageChoice();
@@ -117,23 +172,40 @@ class RecipeCreationState extends State<RecipeCreation> {
             ),
             //if image not null show the image
             //if image null show text
-            image != null
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(2),
-                      child: Image.file(
-                        //to show image, you type like this.
-                        File(image!.path),
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                        height: 300,
-                      ),
+            Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: image != null
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(2),
+                          child: Image.file(
+                            //to show image, you type like this.
+                            File(image!.path),
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width,
+                            height: 300,
+                          ),
+                        ),
+                      )
+                    : Text(' ')),
+            addIngredient(),
+            Expanded(child: listView()),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 380.0,
+                height: 50.0,
+                child: ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    child: Text(
+                      'Create Recipe',
+                      style: TextStyle(fontSize: 20),
                     ),
-                  )
-                : Text(
-                    "No Image",
-                  )
+                    onPressed: () {}),
+              ),
+            )
           ],
         ),
       ),
