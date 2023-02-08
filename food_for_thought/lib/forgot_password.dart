@@ -1,7 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   static String id = 'forgot-password';
+  final _emailController = TextEditingController();
+
+  void dispose() {
+    _emailController.dispose();
+  }
+
+  Future passwordReset() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +34,7 @@ class ForgotPasswordPage extends StatelessWidget {
               ),
               TextFormField(
                 style: TextStyle(color: Colors.white),
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   icon: Icon(
@@ -40,12 +56,12 @@ class ForgotPasswordPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              TextButton(
+              MaterialButton(
+                onPressed: () => passwordReset(),
                 child: Text(
                   'Send Email',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
-                onPressed: () {},
               ),
             ],
           ),
