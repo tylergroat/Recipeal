@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/authentification.dart';
 import 'package:food_for_thought/read%20data/get_user_name.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -42,6 +45,10 @@ class ProfilePageState extends State<ProfilePage> {
           })
         });
   }
+
+  static const logOutMessage = SnackBar(
+    content: Text('User Logged out'),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +96,7 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Text(
-                'Signed in as:  ${user.email!}',
+                'Email:  ${user.email!}',
                 style: TextStyle(fontSize: 20, color: Colors.red),
               ),
               Expanded(
@@ -110,7 +117,66 @@ class ProfilePageState extends State<ProfilePage> {
                     );
                   },
                 ),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 40.0, right: 40.0, top: 10, bottom: 0),
+                child: Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'View Saved Recipes',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 40.0, right: 40.0, top: 10, bottom: 0),
+                child: Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'View Created Recipes',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 40.0, right: 40.0, top: 10, bottom: 0),
+                child: Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextButton(
+                    onPressed: () {
+                      signOut();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => LoginPage()));
+                      ScaffoldMessenger.of(context).showSnackBar(logOutMessage);
+                    },
+                    child: Text(
+                      'Log Out',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
