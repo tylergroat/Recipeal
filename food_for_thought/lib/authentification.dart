@@ -45,7 +45,7 @@ Future<User?> registerWithEmailPassword(String firstName, String lastName,
 
 Future addUserDetails(
     String firstName, String lastName, String userName, String email) async {
-  await FirebaseFirestore.instance.collection('users').add({
+  await FirebaseFirestore.instance.collection('users').doc(uid).set({
     'first name': firstName,
     'last name': lastName,
     'user name': userName,

@@ -36,12 +36,6 @@ class HomePageState extends State<HomePage> {
         leading: Icon(Icons.food_bank),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 15.0, top: 20, bottom: 10),
-            child: Text(
-              "${user?.email!}",
-            ),
-          ),
-          Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: IconButton(
               icon: Icon(Icons.logout),
@@ -57,6 +51,7 @@ class HomePageState extends State<HomePage> {
         ],
         automaticallyImplyLeading: false,
         backgroundColor: Colors.red,
+        centerTitle: true,
         title: const Text('Food for Thought'),
       ),
       body: Center(
