@@ -53,33 +53,39 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+/////////  APP BAR  //////////////
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+        backgroundColor: Colors.grey,
         toolbarHeight: 35,
         centerTitle: true,
         title: Text(
-          'Profile Page',
-          style: TextStyle(color: Colors.red),
+          'Profile',
+          style: TextStyle(
+              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Padding(
+/////////  APP BAR  //////////////
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
             children: [
+///////////////////////  PROFILE PHOTO  /////////////////////////
               GestureDetector(
                 onTap: () {
                   setProfilePhoto();
                 },
                 child: Container(
-                  margin: const EdgeInsets.only(top: 20, bottom: 24),
+                  margin: const EdgeInsets.only(top: 20, bottom: 12),
                   height: 120,
                   width: 90,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.red,
+                    color: Colors.grey,
                   ),
                   child: Center(
                     child: profilePicLink == " "
@@ -95,74 +101,91 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              Text(
-                'Email:  ${user.email!}',
-                style: TextStyle(fontSize: 20, color: Colors.red),
-              ),
-              Expanded(
+///////////////////////  PROFILE PHOTO  /////////////////////////
+              ///////////////////////  DISPLAY NAME AND USERNAME  //////////////////////
+              Padding(
+                padding: const EdgeInsets.all(2.0),
                 child: FutureBuilder(
                   future: getUserDetails(),
                   builder: (context, snapshot) {
                     return SizedBox(
-                      width: 1000,
-                      child: ListView.builder(
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Center(
-                                child: GetUserName(documentID: user.uid)),
-                          );
-                        },
-                      ),
+                      width: 500,
+                      height: 50,
+                      child: Center(child: GetUserName(documentID: user.uid)),
                     );
                   },
                 ),
               ),
+
+              ////////////////////////  DISPLAY NAME AND USERNAME  //////////////////////
+///////////////////  DISPLAY USER EMAIL  ///////////////////////////
+              Padding(
+                padding: const EdgeInsetsDirectional.only(bottom: 65),
+                child: Text(
+                  user.email!,
+                  style: TextStyle(
+                      fontSize: 17, color: Color.fromARGB(255, 75, 72, 72)),
+                ),
+              ),
+///////////////////  DISPLAY USER EMAIL  ///////////////////////////
+              ///////////////////////  VIEW SAVED RECIPES BUTTON   /////////////////////////
               Padding(
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 10, bottom: 0),
                 child: Container(
                   height: 50,
-                  width: 250,
+                  width: 300,
                   decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20)),
+                      color: Color.fromARGB(255, 115, 138, 219),
+                      borderRadius: BorderRadius.circular(8)),
                   child: TextButton(
                     onPressed: () {},
                     child: Text(
                       'View Saved Recipes',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
+              ///////////////////////  VIEW SAVED RECIPES BUTTON   /////////////////////////
+///////////////////////  VIEW CREATED RECIPES BUTTON   /////////////////////////
               Padding(
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 10, bottom: 0),
                 child: Container(
                   height: 50,
-                  width: 250,
+                  width: 300,
                   decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20)),
+                      color: Color.fromARGB(255, 115, 138, 219),
+                      borderRadius: BorderRadius.circular(8)),
                   child: TextButton(
                     onPressed: () {},
                     child: Text(
                       'View Created Recipes',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
+///////////////////////  VIEW CREATED RECIPES BUTTON   /////////////////////////
+              /////////////////////// LOGOUT BUTTON   /////////////////////////
+
               Padding(
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 10, bottom: 0),
                 child: Container(
                   height: 50,
-                  width: 250,
+                  width: 300,
                   decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Color.fromARGB(255, 115, 138, 219),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   child: TextButton(
                     onPressed: () {
                       signOut();
@@ -172,11 +195,16 @@ class ProfilePageState extends State<ProfilePage> {
                     },
                     child: Text(
                       'Log Out',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
+
+              /////////////////////// LOGOUT BUTTON   /////////////////////////
             ],
           ),
         ),

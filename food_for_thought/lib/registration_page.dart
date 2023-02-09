@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'authentification.dart';
 import 'login_page.dart';
 
@@ -7,7 +9,6 @@ class RegistrationPage extends StatefulWidget {
   @override
   RegistrationPageState createState() => RegistrationPageState();
 }
-
 
 class RegistrationPageState extends State<RegistrationPage> {
   TextEditingController firstnameController = TextEditingController();
@@ -45,6 +46,8 @@ class RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final RoundedLoadingButtonController registerButton =
+        RoundedLoadingButtonController();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -56,8 +59,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                 context, MaterialPageRoute(builder: (_) => LoginPage()));
           },
         ),
-        backgroundColor: Colors.red,
-        title: Text('Register'),
+        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        title: Text('Register', textAlign: TextAlign.center),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -155,69 +158,81 @@ class RegistrationPageState extends State<RegistrationPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 40.0, right: 40.0, top: 15, bottom: 0),
-              child: Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () async {
-                    if (emailController.text.isEmpty) {
+                  left: 40.0, right: 40.0, top: 20, bottom: 30),
+              child: RoundedLoadingButton(
+                borderRadius: 8,
+                color: Color.fromARGB(255, 115, 138, 219),
+                controller: registerButton,
+                onPressed: () async {
+                  if (emailController.text.isEmpty) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(enterEmailMessage);
+                    registerButton.error();
+                    Timer(Duration(seconds: 1), () => registerButton.reset());
+                    return;
+                  } else if (passwordController.text.isEmpty) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(enterPasswordMessage);
+                    registerButton.error();
+                    Timer(Duration(seconds: 1), () => registerButton.reset());
+                    return;
+                  } else if (confirmPasswordController.text.isEmpty) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(confirmPasswordMessage);
+                    registerButton.error();
+                    Timer(Duration(seconds: 1), () => registerButton.reset());
+                    return;
+                  } else if (passwordController.text.length <= 6) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(weakPasswordMessage);
+                    registerButton.error();
+                    Timer(Duration(seconds: 1), () => registerButton.reset());
+                    return;
+                  } else if (passwordController.text !=
+                      confirmPasswordController.text) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(passwordsDoNotMatchMessage);
+                    registerButton.error();
+                    Timer(Duration(seconds: 1), () => registerButton.reset());
+                    return;
+                  } else {
+                    User? user = await registerWithEmailPassword(
+                        firstnameController.text.trim(),
+                        lastnameController.text.trim(),
+                        usernameController.text.trim(),
+                        emailController.text.trim(),
+                        passwordController.text.trim());
+
+                    if (user != null) {
+                      registerButton.success();
+                      Timer(
+                          Duration(seconds: 1),
+                          () => Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => LoginPage())));
+                      print(user);
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(enterEmailMessage);
-                      return;
-                    } else if (passwordController.text.isEmpty) {
+                          .showSnackBar(creationSuccessful);
+                      // ignore: use_build_context_synchronously
+                    } else if (!emailController.text.characters.contains('@')) {
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(enterPasswordMessage);
-                      return;
-                    } else if (confirmPasswordController.text.isEmpty) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(confirmPasswordMessage);
-                      return;
-                    } else if (passwordController.text.length <= 6) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(weakPasswordMessage);
-                      return;
-                    } else if (passwordController.text !=
-                        confirmPasswordController.text) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(passwordsDoNotMatchMessage);
+                          .showSnackBar(emailFormatMessage);
+                      registerButton.error();
+                      Timer(Duration(seconds: 1), () => registerButton.reset());
                       return;
                     } else {
-                      User? user = await registerWithEmailPassword(
-                          firstnameController.text.trim(),
-                          lastnameController.text.trim(),
-                          usernameController.text.trim(),
-                          emailController.text.trim(),
-                          passwordController.text.trim());
-
-                      if (user != null) {
-                        print(user);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(creationSuccessful);
-                        // ignore: use_build_context_synchronously
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => LoginPage()));
-                      } else if (!emailController.text.characters
-                          .contains('@')) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(emailFormatMessage);
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(accountExistsMessage);
-                      }
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(accountExistsMessage);
+                      registerButton.error();
+                      Timer(Duration(seconds: 1), () => registerButton.reset());
+                      return;
                     }
-                  },
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white, fontSize: 25),
-                  ),
+                  }
+                },
+                child: Text(
+                  'Register',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 130,
             ),
           ],
         ),

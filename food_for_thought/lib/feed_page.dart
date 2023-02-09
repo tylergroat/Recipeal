@@ -14,12 +14,15 @@ class FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+        backgroundColor: Colors.grey,
         toolbarHeight: 35,
         centerTitle: true,
         title: Text(
           'Feed',
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(
+              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
         automaticallyImplyLeading: false,
       ),

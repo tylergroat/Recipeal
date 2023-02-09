@@ -106,7 +106,8 @@ class RecipeCreationState extends State<RecipeCreation> {
         width: 20.0,
         height: 50.0,
         child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 115, 138, 219)),
             child: Text(
               'Add Ingredient',
               style: TextStyle(fontSize: 20),
@@ -134,12 +135,15 @@ class RecipeCreationState extends State<RecipeCreation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+        backgroundColor: Colors.grey,
         toolbarHeight: 35,
         centerTitle: true,
         title: Text(
           'Create a Recipe',
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(
+              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -148,7 +152,7 @@ class RecipeCreationState extends State<RecipeCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: TextField(
                 controller: recipeTitle,
                 //Text Field for username/email
@@ -163,7 +167,8 @@ class RecipeCreationState extends State<RecipeCreation> {
                 onPressed: () {
                   displayImageChoice();
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 115, 138, 219)),
                 child: Text('Upload Photo'),
               ),
             ),
@@ -192,13 +197,13 @@ class RecipeCreationState extends State<RecipeCreation> {
             addIngredient(),
             Expanded(child: listView()),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(bottom: 20),
               child: SizedBox(
                 width: 380.0,
                 height: 50.0,
                 child: ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 115, 138, 219)),
                     child: Text(
                       'Create Recipe',
                       style: TextStyle(fontSize: 20),

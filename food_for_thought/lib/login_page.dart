@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:food_for_thought/authentification.dart';
 import 'package:food_for_thought/forgot_password.dart';
 import 'package:food_for_thought/registration_page.dart';
 import 'home_page.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,28 +30,38 @@ class LoginPageState extends State<LoginPage> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final RoundedLoadingButtonController loginButton =
+      RoundedLoadingButtonController();
+  final RoundedLoadingButtonController registerButton =
+      RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white, //main scaffold
       appBar: AppBar(
-        leading: Icon(Icons.food_bank),
-        backgroundColor: Colors.red,
-        title: Text("Food for Thought"),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(3))),
+        automaticallyImplyLeading: false,
+        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        title: Text(
+          "Food for Thought",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
+        centerTitle: true,
       ),
 
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              padding: EdgeInsets.only(top: 30, bottom: 30),
               child: Center(
-                child: Container(
+                child: SizedBox(
                     width: 200,
                     height: 150,
                     child: Image.asset(
-                        'assets/images/tomato.png' //to display the image
+                        'assets/logo/logo.png' //to display the image
                         )),
               ),
             ),
@@ -88,69 +101,75 @@ class LoginPageState extends State<LoginPage> {
               },
               child: Text(
                 'Forgot Password?',
-                style: TextStyle(color: Colors.red, fontSize: 15),
+                style: TextStyle(color: Colors.black, fontSize: 15),
               ),
             ),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Colors.red, borderRadius: BorderRadius.circular(20)),
-              child: TextButton(
-                onPressed: () async {
-                  if (emailController.text.isEmpty) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(enterEmailMessage);
-                    return;
-                  } else if (passwordController.text.isEmpty) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(enterPasswordMessage);
-                    return;
-                  } else {
-                    User? user = await signInWithEmailPassword(
-                        emailController.text.toString(),
-                        passwordController.text.toString());
+            RoundedLoadingButton(
+              borderRadius: 10,
+              animateOnTap: true,
+              successColor: Colors.green,
+              errorColor: Colors.red,
+              resetDuration: Duration(seconds: 2),
+              color: Color.fromARGB(255, 115, 138, 219),
+              controller: loginButton,
+              onPressed: () async {
+                if (emailController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(enterEmailMessage);
+                  loginButton.error();
+                  Timer(Duration(seconds: 2), () => loginButton.reset());
 
-                    if (user != null) {
-                      print(user);
-                      // ignore: use_build_context_synchronously
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => HomePage()));
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(userDNEMessage);
-                    }
+                  return;
+                } else if (passwordController.text.isEmpty) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(enterPasswordMessage);
+                  loginButton.error();
+                  Timer(Duration(seconds: 2), () => loginButton.reset());
+                  return;
+                } else {
+                  User? user = await signInWithEmailPassword(
+                      emailController.text.toString(),
+                      passwordController.text.toString());
+
+                  if (user != null) {
+                    loginButton.success();
+                    print(user);
+                    // ignore: use_build_context_synchronously
+                    Timer(
+                        Duration(seconds: 1),
+                        () => Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => HomePage())));
+                  } else {
+                    loginButton.error();
+                    Timer(Duration(seconds: 2), () => loginButton.reset());
+
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(userDNEMessage);
                   }
-                },
-                child: Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
+                }
+              },
+              child: Text(
+                'Login',
+                style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, top: 10, bottom: 0),
-              child: Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => RegistrationPage()));
-                  },
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white, fontSize: 25),
-                  ),
+              child: RoundedLoadingButton(
+                borderRadius: 10,
+                animateOnTap: false,
+                resetDuration: Duration(seconds: 3),
+                color: Color.fromARGB(255, 115, 138, 219),
+                controller: registerButton,
+                onPressed: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => RegistrationPage()));
+                },
+                child: Text(
+                  'Register',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 130,
             ),
           ],
         ),
