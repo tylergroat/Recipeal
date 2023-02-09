@@ -51,16 +51,13 @@ class RegistrationPageState extends State<RegistrationPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          tooltip: 'Back',
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => LoginPage()));
-          },
-        ),
+        automaticallyImplyLeading: true,
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
-        title: Text('Register', textAlign: TextAlign.center),
+        title: Text(
+          'Register',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

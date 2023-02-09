@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:food_for_thought/authentification.dart';
 import 'package:food_for_thought/forgot_password.dart';
 import 'package:food_for_thought/registration_page.dart';
@@ -54,16 +53,43 @@ class LoginPageState extends State<LoginPage> {
       body: Center(
         child: Column(
           children: <Widget>[
+            SizedBox(
+              width: 10000,
+              height: 50,
+            ),
             Padding(
-              padding: EdgeInsets.only(top: 30, bottom: 30),
+              padding: EdgeInsets.only(top: 2, bottom: 2),
+              child: Container(
+                width: 300,
+                child: Text(
+                  'WELCOME BACK',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 60,
+                      height: 1.0,
+                      fontFamily: 'Oswald'),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10000,
+              height: 30,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(),
               child: Center(
                 child: SizedBox(
                     width: 200,
-                    height: 150,
+                    height: 100,
                     child: Image.asset(
                         'assets/logo/logo.png' //to display the image
                         )),
               ),
+            ),
+            SizedBox(
+              width: 10000,
+              height: 60,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40),
