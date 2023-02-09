@@ -50,10 +50,6 @@ class ForgotPasswordPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Reset Your Password',
-                style: TextStyle(fontSize: 25, color: Colors.white),
-              ),
               TextFormField(
                 style: TextStyle(color: Colors.black),
                 controller: _emailController,

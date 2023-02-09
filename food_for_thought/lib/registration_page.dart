@@ -69,7 +69,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                     width: 200,
                     height: 150,
                     child: Image.asset(
-                        'assets/images/tomato.png' //to display the image
+                        'assets/images/logo.png' //to display the image
                         )),
               ),
             ),
