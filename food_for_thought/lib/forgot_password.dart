@@ -37,6 +37,7 @@ class ForgotPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'Reset Password',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),

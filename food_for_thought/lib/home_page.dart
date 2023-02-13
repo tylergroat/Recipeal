@@ -37,8 +37,6 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(3))),
         leading: IconButton(
           onPressed: () {
             /////////////////////   SETTINGS PAGE ????? /////////////
@@ -66,7 +64,7 @@ class HomePageState extends State<HomePage> {
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
         centerTitle: true,
         title: const Text(
-          'Food for Thought',
+          'Recipeal',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),

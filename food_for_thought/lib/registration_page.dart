@@ -53,25 +53,22 @@ class RegistrationPageState extends State<RegistrationPage> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        centerTitle: true,
         title: Text(
           'Register',
-          textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Center(
-                child: Container(
-                    width: 200,
-                    height: 150,
-                    child: Image.asset(
-                        'assets/images/logo.png' //to display the image
-                        )),
-              ),
+            Center(
+              child: Container(
+                  width: 200,
+                  height: 150,
+                  child:
+                      Image.asset('assets/logo/logo.png' //to display the image
+                          )),
             ),
             Padding(
               padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 0),
@@ -153,6 +150,9 @@ class RegistrationPageState extends State<RegistrationPage> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, top: 20, bottom: 30),
@@ -231,6 +231,9 @@ class RegistrationPageState extends State<RegistrationPage> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
