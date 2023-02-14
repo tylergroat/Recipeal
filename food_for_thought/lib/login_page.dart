@@ -56,37 +56,29 @@ class LoginPageState extends State<LoginPage> {
             children: <Widget>[
               SizedBox(
                 width: 10000,
-                height: 10,
+                height: 0,
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 2, bottom: 2),
-                child: Container(
-                  width: 250,
-                  child: Text(
-                    'WELCOME BACK',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 50,
-                        height: 1.0,
-                        fontFamily: 'Oswald'),
-                    textAlign: TextAlign.center,
-                  ),
+              SizedBox(
+                width: 200,
+                child: Text(
+                  'WELCOME BACK',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                      height: 1.0,
+                      fontFamily: 'Oswald'),
+                  textAlign: TextAlign.center,
                 ),
               ),
               SizedBox(
                 width: 10000,
                 height: 5,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(),
-                child: Center(
-                  child: SizedBox(
-                      width: 200,
-                      height: 100,
-                      child: Image.asset(
-                          'assets/logo/logo.png' //to display the image
-                          )),
-                ),
+              SizedBox(
+                width: 200,
+                height: 90,
+                child: Image.asset('assets/logo/logo.png' //to display the image
+                    ),
               ),
               SizedBox(
                 width: 10000,

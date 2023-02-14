@@ -3,8 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
-import 'package:food_for_thought/read%20data/get_user_name.dart';
+import 'package:food_for_thought/change_info.dart';
+import 'package:food_for_thought/view_created.dart';
+import 'package:food_for_thought/view_saved.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:food_for_thought/read_data/get_user_data.dart';
+
 import 'dart:io';
 
 import 'login_page.dart';
@@ -17,16 +21,9 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final user = FirebaseAuth.instance.currentUser!;
-  final String? uid = FirebaseAuth.instance.currentUser?.uid.toString();
+  String? uid = FirebaseAuth.instance.currentUser?.uid.toString();
   String profilePicLink = " ";
-
-  Future<void> getUserDetails() async {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .snapshots()
-        .listen((event) {});
-  }
+  late String userId = uid.toString();
 
   void setProfilePhoto() async {
     final profilePhoto = await ImagePicker().pickImage(
@@ -106,12 +103,11 @@ class ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: FutureBuilder(
-                  future: getUserDetails(),
                   builder: (context, snapshot) {
                     return SizedBox(
-                      width: 500,
+                      width: 400,
                       height: 50,
-                      child: Center(child: GetUserName(documentID: user.uid)),
+                      child: Center(child: GetUserData(documentID: user.uid)),
                     );
                   },
                 ),
@@ -123,8 +119,7 @@ class ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsetsDirectional.only(bottom: 65),
                 child: Text(
                   user.email!,
-                  style: TextStyle(
-                      fontSize: 17, color: Color.fromARGB(255, 75, 72, 72)),
+                  style: TextStyle(fontSize: 17, color: Colors.black),
                 ),
               ),
 ///////////////////  DISPLAY USER EMAIL  ///////////////////////////
@@ -139,7 +134,12 @@ class ProfilePageState extends State<ProfilePage> {
                       color: Color.fromARGB(255, 115, 138, 219),
                       borderRadius: BorderRadius.circular(8)),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ViewSavedRecipesPage()));
+                    },
                     child: Text(
                       'View Saved Recipes',
                       style: TextStyle(
@@ -162,7 +162,12 @@ class ProfilePageState extends State<ProfilePage> {
                       color: Color.fromARGB(255, 115, 138, 219),
                       borderRadius: BorderRadius.circular(8)),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => CreatedRecipesPage()));
+                    },
                     child: Text(
                       'View Created Recipes',
                       style: TextStyle(
@@ -188,13 +193,11 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      signOut();
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => LoginPage()));
-                      ScaffoldMessenger.of(context).showSnackBar(logOutMessage);
+                          MaterialPageRoute(builder: (_) => ChangeInfoPage()));
                     },
                     child: Text(
-                      'Log Out',
+                      'Change User Info',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
