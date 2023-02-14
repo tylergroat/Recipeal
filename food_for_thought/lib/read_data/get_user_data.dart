@@ -21,21 +21,9 @@ class GetUserData extends StatelessWidget {
           String username = '${data['user name']}';
           String fullName = '${data['first name']} ${data['last name']}';
 
-          return RichText(
-            text: TextSpan(
-                text: '${data['first name']} ${data['last name']}',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 18),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '\n@${data['user name']}',
-                    style: TextStyle(fontWeight: FontWeight.normal),
-                  )
-                ]),
-
-            // textAlign: TextAlign.center,
+          return Text(
+            '${data['first name']} ${data['last name']}',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           );
         }
         return Text('Loading...');

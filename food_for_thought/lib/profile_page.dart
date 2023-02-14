@@ -100,29 +100,28 @@ class ProfilePageState extends State<ProfilePage> {
               ),
 ///////////////////////  PROFILE PHOTO  /////////////////////////
               ///////////////////////  DISPLAY NAME AND USERNAME  //////////////////////
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: FutureBuilder(
-                  builder: (context, snapshot) {
-                    return SizedBox(
-                      width: 400,
-                      height: 50,
-                      child: Center(child: GetUserData(documentID: user.uid)),
-                    );
-                  },
-                ),
+              FutureBuilder(
+                builder: (context, snapshot) {
+                  return SizedBox(
+                    width: 400,
+                    height: 30,
+                    child: Center(child: GetUserData(documentID: user.uid)),
+                  );
+                },
               ),
 
               ////////////////////////  DISPLAY NAME AND USERNAME  //////////////////////
 ///////////////////  DISPLAY USER EMAIL  ///////////////////////////
-              Padding(
-                padding: const EdgeInsetsDirectional.only(bottom: 65),
-                child: Text(
-                  user.email!,
-                  style: TextStyle(fontSize: 17, color: Colors.black),
-                ),
+
+              Text(
+                user.email!,
+                style: TextStyle(fontSize: 17, color: Colors.black),
               ),
+
 ///////////////////  DISPLAY USER EMAIL  ///////////////////////////
+              SizedBox(
+                height: 80,
+              ),
               ///////////////////////  VIEW SAVED RECIPES BUTTON   /////////////////////////
               Padding(
                 padding: const EdgeInsets.only(

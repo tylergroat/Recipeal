@@ -6,6 +6,7 @@ import 'package:food_for_thought/forgot_password.dart';
 import 'package:food_for_thought/registration_page.dart';
 import 'home_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,18 +14,49 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  static const enterEmailMessage = SnackBar(
-    content: Text('Please enter an email'),
+  final enterEmailMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please enter an email!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const enterPasswordMessage = SnackBar(
-    content: Text('Please enter a password'),
+
+  final userDNEMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'User not found',
+      message: 'Please register first!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const userDNEMessage = SnackBar(
-    content:
-        Text('No user exists with these credentials, please register first'),
-  );
-  static const emailFormatMessage = SnackBar(
-    content: Text('Please enter a valid email'),
+
+  final enterPasswordMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please enter a password!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
 
   TextEditingController emailController = TextEditingController();
@@ -134,14 +166,25 @@ class LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   if (emailController.text.isEmpty) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(enterEmailMessage);
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(enterEmailMessage);
                     loginButton.error();
-                    Timer(Duration(seconds: 2), () => loginButton.reset());
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
+                    Timer(Duration(seconds: 1), () => loginButton.reset());
 
                     return;
                   } else if (passwordController.text.isEmpty) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(enterPasswordMessage);
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(enterPasswordMessage);
+                    loginButton.error();
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
                     loginButton.error();
                     Timer(Duration(seconds: 2), () => loginButton.reset());
                     return;
@@ -164,7 +207,13 @@ class LoginPageState extends State<LoginPage> {
 
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(userDNEMessage);
+                        ..hideCurrentMaterialBanner()
+                        ..showMaterialBanner(userDNEMessage);
+                      loginButton.error();
+                      Timer(
+                          Duration(seconds: 2),
+                          () => ScaffoldMessenger.of(context)
+                              .hideCurrentMaterialBanner());
                     }
                   }
                 },
