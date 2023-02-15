@@ -28,10 +28,12 @@ class FeedPageState extends State<FeedPage> {
         ),
         body: Center(
           child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             color: Colors.grey,
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
+              splashColor: Colors.white.withAlpha(30),
               onTap: () {
                 debugPrint('Card tapped.');
               },

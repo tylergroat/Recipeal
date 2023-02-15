@@ -62,6 +62,7 @@ class ForgotPasswordPage extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        centerTitle: true,
       ),
       backgroundColor: Colors.white,
       body: Form(

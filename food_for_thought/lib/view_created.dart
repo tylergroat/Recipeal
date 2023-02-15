@@ -16,8 +16,8 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage> {
       appBar: AppBar(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-        backgroundColor: Colors.grey,
-        toolbarHeight: 35,
+        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        toolbarHeight: 40,
         centerTitle: true,
         title: Text(
           'Created Recipes',

@@ -1,8 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/authentification.dart';
-import 'package:food_for_thought/login_page.dart';
 
 class ViewSavedRecipesPage extends StatefulWidget {
   @override
@@ -16,8 +12,8 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         appBar: AppBar(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-          backgroundColor: Colors.grey,
-          toolbarHeight: 35,
+          backgroundColor: Color.fromARGB(255, 115, 138, 219),
+          toolbarHeight: 40,
           centerTitle: true,
           title: Text(
             'Saved Recipes',
@@ -34,15 +30,68 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.bug_report),
-                    title: Text('Recipe 1'),
-                    onTap: () => {Navigator.of(context).pop()},
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      leading: Icon(Icons.food_bank),
+                      title: Text('Recipe 1'),
+                      onTap: () => {Navigator.of(context).pop()},
+                    ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.food_bank),
-                    title: Text('Recipe 1'),
-                    onTap: () => {},
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      leading: Icon(Icons.food_bank),
+                      title: Text('Recipe 2'),
+                      onTap: () => {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      leading: Icon(Icons.food_bank),
+                      title: Text('Recipe 3'),
+                      onTap: () => {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      leading: Icon(Icons.food_bank),
+                      title: Text('Recipe 4'),
+                      onTap: () => {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      leading: Icon(Icons.food_bank),
+                      title: Text('Recipe 5'),
+                      onTap: () => {},
+                    ),
                   ),
                 ],
               ),

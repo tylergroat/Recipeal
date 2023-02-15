@@ -18,9 +18,6 @@ class GetUserData extends StatelessWidget {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
 
-          String username = '${data['user name']}';
-          String fullName = '${data['first name']} ${data['last name']}';
-
           return Text(
             '${data['first name']} ${data['last name']}',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),

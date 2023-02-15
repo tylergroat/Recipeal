@@ -2,16 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/authentification.dart';
 import 'package:food_for_thought/change_info.dart';
 import 'package:food_for_thought/view_created.dart';
 import 'package:food_for_thought/view_saved.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/read_data/get_user_data.dart';
-
 import 'dart:io';
-
-import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -99,7 +95,7 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
 ///////////////////////  PROFILE PHOTO  /////////////////////////
-              ///////////////////////  DISPLAY NAME AND USERNAME  //////////////////////
+              ///////////////////////  DISPLAY NAME //////////////////////
               FutureBuilder(
                 builder: (context, snapshot) {
                   return SizedBox(
