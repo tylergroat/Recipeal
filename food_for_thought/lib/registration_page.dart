@@ -216,6 +216,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                       passwordController.text.isEmpty ||
                       firstnameController.text.isEmpty ||
                       lastnameController.text.isEmpty ||
+                      usernameController.text.isEmpty ||
                       confirmPasswordController.text.isEmpty ||
                       emailController.text.isEmpty) {
                     ScaffoldMessenger.of(context)

@@ -53,6 +53,12 @@ Future addUserDetails(
   });
 }
 
+Future updateUserDetails(String email, String uid) async {
+  await FirebaseFirestore.instance.collection('users').doc(uid).update({
+    'email': email,
+  });
+}
+
 Future<User?> signInWithEmailPassword(String email, String password) async {
   await Firebase.initializeApp();
   User? user;

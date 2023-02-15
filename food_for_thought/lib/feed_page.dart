@@ -29,12 +29,16 @@ class FeedPageState extends State<FeedPage> {
         body: Center(
           child: Card(
             color: Colors.grey,
-            child: SizedBox(
-              width: 300,
-              height: 350,
-              child: Center(
-                child: Image.asset('assets/logo/logo.png' //to display the image
-                    ),
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              splashColor: Colors.blue.withAlpha(30),
+              onTap: () {
+                debugPrint('Card tapped.');
+              },
+              child: const SizedBox(
+                width: 300,
+                height: 350,
+                child: Center(child: Text('Placeholder for recipes')),
               ),
             ),
           ),

@@ -59,6 +59,21 @@ class LoginPageState extends State<LoginPage> {
     actions: const [SizedBox.shrink()],
   );
 
+  final invalidEmailMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Invalid Input',
+      message: 'Please enter a valid email!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final RoundedLoadingButtonController loginButton =
@@ -201,15 +216,24 @@ class LoginPageState extends State<LoginPage> {
                           Duration(seconds: 1),
                           () => Navigator.push(context,
                               MaterialPageRoute(builder: (_) => HomePage())));
+                    } else if (!emailController.text.contains('@')) {
+                      loginButton.error();
+                      Timer(Duration(seconds: 1), () => loginButton.reset());
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentMaterialBanner()
+                        ..showMaterialBanner(invalidEmailMessage);
+                      Timer(
+                          Duration(seconds: 2),
+                          () => ScaffoldMessenger.of(context)
+                              .hideCurrentMaterialBanner());
                     } else {
                       loginButton.error();
-                      Timer(Duration(seconds: 2), () => loginButton.reset());
-
+                      Timer(Duration(seconds: 1), () => loginButton.reset());
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context)
                         ..hideCurrentMaterialBanner()
                         ..showMaterialBanner(userDNEMessage);
-                      loginButton.error();
                       Timer(
                           Duration(seconds: 2),
                           () => ScaffoldMessenger.of(context)

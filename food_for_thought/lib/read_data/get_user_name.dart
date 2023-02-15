@@ -17,9 +17,6 @@ class GetUserName extends StatelessWidget {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
 
-          String username = '${data['user name']}';
-          String fullName = '${data['first name']} ${data['last name']}';
-
           return RichText(
             text: TextSpan(
                 text: '${data['first name']} ${data['last name']}',
