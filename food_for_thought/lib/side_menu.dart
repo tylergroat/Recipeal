@@ -13,13 +13,24 @@ class NavDrawer extends StatelessWidget {
 
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
-      child: Text("Cancel"),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+      child: Text(
+        "Cancel",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
       onPressed: () {
         Navigator.pop(context);
       },
     );
+
     Widget confirmButton = TextButton(
-      child: Text("Logout"),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+      child: Text(
+        "Logout",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
         signOut();
@@ -28,7 +39,7 @@ class NavDrawer extends StatelessWidget {
     ); // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Confirm"),
-      content: Text("Are you sure you want to log out?"),
+      content: Text("Are you sure you want to logout?"),
       actions: [cancelButton, confirmButton],
     ); // show the dialog
     showDialog(

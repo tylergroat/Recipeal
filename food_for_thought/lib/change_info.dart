@@ -19,13 +19,19 @@ class ChangeInfoPageState extends State<ChangeInfoPage> {
 
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
-      child: Text("Cancel"),
+      child: Text(
+        "Cancel",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
       onPressed: () async {
         Navigator.pop(context);
       },
     );
     Widget confirmButton = TextButton(
-      child: Text("Confirm change"),
+      child: Text(
+        "Confirm change",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
       onPressed: () async {
         updateInfoButton.success();
         await user.updateEmail(newEmailController.text.trim());
