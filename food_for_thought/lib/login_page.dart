@@ -6,6 +6,7 @@ import 'package:food_for_thought/forgot_password.dart';
 import 'package:food_for_thought/registration_page.dart';
 import 'home_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,18 +14,64 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  static const enterEmailMessage = SnackBar(
-    content: Text('Please enter an email'),
+  final enterEmailMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please enter an email!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const enterPasswordMessage = SnackBar(
-    content: Text('Please enter a password'),
+
+  final userDNEMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'User not found',
+      message: 'Please register first!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const userDNEMessage = SnackBar(
-    content:
-        Text('No user exists with these credentials, please register first'),
+
+  final enterPasswordMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please enter a password!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const emailFormatMessage = SnackBar(
-    content: Text('Please enter a valid email'),
+
+  final invalidEmailMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Invalid Input',
+      message: 'Please enter a valid email!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
 
   TextEditingController emailController = TextEditingController();
@@ -56,37 +103,29 @@ class LoginPageState extends State<LoginPage> {
             children: <Widget>[
               SizedBox(
                 width: 10000,
-                height: 10,
+                height: 0,
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 2, bottom: 2),
-                child: Container(
-                  width: 250,
-                  child: Text(
-                    'WELCOME BACK',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 50,
-                        height: 1.0,
-                        fontFamily: 'Oswald'),
-                    textAlign: TextAlign.center,
-                  ),
+              SizedBox(
+                width: 200,
+                child: Text(
+                  'WELCOME BACK',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                      height: 1.0,
+                      fontFamily: 'Oswald'),
+                  textAlign: TextAlign.center,
                 ),
               ),
               SizedBox(
                 width: 10000,
                 height: 5,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(),
-                child: Center(
-                  child: SizedBox(
-                      width: 200,
-                      height: 100,
-                      child: Image.asset(
-                          'assets/logo/logo.png' //to display the image
-                          )),
-                ),
+              SizedBox(
+                width: 200,
+                height: 90,
+                child: Image.asset('assets/logo/logo.png' //to display the image
+                    ),
               ),
               SizedBox(
                 width: 10000,
@@ -142,14 +181,25 @@ class LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   if (emailController.text.isEmpty) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(enterEmailMessage);
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(enterEmailMessage);
                     loginButton.error();
-                    Timer(Duration(seconds: 2), () => loginButton.reset());
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
+                    Timer(Duration(seconds: 1), () => loginButton.reset());
 
                     return;
                   } else if (passwordController.text.isEmpty) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(enterPasswordMessage);
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(enterPasswordMessage);
+                    loginButton.error();
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
                     loginButton.error();
                     Timer(Duration(seconds: 2), () => loginButton.reset());
                     return;
@@ -166,13 +216,28 @@ class LoginPageState extends State<LoginPage> {
                           Duration(seconds: 1),
                           () => Navigator.push(context,
                               MaterialPageRoute(builder: (_) => HomePage())));
-                    } else {
+                    } else if (!emailController.text.contains('@')) {
                       loginButton.error();
-                      Timer(Duration(seconds: 2), () => loginButton.reset());
-
+                      Timer(Duration(seconds: 1), () => loginButton.reset());
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(userDNEMessage);
+                        ..hideCurrentMaterialBanner()
+                        ..showMaterialBanner(invalidEmailMessage);
+                      Timer(
+                          Duration(seconds: 2),
+                          () => ScaffoldMessenger.of(context)
+                              .hideCurrentMaterialBanner());
+                    } else {
+                      loginButton.error();
+                      Timer(Duration(seconds: 1), () => loginButton.reset());
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentMaterialBanner()
+                        ..showMaterialBanner(userDNEMessage);
+                      Timer(
+                          Duration(seconds: 2),
+                          () => ScaffoldMessenger.of(context)
+                              .hideCurrentMaterialBanner());
                     }
                   }
                 },

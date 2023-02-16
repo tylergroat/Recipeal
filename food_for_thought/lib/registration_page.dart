@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -19,29 +20,79 @@ class RegistrationPageState extends State<RegistrationPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  static const enterEmailMessage = SnackBar(
-    content: Text('Please enter an email'),
+  final emptyInputMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please fill in all inputs',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const confirmPasswordMessage = SnackBar(
-    content: Text('Please confirm your password'),
+  final weakPasswordMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Weak Password',
+      message: 'Password must be at least 6 alphanumberic characters',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const enterPasswordMessage = SnackBar(
-    content: Text('Please enter a password'),
+  final userExistsMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'User exists',
+      message: 'A user with this email already exists',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const passwordsDoNotMatchMessage = SnackBar(
-    content: Text('Passwords must match'),
+  final emailFormatMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Email Format Incorrect',
+      message: 'Please enter a valid email',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
-  static const emailFormatMessage = SnackBar(
-    content: Text('Please enter a valid email'),
+  final passwordsDoNotMatchMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Passwords Do Not Match',
+      message: 'Please confirn your password',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
   );
+
   static const creationSuccessful = SnackBar(
     content: Text('Account Created! Redirecting.....'),
-  );
-  static const accountExistsMessage = SnackBar(
-    content: Text('Account with this email exists'),
-  );
-  static const weakPasswordMessage = SnackBar(
-    content: Text('Password must be at least 6 alphanumeric characters'),
   );
 
   @override
@@ -161,35 +212,44 @@ class RegistrationPageState extends State<RegistrationPage> {
                 color: Color.fromARGB(255, 115, 138, 219),
                 controller: registerButton,
                 onPressed: () async {
-                  if (emailController.text.isEmpty) {
+                  if (emailController.text.isEmpty ||
+                      passwordController.text.isEmpty ||
+                      firstnameController.text.isEmpty ||
+                      lastnameController.text.isEmpty ||
+                      usernameController.text.isEmpty ||
+                      confirmPasswordController.text.isEmpty ||
+                      emailController.text.isEmpty) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(enterEmailMessage);
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(emptyInputMessage);
                     registerButton.error();
-                    Timer(Duration(seconds: 1), () => registerButton.reset());
-                    return;
-                  } else if (passwordController.text.isEmpty) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(enterPasswordMessage);
-                    registerButton.error();
-                    Timer(Duration(seconds: 1), () => registerButton.reset());
-                    return;
-                  } else if (confirmPasswordController.text.isEmpty) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(confirmPasswordMessage);
-                    registerButton.error();
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
                     Timer(Duration(seconds: 1), () => registerButton.reset());
                     return;
                   } else if (passwordController.text.length <= 6) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(weakPasswordMessage);
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(weakPasswordMessage);
                     registerButton.error();
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
                     Timer(Duration(seconds: 1), () => registerButton.reset());
                     return;
                   } else if (passwordController.text !=
                       confirmPasswordController.text) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(passwordsDoNotMatchMessage);
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(passwordsDoNotMatchMessage);
                     registerButton.error();
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
                     Timer(Duration(seconds: 1), () => registerButton.reset());
                     return;
                   } else {
@@ -212,13 +272,25 @@ class RegistrationPageState extends State<RegistrationPage> {
                       // ignore: use_build_context_synchronously
                     } else if (!emailController.text.characters.contains('@')) {
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(emailFormatMessage);
+                        ..hideCurrentMaterialBanner()
+                        ..showMaterialBanner(emailFormatMessage);
+                      registerButton.error();
+                      Timer(
+                          Duration(seconds: 2),
+                          () => ScaffoldMessenger.of(context)
+                              .hideCurrentMaterialBanner());
                       registerButton.error();
                       Timer(Duration(seconds: 1), () => registerButton.reset());
                       return;
                     } else {
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(accountExistsMessage);
+                        ..hideCurrentMaterialBanner()
+                        ..showMaterialBanner(userExistsMessage);
+                      registerButton.error();
+                      Timer(
+                          Duration(seconds: 2),
+                          () => ScaffoldMessenger.of(context)
+                              .hideCurrentMaterialBanner());
                       registerButton.error();
                       Timer(Duration(seconds: 1), () => registerButton.reset());
                       return;

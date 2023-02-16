@@ -13,19 +13,37 @@ class FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
-        backgroundColor: Colors.grey,
-        toolbarHeight: 35,
-        centerTitle: true,
-        title: Text(
-          'Feed',
-          style: TextStyle(
-              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+          backgroundColor: Colors.grey,
+          toolbarHeight: 35,
+          centerTitle: true,
+          title: Text(
+            'Feed',
+            style: TextStyle(
+                color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+          ),
+          automaticallyImplyLeading: false,
         ),
-        automaticallyImplyLeading: false,
-      ),
-    );
+        body: Center(
+          child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            color: Colors.grey,
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              splashColor: Colors.white.withAlpha(30),
+              onTap: () {
+                debugPrint('Card tapped.');
+              },
+              child: const SizedBox(
+                width: 300,
+                height: 350,
+                child: Center(child: Text('Placeholder for recipes')),
+              ),
+            ),
+          ),
+        ));
   }
 }

@@ -5,6 +5,7 @@ import 'package:food_for_thought/feed_page.dart';
 import 'package:food_for_thought/login_page.dart';
 import 'package:food_for_thought/profile_page.dart';
 import 'package:food_for_thought/recipecreation_page.dart';
+import 'package:food_for_thought/side_menu.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -36,31 +37,8 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavDrawer(),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            /////////////////////   SETTINGS PAGE ????? /////////////
-          },
-          icon: Icon(Icons.settings),
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              icon: Icon(Icons.logout),
-              tooltip: 'Logout',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(logOutMessage);
-
-                signOut();
-                print('User Logged Out');
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => LoginPage()));
-              },
-            ),
-          ),
-        ],
-        automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
         centerTitle: true,
         title: const Text(

@@ -54,8 +54,8 @@ class RecipeCreationState extends State<RecipeCreation> {
                         Navigator.pop(context);
                         getImage(ImageSource.gallery);
                       },
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
                       child: Row(
                         children: [
                           Icon(Icons.image),
@@ -71,8 +71,8 @@ class RecipeCreationState extends State<RecipeCreation> {
                         Navigator.pop(context);
                         getImage(ImageSource.camera);
                       },
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
                       child: Row(
                         children: [
                           Icon(Icons.camera),
