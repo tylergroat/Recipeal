@@ -1,0 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
+class EditRecipe extends StatefulWidget {
+    @override
+    EditRecipeState createState() => EditRecipeState();
+  }
+
+  class EditRecipeState extends State<EditRecipe> {
+
+    final List<TextEditingController> ingredients = [];
+    List<TextField> fields = [];
+    
+    TextEditingController recipeTitle = TextEditingController();
+    TextEditingController recipe = TextEditingController();
+    TextEditingController timeCook = TextEditingController();
+    TextEditingController servings = TextEditingController();
+
+  }
