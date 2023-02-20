@@ -202,30 +202,29 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 40.0, right: 40.0, top: 10, bottom: 0),
-                child: Container(
-                  height: 50,
-                  width: 300,
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 115, 138, 219),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => EditRecipePage()));
-                    },
-                    child: Text(
-                      'Edit Recipes',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+              ///////////////////////  VIEW CHANGE USER INFO BUTTON   /////////////////////////
+               @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Recipe App"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditRecipePage(recipe: myRecipe),
               ),
+            );
+          },
+          child: Text("Edit Recipe"),
+        ),
+      ),
+    );
+  }
+}
 ///////////////////////  VIEW EDIT RECIPES BUTTON   /////////////////////////
 
               /////////////////////// LOGOUT BUTTON   /////////////////////////
