@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:food_for_thought/change_info.dart';
 import 'package:food_for_thought/view_created.dart';
 import 'package:food_for_thought/view_saved.dart';
+import 'package:food_for_thought/edit_recipe.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/read_data/get_user_data.dart';
 import 'dart:io';
@@ -201,6 +202,31 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 40.0, right: 40.0, top: 10, bottom: 0),
+                child: Container(
+                  height: 50,
+                  width: 300,
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 115, 138, 219),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => EditRecipePage()));
+                    },
+                    child: Text(
+                      'Edit Recipes',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+///////////////////////  VIEW EDIT RECIPES BUTTON   /////////////////////////
 
               /////////////////////// LOGOUT BUTTON   /////////////////////////
             ],
