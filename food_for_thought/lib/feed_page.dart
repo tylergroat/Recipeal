@@ -11,6 +11,7 @@ class FeedPage extends StatefulWidget {
 class FeedPageState extends State<FeedPage> {
   int index = 0;
   late List<Recipe> recipes;
+  late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
 
   @override
@@ -21,6 +22,7 @@ class FeedPageState extends State<FeedPage> {
 
   Future<void> getRecipes() async {
     recipes = await RecipeApi.getRecipe();
+
     setState(() {
       _isLoading = false;
     });
@@ -46,41 +48,73 @@ class FeedPageState extends State<FeedPage> {
           ? Center(child: CircularProgressIndicator())
           : Center(
               child: Column(children: [
-                SizedBox(
-                  height: 20,
+                RecipeCard(
+                  title: recipes[index].name,
+                  servings: recipes[index].servings,
+                  cookTime: recipes[index].totalTime,
+                  rating: recipes[index].rating.toString(),
+                  thumbnailUrl: recipes[index].images,
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return RecipeCard(
-                        title: recipes[index].name,
-                        servings: recipes[index].servings,
-                        cookTime: recipes[index].totalTime,
-                        rating: recipes[index].rating.toString(),
-                        thumbnailUrl: recipes[index].images);
-                  },
-                ),
-                Container(
-                  height: 50,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 115, 138, 219),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      index++;
-                      setState(() {});
-                    },
-                    child: Text(
-                      'Next Recipe',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        height: 50,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 115, 138, 219),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            if (index == 0) {
+                              print('error, already at first index');
+                            } else {
+                              index--;
+                              setState(() {});
+                            }
+                          },
+                          child: Text(
+                            'Previous Recipe',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        height: 50,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 115, 138, 219),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            if (index == recipes.length - 1) {
+                              print('at end of list');
+                            } else {
+                              index++;
+                              setState(() {});
+                            }
+                          },
+                          child: Text(
+                            'Next Recipe',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ]),
             ),
