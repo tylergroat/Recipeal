@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
+  final int servings;
   final String rating;
   final String cookTime;
   final String thumbnailUrl;
   RecipeCard({
     required this.title,
+    required this.servings,
     required this.cookTime,
     required this.rating,
     required this.thumbnailUrl,
@@ -58,6 +60,22 @@ class RecipeCard extends StatelessWidget {
               ),
             ),
           ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: Padding(
+          //     padding: EdgeInsets.symmetric(horizontal: 5.0),
+          //     child: Text(
+          //       description,
+          //       style: TextStyle(
+          //           fontSize: 19,
+          //           color: Colors.white,
+          //           fontWeight: FontWeight.bold),
+          //       overflow: TextOverflow.ellipsis,
+          //       maxLines: 2,
+          //       textAlign: TextAlign.center,
+          //     ),
+          //   ),
+          // ),
           Align(
             alignment: Alignment.bottomLeft,
             child: Row(
@@ -80,6 +98,28 @@ class RecipeCard extends StatelessWidget {
                       SizedBox(width: 7),
                       Text(
                         rating,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.person,
+                        color: Colors.yellow,
+                        size: 18,
+                      ),
+                      SizedBox(width: 7),
+                      Text(
+                        'Serves $servings',
                         style: TextStyle(color: Colors.white),
                       ),
                     ],

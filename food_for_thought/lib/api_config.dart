@@ -17,7 +17,27 @@ class RecipeApi {
     List _temp = [];
 
     for (var i in data['feed']) {
-      _temp.add(i['content']['details']);
+      _temp.add(i['content']);
+    }
+
+    return Recipe.recipesFromSnapshot(_temp);
+  }
+
+  static Future<List<Recipe>> getIngredients() async {
+    var uri = Uri.https('yummly2.p.rapidapi.com', '/feeds/list',
+        {"limit": "18", "start": "0", "tag": "list.recipe.popular"});
+
+    final response = await http.get(uri, headers: {
+      "x-rapidapi-key": "326cf22eb1mshac86455f9f02e49p136e08jsnb6a08eb83b01",
+      "x-rapidapi-host": "yummly2.p.rapidapi.com",
+      "useQueryString": "true"
+    });
+
+    Map data = jsonDecode(response.body);
+    List _temp = [];
+
+    for (var i in data['feed']['content']) {
+      _temp.add(i['preparationSteps']);
     }
 
     return Recipe.recipesFromSnapshot(_temp);

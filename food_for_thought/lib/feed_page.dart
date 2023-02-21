@@ -55,6 +55,7 @@ class FeedPageState extends State<FeedPage> {
                   itemBuilder: (context, index) {
                     return RecipeCard(
                         title: recipes[index].name,
+                        servings: recipes[index].servings,
                         cookTime: recipes[index].totalTime,
                         rating: recipes[index].rating.toString(),
                         thumbnailUrl: recipes[index].images);
