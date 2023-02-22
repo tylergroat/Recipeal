@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flip_card/flip_card.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:expandable/expandable.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
   final int servings;
-  final String rating;
-  final String cookTime;
+  final List<dynamic> ingredients;
+  final String preparationSteps;
+  final int cookTime;
   final String thumbnailUrl;
   RecipeCard({
     required this.title,
     required this.servings,
+    required this.ingredients,
+    required this.preparationSteps,
     required this.cookTime,
-    required this.rating,
     required this.thumbnailUrl,
   });
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      child: Container(
+    return FlipCard(
+      front: Container(
         margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         width: MediaQuery.of(context).size.width,
-        height: 300,
+        height: 400,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(15),
@@ -75,20 +78,6 @@ class RecipeCard extends StatelessWidget {
                       color: Colors.black.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.yellow,
-                          size: 18,
-                        ),
-                        SizedBox(width: 7),
-                        Text(
-                          rating,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
                   ),
                   Container(
                     padding: EdgeInsets.all(5),
@@ -127,7 +116,8 @@ class RecipeCard extends StatelessWidget {
                           size: 18,
                         ),
                         SizedBox(width: 7),
-                        Text(cookTime, style: TextStyle(color: Colors.white)),
+                        Text('$cookTime',
+                            style: TextStyle(color: Colors.white)),
                       ],
                     ),
                   )
@@ -136,6 +126,80 @@ class RecipeCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      back: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+            width: MediaQuery.of(context).size.width,
+            height: 400,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.6),
+                  offset: Offset(
+                    0.0,
+                    10.0,
+                  ),
+                  blurRadius: 10.0,
+                  spreadRadius: -6.0,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Center(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+                    child: Container(
+                      width: 300,
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 19,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    // Expanded(
+                    //   child: ListView.builder(
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       return ingredients[index];
+                    //     },
+                    //   ),
+                    // ),
+                    InkWell(
+                        child: Text(
+                          'Preparation Steps',
+                          style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline),
+                        ),
+                        onTap: () {
+                          launchUrl(Uri.parse(
+                              preparationSteps.replaceAll('/private', '')));
+                          print('URL:$preparationSteps');
+                        }),
+
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
