@@ -203,30 +203,6 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               ///////////////////////  VIEW CHANGE USER INFO BUTTON   /////////////////////////
-               @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Recipe App"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EditRecipePage(recipe: myRecipe),
-              ),
-            );
-          },
-          child: Text("Edit Recipe"),
-        ),
-      ),
-    );
-  }
-}
-///////////////////////  VIEW EDIT RECIPES BUTTON   /////////////////////////
-
               /////////////////////// LOGOUT BUTTON   /////////////////////////
             ],
           ),
