@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:expandable/expandable.dart';
 
@@ -78,14 +79,6 @@ class RecipeCard extends StatelessWidget {
                       color: Colors.black.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
                     child: Row(
                       children: [
                         Icon(
@@ -127,27 +120,26 @@ class RecipeCard extends StatelessWidget {
           ],
         ),
       ),
-      back: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-            width: MediaQuery.of(context).size.width,
-            height: 400,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.6),
-                  offset: Offset(
-                    0.0,
-                    10.0,
-                  ),
-                  blurRadius: 10.0,
-                  spreadRadius: -6.0,
+      back: Container(
+          margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+          width: MediaQuery.of(context).size.width,
+          height: 400,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.6),
+                offset: Offset(
+                  0.0,
+                  10.0,
                 ),
-              ],
-            ),
+                blurRadius: 10.0,
+                spreadRadius: -6.0,
+              ),
+            ],
+          ),
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 Center(
@@ -178,18 +170,18 @@ class RecipeCard extends StatelessWidget {
                     //     },
                     //   ),
                     // ),
-                    InkWell(
-                        child: Text(
-                          'Preparation Steps',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline),
-                        ),
-                        onTap: () {
-                          launchUrl(Uri.parse(
-                              preparationSteps.replaceAll('/private', '')));
-                          print('URL:$preparationSteps');
-                        }),
+                    Text(
+                      '\nPreparation Steps',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          decoration: TextDecoration.underline),
+                    ),
+                    Container(
+                      child: Html(
+                        data: preparationSteps,
+                      ),
+                    ),
 
                     SizedBox(
                       height: 20,
@@ -198,9 +190,7 @@ class RecipeCard extends StatelessWidget {
                 ),
               ],
             ),
-          )
-        ],
-      ),
+          )),
     );
   }
 }

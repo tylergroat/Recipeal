@@ -19,7 +19,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    // getRecipes(); ///// will create button to refresh query -- accidentally got too many requests
+    getRecipes(); ///// will create button to refresh query -- accidentally got too many requests
   }
 
   Future<void> getRecipes() async {
