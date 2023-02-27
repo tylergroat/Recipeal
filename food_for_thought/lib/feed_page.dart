@@ -1,9 +1,11 @@
-import 'dart:html';
+import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'api_config.dart';
+import 'authentification.dart';
 
 class FeedPage extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class FeedPage extends StatefulWidget {
 class FeedPageState extends State<FeedPage> {
   int index = 0;
   late List<Recipe> recipes;
-  late List<Recipe> ingredients;
+  late List<String> ingredients = [];
 
   late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
@@ -27,8 +29,30 @@ class FeedPageState extends State<FeedPage> {
   Future<void> getRecipes() async {
     recipes = await RecipeApi.getRecipe();
 
+    for (int i = 0; i < recipes.length; i++) {
+      for (int j = 0; j < ingredients.length; j++) {
+        String ingredient = recipes[i].ingredients[j];
+        ingredients.add(ingredient);
+      }
+    }
     setState(() {
       _isLoading = false;
+    });
+  }
+
+  Future<void> saveRecipe(List<Recipe> recipes, int index) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('saved recipes')
+        .doc()
+        .set({
+      'title': recipes[index].name,
+      'servings': recipes[index].servings,
+      'ingredients': recipes[index].ingredients,
+      'preparationSteps': recipes[index].preparationSteps,
+      'cookTime': recipes[index].totalTime,
+      'thumbnailUrl': recipes[index].images
     });
   }
 
@@ -67,12 +91,15 @@ class FeedPageState extends State<FeedPage> {
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
                         height: 50,
-                        width: 180,
+                        width: 50,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                        child: TextButton(
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.thumb_down,
+                          ),
                           onPressed: () {
                             if (index == 0) {
                               print('error, already at first index');
@@ -83,29 +110,26 @@ class FeedPageState extends State<FeedPage> {
                               });
                             }
                           },
-                          child: Text(
-                            'Dislike',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      width: 50,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
                         height: 50,
-                        width: 180,
+                        width: 50,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                        child: TextButton(
+                        child: IconButton(
+                          icon: Icon(Icons.favorite, color: Colors.red),
                           onPressed: () {
                             if (index == recipes.length - 1) {
-                              print('at end of list');
+                              print('error, last index');
                             } else {
                               index++;
                               setState(() {
@@ -113,13 +137,6 @@ class FeedPageState extends State<FeedPage> {
                               });
                             }
                           },
-                          child: Text(
-                            'Like',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
                         ),
                       ),
                     ),

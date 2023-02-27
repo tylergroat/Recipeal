@@ -25,7 +25,7 @@ class RecipeCard extends StatelessWidget {
       front: Container(
         margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         width: MediaQuery.of(context).size.width,
-        height: 400,
+        height: 300,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(15),
@@ -123,7 +123,7 @@ class RecipeCard extends StatelessWidget {
       back: Container(
           margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
           width: MediaQuery.of(context).size.width,
-          height: 400,
+          height: 300,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
@@ -163,13 +163,16 @@ class RecipeCard extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    // Expanded(
-                    //   child: ListView.builder(
-                    //     itemBuilder: (BuildContext context, int index) {
-                    //       return ingredients[index];
-                    //     },
-                    //   ),
-                    // ),
+                    Text(
+                      '\nIngredients',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          decoration: TextDecoration.underline),
+                    ),
+                    for (int i = 1; i <= ingredients.length - 1; i++) ...[
+                      Text(ingredients[i].toString() + "\n"),
+                    ],
                     Text(
                       '\nPreparation Steps',
                       style: TextStyle(
@@ -182,7 +185,6 @@ class RecipeCard extends StatelessWidget {
                         data: preparationSteps,
                       ),
                     ),
-
                     SizedBox(
                       height: 20,
                     ),

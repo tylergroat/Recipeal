@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,7 @@ Future<User?> registerWithEmailPassword(String firstName, String lastName,
       await user.updateDisplayName(userName);
 
       addUserDetails(firstName, lastName, userName, email);
+      createSubcollections(uid!);
 
       print('Successfully Registered');
     }
@@ -52,6 +54,19 @@ Future addUserDetails(
     'email': email,
     'uid': uid
   });
+}
+
+Future createSubcollections(String uid) async {
+  FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('saved recipes')
+      .doc();
+  FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('created recipes')
+      .doc();
 }
 
 Future updateUserDetails(String email, String uid) async {
