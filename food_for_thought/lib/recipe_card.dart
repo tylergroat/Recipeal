@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:expandable/expandable.dart';
 
 class RecipeCard extends StatelessWidget {
@@ -171,7 +170,8 @@ class RecipeCard extends StatelessWidget {
                           decoration: TextDecoration.underline),
                     ),
                     for (int i = 1; i <= ingredients.length - 1; i++) ...[
-                      Text(ingredients[i].toString() + "\n"),
+                      Text(("$i: ${ingredients[i]['original']}\n"),
+                          style: TextStyle(fontWeight: FontWeight.bold))
                     ],
                     Text(
                       '\nPreparation Steps',

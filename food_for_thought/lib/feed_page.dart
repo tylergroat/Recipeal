@@ -31,8 +31,10 @@ class FeedPageState extends State<FeedPage> {
 
     for (int i = 0; i < recipes.length; i++) {
       for (int j = 0; j < ingredients.length; j++) {
-        String ingredient = recipes[i].ingredients[j];
-        ingredients.add(ingredient);
+        String ingredient = recipes[i].ingredients[j]['original'];
+        List<String> ingredients = ingredient.split("original");
+        print(ingredients[0]);
+        // ingredients.add(ingredient);
       }
     }
     setState(() {
@@ -58,6 +60,14 @@ class FeedPageState extends State<FeedPage> {
 
   @override
   Widget build(BuildContext context) {
+    for (int i = 0; i < recipes.length; i++) {
+      for (int j = 0; j < ingredients.length; j++) {
+        String ingredient = recipes[i].ingredients[j]['original'];
+        List<String> ingredients = ingredient.split("original");
+        print(ingredients[0]);
+        // ingredients.add(ingredient);
+      }
+    }
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
