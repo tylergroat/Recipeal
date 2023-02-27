@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
@@ -82,7 +84,7 @@ class FeedPageState extends State<FeedPage> {
                             }
                           },
                           child: Text(
-                            'Previous Recipe',
+                            'Dislike',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -112,7 +114,7 @@ class FeedPageState extends State<FeedPage> {
                             }
                           },
                           child: Text(
-                            'Next Recipe',
+                            'Like',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
