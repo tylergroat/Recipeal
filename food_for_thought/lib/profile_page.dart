@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:food_for_thought/change_info.dart';
 import 'package:food_for_thought/view_created.dart';
 import 'package:food_for_thought/view_saved.dart';
+import 'package:food_for_thought/edit_recipe.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/read_data/get_user_data.dart';
 import 'dart:io';
@@ -174,7 +175,6 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
 ///////////////////////  VIEW CREATED RECIPES BUTTON   /////////////////////////
-              /////////////////////// LOGOUT BUTTON   /////////////////////////
 
               Padding(
                 padding: const EdgeInsets.only(
@@ -201,8 +201,6 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-
-              /////////////////////// LOGOUT BUTTON   /////////////////////////
             ],
           ),
         ),

@@ -25,6 +25,7 @@ Future<User?> registerWithEmailPassword(String firstName, String lastName,
     if (user != null) {
       uid = user.uid;
       userEmail = user.email;
+      await user.updateDisplayName(userName);
 
       addUserDetails(firstName, lastName, userName, email);
 
