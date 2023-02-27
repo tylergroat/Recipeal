@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
@@ -11,13 +13,15 @@ class FeedPage extends StatefulWidget {
 class FeedPageState extends State<FeedPage> {
   int index = 0;
   late List<Recipe> recipes;
+  late List<Recipe> ingredients;
+
   late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    getRecipes(); ///// will create button to refresh query -- accidentally got too many requests
   }
 
   Future<void> getRecipes() async {
@@ -51,8 +55,9 @@ class FeedPageState extends State<FeedPage> {
                 RecipeCard(
                   title: recipes[index].name,
                   servings: recipes[index].servings,
+                  ingredients: recipes[index].ingredients,
+                  preparationSteps: recipes[index].preparationSteps,
                   cookTime: recipes[index].totalTime,
-                  rating: recipes[index].rating.toString(),
                   thumbnailUrl: recipes[index].images,
                 ),
                 Row(
@@ -73,11 +78,13 @@ class FeedPageState extends State<FeedPage> {
                               print('error, already at first index');
                             } else {
                               index--;
-                              setState(() {});
+                              setState(() {
+                                index = index;
+                              });
                             }
                           },
                           child: Text(
-                            'Previous Recipe',
+                            'Dislike',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -101,11 +108,13 @@ class FeedPageState extends State<FeedPage> {
                               print('at end of list');
                             } else {
                               index++;
-                              setState(() {});
+                              setState(() {
+                                index = index;
+                              });
                             }
                           },
                           child: Text(
-                            'Next Recipe',
+                            'Like',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
