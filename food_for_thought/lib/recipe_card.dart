@@ -24,7 +24,7 @@ class RecipeCard extends StatelessWidget {
       front: Container(
         margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         width: MediaQuery.of(context).size.width,
-        height: 350,
+        height: 375,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(15),
@@ -122,7 +122,7 @@ class RecipeCard extends StatelessWidget {
       back: Container(
           margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
           width: MediaQuery.of(context).size.width,
-          height: 350,
+          height: 375,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),

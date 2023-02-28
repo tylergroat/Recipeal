@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe.dart';
@@ -16,14 +15,16 @@ class FeedPageState extends State<FeedPage> {
   int index = 0;
   late List<Recipe> recipes = [];
   late List<String> ingredients = [];
-
+  late int lastIndex = ingredients.length - 1;
+  late DatabaseReference dbRef;
   late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
 
   @override
   void initState() {
+    dbRef = FirebaseDatabase.instance.ref().child('user data');
     super.initState();
-    getRecipes(); ///// will create button to refresh query -- accidentally got too many requests
+    getRecipes();
   }
 
   Future<void> getRecipes() async {
@@ -33,32 +34,8 @@ class FeedPageState extends State<FeedPage> {
     });
   }
 
-  Future<void> saveRecipe(List<Recipe> recipes, int index) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('saved recipes')
-        .doc()
-        .set({
-      'title': recipes[index].name,
-      'servings': recipes[index].servings,
-      'ingredients': recipes[index].ingredients,
-      'preparationSteps': recipes[index].preparationSteps,
-      'cookTime': recipes[index].totalTime,
-      'thumbnailUrl': recipes[index].images
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < recipes.length; i++) {
-      for (int j = 0; j < ingredients.length; j++) {
-        String ingredient = recipes[i].ingredients[j]['original'];
-        List<String> ingredients = ingredient.split("original");
-        print(ingredients[0]);
-        // ingredients.add(ingredient);
-      }
-    }
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -103,14 +80,16 @@ class FeedPageState extends State<FeedPage> {
                             size: 35,
                           ),
                           onPressed: () {
-                            if (index == 0) {
-                              print('error, already at first index');
+                            if (index >= lastIndex) {
+                              index = 0;
+                              getRecipes();
                             } else {
-                              index--;
-                              setState(() {
-                                index = index;
-                              });
+                              index++;
+                              recipes.removeAt(index);
                             }
+                            setState(() {
+                              index = index;
+                            });
                           },
                         ),
                       ),
@@ -134,14 +113,31 @@ class FeedPageState extends State<FeedPage> {
                             size: 35,
                           ),
                           onPressed: () {
-                            if (index == recipes.length - 1) {
-                              print('error, last index');
+                            if (index >= lastIndex) {
+                              index = 0;
+                              getRecipes();
                             } else {
                               index++;
-                              setState(() {
-                                index = index;
-                              });
+                              recipes.removeAt(index);
                             }
+
+                            Map<String, dynamic> savedRecipe = {
+                              'title': recipes[index].name,
+                              'servings': recipes[index].servings,
+                              'ingredients': recipes[index].ingredients,
+                              'preparationSteps':
+                                  recipes[index].preparationSteps,
+                              'cookTime': recipes[index].totalTime,
+                              'thumbnailUrl': recipes[index].images,
+                            };
+                            dbRef
+                                .child('$uid!/saved recipes')
+                                .push()
+                                .set(savedRecipe);
+
+                            setState(() {
+                              index = index;
+                            });
                           },
                         ),
                       ),
