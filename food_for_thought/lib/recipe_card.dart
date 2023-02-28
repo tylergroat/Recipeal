@@ -24,7 +24,7 @@ class RecipeCard extends StatelessWidget {
       front: Container(
         margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         width: MediaQuery.of(context).size.width,
-        height: 300,
+        height: 350,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(15),
@@ -82,7 +82,7 @@ class RecipeCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.person,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 18,
                         ),
                         SizedBox(width: 7),
@@ -104,15 +104,15 @@ class RecipeCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.schedule,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 18,
                         ),
                         SizedBox(width: 7),
-                        Text('$cookTime',
+                        Text('$cookTime minutes',
                             style: TextStyle(color: Colors.white)),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -122,7 +122,7 @@ class RecipeCard extends StatelessWidget {
       back: Container(
           margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
           width: MediaQuery.of(context).size.width,
-          height: 300,
+          height: 350,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
@@ -150,7 +150,7 @@ class RecipeCard extends StatelessWidget {
                       child: Text(
                         title,
                         style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 22,
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
                         overflow: TextOverflow.ellipsis,
@@ -160,33 +160,70 @@ class RecipeCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                Container(
+                  height: 175,
+                  width: 275,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.6),
+                        offset: Offset(
+                          0.0,
+                          10.0,
+                        ),
+                        blurRadius: 10.0,
+                        spreadRadius: -6.0,
+                      ),
+                    ],
+                    image: DecorationImage(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.35),
+                        BlendMode.multiply,
+                      ),
+                      image: NetworkImage(thumbnailUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
                 Column(
                   children: [
                     Text(
                       '\nIngredients',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 18,
                           decoration: TextDecoration.underline),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     for (int i = 1; i <= ingredients.length - 1; i++) ...[
-                      Text(("$i: ${ingredients[i]['original']}\n"),
-                          style: TextStyle(fontWeight: FontWeight.bold))
+                      Container(
+                        width: 200,
+                        child: Text(("$i. ${ingredients[i]['original']}\n"),
+                            style: TextStyle()),
+                      )
                     ],
                     Text(
                       '\nPreparation Steps',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 18,
                           decoration: TextDecoration.underline),
                     ),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Container(
+                      width: 350,
                       child: Html(
                         data: preparationSteps,
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                   ],
                 ),

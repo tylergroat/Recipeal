@@ -14,7 +14,7 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage> {
   int index = 0;
-  late List<Recipe> recipes;
+  late List<Recipe> recipes = [];
   late List<String> ingredients = [];
 
   late List<RecipeCard> recipeCards = [];
@@ -28,15 +28,6 @@ class FeedPageState extends State<FeedPage> {
 
   Future<void> getRecipes() async {
     recipes = await RecipeApi.getRecipe();
-
-    for (int i = 0; i < recipes.length; i++) {
-      for (int j = 0; j < ingredients.length; j++) {
-        String ingredient = recipes[i].ingredients[j]['original'];
-        List<String> ingredients = ingredient.split("original");
-        print(ingredients[0]);
-        // ingredients.add(ingredient);
-      }
-    }
     setState(() {
       _isLoading = false;
     });
@@ -100,8 +91,8 @@ class FeedPageState extends State<FeedPage> {
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
-                        height: 50,
-                        width: 50,
+                        height: 70,
+                        width: 70,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 115, 138, 219),
                           borderRadius: BorderRadius.circular(50),
@@ -109,6 +100,7 @@ class FeedPageState extends State<FeedPage> {
                         child: IconButton(
                           icon: Icon(
                             Icons.thumb_down,
+                            size: 35,
                           ),
                           onPressed: () {
                             if (index == 0) {
@@ -129,14 +121,18 @@ class FeedPageState extends State<FeedPage> {
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
-                        height: 50,
-                        width: 50,
+                        height: 70,
+                        width: 70,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 115, 138, 219),
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.favorite, color: Colors.red),
+                          icon: Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                            size: 35,
+                          ),
                           onPressed: () {
                             if (index == recipes.length - 1) {
                               print('error, last index');
