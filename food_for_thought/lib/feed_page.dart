@@ -22,7 +22,6 @@ class FeedPageState extends State<FeedPage> {
 
   @override
   void initState() {
-    dbRef = FirebaseDatabase.instance.ref().child('user data');
     super.initState();
     getRecipes();
   }
