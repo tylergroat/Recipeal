@@ -15,20 +15,6 @@ class Recipe {
       required this.totalTime});
 
   factory Recipe.fromJson(dynamic json) {
-    List<String> jsonFields = [
-      'title',
-      'servings',
-      'extendedIngredients',
-      'instructions',
-      'image',
-      'readyInMinutes'
-    ];
-
-    for (int i = 0; i < 5; i++) {
-      if (json[jsonFields[i].toString()] == null) {
-        print(json['title']);
-      }
-    }
     return Recipe(
       name: json['title'] as String,
       servings: json['servings'],

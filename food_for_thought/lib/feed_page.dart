@@ -13,10 +13,11 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage> {
   int index = 0;
+  late List<Recipe> savedRecipes = [];
   late List<Recipe> recipes = [];
   late List<String> ingredients = [];
   late int lastIndex = ingredients.length - 1;
-  late DatabaseReference dbRef;
+  late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
   late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
 
@@ -31,6 +32,10 @@ class FeedPageState extends State<FeedPage> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  List<Recipe> returnSavedRecipes() {
+    return savedRecipes;
   }
 
   @override
@@ -118,6 +123,14 @@ class FeedPageState extends State<FeedPage> {
                             } else {
                               index++;
                               recipes.removeAt(index);
+                              savedRecipes.add(Recipe(
+                                  name: recipes[index].name,
+                                  servings: recipes[index].servings,
+                                  ingredients: recipes[index].ingredients,
+                                  preparationSteps:
+                                      recipes[index].preparationSteps,
+                                  images: recipes[index].images,
+                                  totalTime: recipes[index].totalTime));
                             }
 
                             Map<String, dynamic> savedRecipe = {
@@ -130,7 +143,7 @@ class FeedPageState extends State<FeedPage> {
                               'thumbnailUrl': recipes[index].images,
                             };
                             dbRef
-                                .child('$uid!/saved recipes')
+                                .child('user data/$uid/saved recipes')
                                 .push()
                                 .set(savedRecipe);
 

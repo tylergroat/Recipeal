@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/feed_page.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'authentification.dart';
@@ -11,10 +13,8 @@ class ViewSavedRecipesPage extends StatefulWidget {
 }
 
 class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
-  late DatabaseReference db =
-      FirebaseDatabase.instance.ref('user data/$uid/saved recipes');
-
   late List<Recipe> recipes = [];
+  late List<Recipe> savedRecipes;
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   }
 
   Future<void> getRecipes() async {
-    recipes = DatabaseService.getRecipesFromDB(uid!) as List<Recipe>;
+    recipes = await DatabaseService.getRecipesFromDB();
   }
 
   @override

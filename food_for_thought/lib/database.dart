@@ -1,18 +1,26 @@
-import 'dart:convert';
+import 'dart:ffi';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class DatabaseService {
-  static Future<List<Recipe>> getRecipesFromDB(String uid) async {
-    final List<Recipe> recipes = [];
+  static Future<List<Recipe>> getRecipesFromDB() async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    List recipes = [];
 
-    final snapshot =
-        await FirebaseDatabase.instance.ref('user data/$uid').get();
+    var ref = FirebaseDatabase.instance.ref('user data');
 
-    Map data = jsonDecode(snapshot.toString());
+    var snapshot = await ref.child('$uid').get();
 
-    for (var i in data['saved recipes']) {
-      recipes.add(i);
+    final data = snapshot.value;
+    print(data);
+    while (data != null) {
+      recipes.add(data);
     }
     return Recipe.recipesFromSnapshot(recipes);
   }
