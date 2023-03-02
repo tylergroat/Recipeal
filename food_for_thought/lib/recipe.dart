@@ -1,30 +1,42 @@
 class Recipe {
   final String name;
   final int servings;
-  // final List<String> ingredients;
-  // final List<String> preparationSteps;
+  final List<dynamic> ingredients;
+  final String preparationSteps;
   final String images;
-  final double rating;
-  final String totalTime;
+  final int totalTime;
 
   Recipe(
       {required this.name,
       required this.servings,
-      // required this.ingredients,
-      // required this.preparationSteps,
+      required this.ingredients,
+      required this.preparationSteps,
       required this.images,
-      required this.rating,
       required this.totalTime});
 
   factory Recipe.fromJson(dynamic json) {
+    List<String> jsonFields = [
+      'title',
+      'servings',
+      'extendedIngredients',
+      'instructions',
+      'image',
+      'readyInMinutes'
+    ];
+
+    for (int i = 0; i < 5; i++) {
+      if (json[jsonFields[i].toString()] == null) {
+        print(json['title']);
+      }
+    }
     return Recipe(
-        name: json['details']['name'] as String,
-        servings: json['details']['numberOfServings'],
-        // ingredients: json['ingredientLines'][0]['wholeLine'],
-        // preparationSteps: json['preparationSteps'],
-        images: json['details']['images'][0]['hostedLargeUrl'] as String,
-        rating: json['details']['rating'] as double,
-        totalTime: json['details']['totalTime'] as String);
+      name: json['title'] as String,
+      servings: json['servings'],
+      ingredients: json['extendedIngredients'],
+      preparationSteps: json['instructions'] as String,
+      images: json['image'] as String,
+      totalTime: json['readyInMinutes'],
+    );
   }
 
   static List<Recipe> recipesFromSnapshot(List snapshot) {
