@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
@@ -18,6 +19,8 @@ class FeedPageState extends State<FeedPage> {
   late List<String> ingredients = [];
   late int lastIndex = ingredients.length - 1;
   late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
   late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
 
@@ -138,9 +141,11 @@ class FeedPageState extends State<FeedPage> {
                               'cookTime': recipes[index].totalTime,
                               'thumbnailUrl': recipes[index].images,
                             };
-                            dbRef
-                                .child('user data/$uid/saved recipes')
-                                .push()
+                            db
+                                .collection("users")
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .collection("saved recipes")
+                                .doc()
                                 .set(savedRecipe);
 
                             setState(() {

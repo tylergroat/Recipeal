@@ -16,9 +16,11 @@ class DatabaseService {
     var snapshot = await ref.child('$uid/saved recipes').get();
 
     Map data = snapshot.value as Map<dynamic, dynamic>;
-    print(data);
+    data.forEach((key, values) {
+      recipes.add(values);
+    });
 
-    recipes.add(data);
+    print(recipes);
 
     return Recipe.recipesFromDB(recipes);
   }
