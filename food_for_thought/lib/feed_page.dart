@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
