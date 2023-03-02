@@ -34,10 +34,6 @@ class FeedPageState extends State<FeedPage> {
     });
   }
 
-  List<Recipe> returnSavedRecipes() {
-    return savedRecipes;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

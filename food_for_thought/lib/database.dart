@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
@@ -9,19 +7,19 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class DatabaseService {
-  static Future<List<Recipe>> getRecipesFromDB() async {
+  static Future<List> getRecipesFromDB() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     List recipes = [];
 
     var ref = FirebaseDatabase.instance.ref('user data');
 
-    var snapshot = await ref.child('$uid').get();
+    var snapshot = await ref.child('$uid/saved recipes').get();
 
-    final data = snapshot.value;
+    Map data = snapshot.value as Map<dynamic, dynamic>;
     print(data);
-    while (data != null) {
-      recipes.add(data);
-    }
-    return Recipe.recipesFromSnapshot(recipes);
+
+    recipes.add(data);
+
+    return Recipe.recipesFromDB(recipes);
   }
 }

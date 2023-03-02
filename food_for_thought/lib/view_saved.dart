@@ -13,8 +13,7 @@ class ViewSavedRecipesPage extends StatefulWidget {
 }
 
 class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
-  late List<Recipe> recipes = [];
-  late List<Recipe> savedRecipes;
+  late List<dynamic> recipes = [];
 
   @override
   void initState() {

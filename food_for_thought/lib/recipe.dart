@@ -25,9 +25,26 @@ class Recipe {
     );
   }
 
+  factory Recipe.fromSnapshot(dynamic snapshot) {
+    return Recipe(
+      name: snapshot['title'],
+      servings: snapshot['servings'],
+      ingredients: snapshot['ingredients'],
+      preparationSteps: snapshot['instructions'] as String,
+      images: snapshot['image'] as String,
+      totalTime: snapshot['readyInMinutes'],
+    );
+  }
+
   static List<Recipe> recipesFromSnapshot(List snapshot) {
     return snapshot.map((data) {
       return Recipe.fromJson(data);
+    }).toList();
+  }
+
+  static List<Recipe> recipesFromDB(List snapshot) {
+    return snapshot.map((data) {
+      return Recipe.fromSnapshot(data);
     }).toList();
   }
 }
