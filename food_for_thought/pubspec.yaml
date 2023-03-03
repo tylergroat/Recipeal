@@ -47,6 +47,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   http: ^0.13.5
+  flutter_launcher_icons: ^0.12.0
+  flutter_native_splash: ^2.2.18
   flip_card: ^0.7.0
   url_launcher: ^6.1.9
   expandable: ^5.0.1
@@ -67,23 +69,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
-  uses-material-design: true
-
-  # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/logo/logo.png
-    
-
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -104,5 +89,46 @@ flutter:
           weight: 600
         - asset: assets/fonts/Oswald/Oswald-SemiBold.ttf
           weight: 500
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/logo/logo.png
+    # - assets/images/splash_screen.png
+    # - assets/images/background_color_screen.png
+
+# Launch icon settings
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/logo.png"
+  adaptive_icon_background: "#738adb"
+  adaptive_icon_foreground: "assets/logo/logo.png"
+  web:
+    generate: true
+    image_path: "assets/logo/logo.png"
+    background_color: "#ffffff"
+    theme_color: "#738adb"
+
+# Splash Screen Settings
+flutter_native_splash:
+  # background_image: "assets/images/splash_screen.png"
+  color: "#738adb"
+  image: assets/logo/logo.png
+  android_12:
+    image: assets/logo/logo.png
+    # icon_background_color: "#738adb"
+    color: "#738adb"
+
+# An image asset can refer to one or more resolution-specific "variants", see
+# https://flutter.dev/assets-and-images/#resolution-aware
+
+# For details regarding adding assets from package dependencies, see
+# https://flutter.dev/assets-and-images/#from-packages
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
