@@ -28,7 +28,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    // getRecipes();
   }
 
   Future<void> getRecipes() async {
@@ -142,6 +142,7 @@ class FeedPageState extends State<FeedPage> {
                               'cookTime': recipes[index].totalTime,
                               'thumbnailUrl': recipes[index].images,
                             };
+
                             db
                                 .collection("users")
                                 .doc(FirebaseAuth.instance.currentUser!.uid)

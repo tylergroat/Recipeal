@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_for_thought/feed_page.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
+import 'package:food_for_thought/saved_recipe_card.dart';
 import 'authentification.dart';
 import 'database.dart';
 
@@ -14,15 +15,17 @@ class ViewSavedRecipesPage extends StatefulWidget {
 
 class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   late List<dynamic> recipes = [];
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
     super.initState();
     getRecipes();
+    print('hi');
   }
 
-  Future<void> getRecipes() async {
-    recipes = await DatabaseService.getRecipesFromDB();
+  getRecipes() async {
+    recipes = DatabaseService.getSavedRecipes(uid);
   }
 
   @override
@@ -46,7 +49,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         child: ListView.builder(
           itemCount: recipes.length,
           itemBuilder: (BuildContext context, int index) {
-            return RecipeCard(
+            return SavedRecipeCard(
               title: recipes[index].name,
               servings: recipes[index].servings,
               ingredients: recipes[index].ingredients,

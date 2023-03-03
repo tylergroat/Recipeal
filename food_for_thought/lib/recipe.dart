@@ -29,17 +29,15 @@ class Recipe {
   }
 
   factory Recipe.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return Recipe(
         name: data?['title'],
         servings: data?['servings'],
         ingredients: data?['ingredients'],
         preparationSteps: data?['preparationSteps'],
-        images: data?['images'],
-        totalTime: data?['totalTime']);
+        images: data?['thumbnailUrl'],
+        totalTime: data?['cookTime']);
   }
 
   Map<String, dynamic> toFirestore() {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
@@ -7,21 +8,25 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class DatabaseService {
-  static Future<List> getRecipesFromDB() async {
-    String? uid = FirebaseAuth.instance.currentUser?.uid;
-    List recipes = [];
-
-    var ref = FirebaseDatabase.instance.ref('user data');
-
-    var snapshot = await ref.child('$uid/saved recipes').get();
-
-    Map data = snapshot.value as Map<dynamic, dynamic>;
-    data.forEach((key, values) {
-      recipes.add(values);
-    });
-
-    print(recipes);
-
+  static List<Recipe> getSavedRecipes(String uid) {
+    List<Recipe> recipes = [];
+    final ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection('saved recipes')
+        .get()
+        .then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          print(Recipe.fromFirestore(docSnapshot));
+          recipes.add(Recipe.fromFirestore(docSnapshot));
+          // print('${docSnapshot.id} => ${docSnapshot.data()}');
+          print(recipes);
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
     return recipes;
   }
 }
