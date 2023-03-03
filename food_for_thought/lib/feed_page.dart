@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'api_config.dart';

@@ -22,6 +22,6 @@ class DatabaseService {
 
     print(recipes);
 
-    return Recipe.recipesFromDB(recipes);
+    return recipes;
   }
 }
