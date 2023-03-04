@@ -14,18 +14,20 @@ class ViewSavedRecipesPage extends StatefulWidget {
 }
 
 class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
-  late List<dynamic> recipes = [];
+  late List<Recipe> recipes = [];
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
     super.initState();
     getRecipes();
-    print('hi');
   }
 
-  getRecipes() async {
-    recipes = DatabaseService.getSavedRecipes(uid);
+  Future<void> getRecipes() async {
+    recipes = await DatabaseService.getSavedRecipes(uid);
+    setState(() {
+      recipes;
+    });
   }
 
   @override
