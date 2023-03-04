@@ -192,7 +192,7 @@ class ProfilePageState extends State<ProfilePage> {
                           MaterialPageRoute(builder: (_) => ChangeInfoPage()));
                     },
                     child: Text(
-                      'Change User Info',
+                      'Update Email',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,

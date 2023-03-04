@@ -1,4 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/feed_page.dart';
+import 'package:food_for_thought/recipe.dart';
+import 'package:food_for_thought/recipe_card.dart';
+import 'package:food_for_thought/saved_recipe_card.dart';
+import 'authentification.dart';
+import 'database.dart';
 
 class ViewSavedRecipesPage extends StatefulWidget {
   @override
@@ -6,97 +14,54 @@ class ViewSavedRecipesPage extends StatefulWidget {
 }
 
 class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
+  late List<Recipe> recipes = [];
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+
+  @override
+  void initState() {
+    super.initState();
+    getRecipes();
+  }
+
+  Future<void> getRecipes() async {
+    recipes = await DatabaseService.getSavedRecipes(uid);
+    setState(() {
+      recipes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-          backgroundColor: Color.fromARGB(255, 115, 138, 219),
-          toolbarHeight: 40,
-          centerTitle: true,
-          title: Text(
-            'Saved Recipes',
-            style: TextStyle(
-                color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-          ),
-          automaticallyImplyLeading: true,
+      appBar: AppBar(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
+        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        toolbarHeight: 40,
+        centerTitle: true,
+        title: Text(
+          'Saved Recipes',
+          style: TextStyle(
+              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
-        body: Center(
-          child: SingleChildScrollView(
-              child: Column(
-            children: [
-              ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      leading: Icon(Icons.food_bank),
-                      title: Text('Recipe 1'),
-                      onTap: () => {Navigator.of(context).pop()},
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      leading: Icon(Icons.food_bank),
-                      title: Text('Recipe 2'),
-                      onTap: () => {},
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      leading: Icon(Icons.food_bank),
-                      title: Text('Recipe 3'),
-                      onTap: () => {},
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      leading: Icon(Icons.food_bank),
-                      title: Text('Recipe 4'),
-                      onTap: () => {},
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      leading: Icon(Icons.food_bank),
-                      title: Text('Recipe 5'),
-                      onTap: () => {},
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          )),
-        ));
+        automaticallyImplyLeading: true,
+      ),
+      body: RefreshIndicator(
+        onRefresh: () => getRecipes(),
+        child: ListView.builder(
+          itemCount: recipes.length,
+          itemBuilder: (BuildContext context, int index) {
+            return SavedRecipeCard(
+              title: recipes[index].name,
+              servings: recipes[index].servings,
+              ingredients: recipes[index].ingredients,
+              preparationSteps: recipes[index].preparationSteps,
+              cookTime: recipes[index].totalTime,
+              thumbnailUrl: recipes[index].images,
+            );
+          },
+        ),
+      ),
+    );
   }
 }

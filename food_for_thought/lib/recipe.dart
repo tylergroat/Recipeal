@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
+
 class Recipe {
   final String name;
   final int servings;
@@ -15,20 +18,6 @@ class Recipe {
       required this.totalTime});
 
   factory Recipe.fromJson(dynamic json) {
-    List<String> jsonFields = [
-      'title',
-      'servings',
-      'extendedIngredients',
-      'instructions',
-      'image',
-      'readyInMinutes'
-    ];
-
-    for (int i = 0; i < 5; i++) {
-      if (json[jsonFields[i].toString()] == null) {
-        print(json['title']);
-      }
-    }
     return Recipe(
       name: json['title'] as String,
       servings: json['servings'],
@@ -37,6 +26,29 @@ class Recipe {
       images: json['image'] as String,
       totalTime: json['readyInMinutes'],
     );
+  }
+
+  factory Recipe.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data();
+    return Recipe(
+        name: data?['title'],
+        servings: data?['servings'],
+        ingredients: data?['ingredients'],
+        preparationSteps: data?['preparationSteps'],
+        images: data?['thumbnailUrl'],
+        totalTime: data?['cookTime']);
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (name != null) "title": name,
+      if (servings != null) "servings": servings,
+      if (ingredients != null) "ingredients": ingredients,
+      if (preparationSteps != null) "preparationSteps": preparationSteps,
+      if (images != null) "images": images,
+      if (totalTime != totalTime) "regions": totalTime,
+    };
   }
 
   static List<Recipe> recipesFromSnapshot(List snapshot) {

@@ -1,7 +1,12 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'api_config.dart';
+import 'authentification.dart';
 
 class FeedPage extends StatefulWidget {
   @override
@@ -10,8 +15,12 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage> {
   int index = 0;
-  late List<Recipe> recipes;
-  late List<Recipe> ingredients;
+  late List<Recipe> savedRecipes = [];
+  late List<Recipe> recipes = [];
+  late List<String> ingredients = [];
+  late int lastIndex = ingredients.length - 1;
+  late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
@@ -19,12 +28,11 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    getRecipes(); ///// will create button to refresh query -- accidentally got too many requests
+    // getRecipes();
   }
 
   Future<void> getRecipes() async {
     recipes = await RecipeApi.getRecipe();
-
     setState(() {
       _isLoading = false;
     });
@@ -64,60 +72,88 @@ class FeedPageState extends State<FeedPage> {
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
-                        height: 50,
-                        width: 180,
+                        height: 70,
+                        width: 70,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                        child: TextButton(
-                          onPressed: () {
-                            if (index == 0) {
-                              print('error, already at first index');
-                            } else {
-                              index--;
-                              setState(() {
-                                index = index;
-                              });
-                            }
-                          },
-                          child: Text(
-                            'Dislike',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.thumb_down,
+                            size: 35,
                           ),
+                          onPressed: () {
+                            if (index >= lastIndex) {
+                              index = 0;
+                              getRecipes();
+                            } else {
+                              index++;
+                              recipes.removeAt(index);
+                            }
+                            setState(() {
+                              index = index;
+                            });
+                          },
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      width: 50,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
-                        height: 50,
-                        width: 180,
+                        height: 70,
+                        width: 70,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                        child: TextButton(
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                            size: 35,
+                          ),
                           onPressed: () {
-                            if (index == recipes.length - 1) {
-                              print('at end of list');
+                            if (index >= lastIndex) {
+                              index = 0;
+                              getRecipes();
                             } else {
                               index++;
-                              setState(() {
-                                index = index;
-                              });
+                              recipes.removeAt(index);
+                              savedRecipes.add(Recipe(
+                                  name: recipes[index].name,
+                                  servings: recipes[index].servings,
+                                  ingredients: recipes[index].ingredients,
+                                  preparationSteps:
+                                      recipes[index].preparationSteps,
+                                  images: recipes[index].images,
+                                  totalTime: recipes[index].totalTime));
                             }
+
+                            Map<String, dynamic> savedRecipe = {
+                              'title': recipes[index].name,
+                              'servings': recipes[index].servings,
+                              'ingredients': recipes[index].ingredients,
+                              'preparationSteps':
+                                  recipes[index].preparationSteps,
+                              'cookTime': recipes[index].totalTime,
+                              'thumbnailUrl': recipes[index].images,
+                            };
+
+                            db
+                                .collection("users")
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .collection("saved recipes")
+                                .doc()
+                                .set(savedRecipe);
+
+                            setState(() {
+                              index = index;
+                            });
                           },
-                          child: Text(
-                            'Like',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
                         ),
                       ),
                     ),

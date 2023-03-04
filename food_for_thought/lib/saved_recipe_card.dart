@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-class RecipeCard extends StatelessWidget {
+class SavedRecipeCard extends StatelessWidget {
   final String title;
   final int servings;
   final List<dynamic> ingredients;
   final String preparationSteps;
   final int cookTime;
   final String thumbnailUrl;
-  RecipeCard({
+  SavedRecipeCard({
     required this.title,
     required this.servings,
     required this.ingredients,
