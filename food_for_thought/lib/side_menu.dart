@@ -72,6 +72,24 @@ class NavDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: Icon(Icons.person),
+            title: Text('User Details'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.question_mark),
+            title: Text('About Us'),
+            onTap: () => {},
+          ),
+          SizedBox(
+            height: 340,
+          ),
+          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => {showAlertDialog(context)},

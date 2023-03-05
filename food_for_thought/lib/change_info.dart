@@ -131,7 +131,7 @@ class ChangeInfoPageState extends State<ChangeInfoPage> {
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
-          'Change User Info',
+          'Update Email',
           style: TextStyle(
               color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),

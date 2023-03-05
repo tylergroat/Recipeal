@@ -137,7 +137,7 @@ class ProfilePageState extends State<ProfilePage> {
                               builder: (_) => ViewSavedRecipesPage()));
                     },
                     child: Text(
-                      'View Saved Recipes',
+                      'View Liked Recipes',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
