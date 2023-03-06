@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_for_thought/recipe.dart';
+import 'package:food_for_thought/user.dart';
 
 class DatabaseService {
   static Future<List<Recipe>> getSavedRecipes(String uid) async {
@@ -23,5 +24,15 @@ class DatabaseService {
     );
 
     return recipes;
+  }
+
+  static Future<UserInformation> getUser(String uid) async {
+    late UserInformation user;
+    final doc = FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+    await doc.then((querySnapshot) {
+      user = UserInformation.fromFirestore(querySnapshot);
+    });
+    return user;
   }
 }

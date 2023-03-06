@@ -22,17 +22,16 @@ class FeedPageState extends State<FeedPage> {
   late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  late List<RecipeCard> recipeCards = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    // getRecipes();
   }
 
   Future<void> getRecipes() async {
-    recipes = await RecipeApi.getRecipe();
+    recipes = await RecipeApi.getRecipes();
     setState(() {
       _isLoading = false;
     });
@@ -147,7 +146,7 @@ class FeedPageState extends State<FeedPage> {
                                 .collection("users")
                                 .doc(FirebaseAuth.instance.currentUser!.uid)
                                 .collection("saved recipes")
-                                .doc()
+                                .doc(recipes[index].name)
                                 .set(savedRecipe);
 
                             setState(() {

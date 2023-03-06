@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class UserInformation {
   final String firstName;
   final String lastName;
   final String userName;
   final String email;
   final String uid;
 
-  User({
+  UserInformation({
     required this.firstName,
     required this.lastName,
     required this.userName,
@@ -15,9 +15,10 @@ class User {
     required this.uid,
   });
 
-  factory User.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+  factory UserInformation.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
-    return User(
+    return UserInformation(
       firstName: data?['first name'],
       lastName: data?['last name'],
       email: data?['email'],

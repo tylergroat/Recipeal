@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/feed_page.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
-import 'package:food_for_thought/saved_recipe_card.dart';
 import 'authentification.dart';
 import 'database.dart';
 
@@ -28,6 +28,41 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
     setState(() {
       recipes;
     });
+  }
+
+  showAlertDialog(BuildContext context) {
+    Widget cancelButton = TextButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+      child: Text(
+        "Cancel",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget confirmButton = TextButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+      child: Text(
+        "Confirm",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      onPressed: () {},
+    ); // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirm"),
+      content: Text("Are you sure you want to remove this recipe?"),
+      actions: [cancelButton, confirmButton],
+    ); // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -58,13 +93,65 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         child: ListView.builder(
           itemCount: recipes.length,
           itemBuilder: (BuildContext context, int index) {
-            return SavedRecipeCard(
-              title: recipes[index].name,
-              servings: recipes[index].servings,
-              ingredients: recipes[index].ingredients,
-              preparationSteps: recipes[index].preparationSteps,
-              cookTime: recipes[index].totalTime,
-              thumbnailUrl: recipes[index].images,
+            return GestureDetector(
+              child: RecipeCard(
+                title: recipes[index].name,
+                servings: recipes[index].servings,
+                ingredients: recipes[index].ingredients,
+                preparationSteps: recipes[index].preparationSteps,
+                cookTime: recipes[index].totalTime,
+                thumbnailUrl: recipes[index].images,
+              ),
+              onLongPress: () {
+                print(recipes[index].name);
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Confirm"),
+                        content: Text(
+                            "Are you sure you want to remove this recipe?"),
+                        actions: [
+                          TextButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 115, 138, 219)),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          TextButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 115, 138, 219)),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // final docs = FirebaseFirestore.instance
+                              //     .collection("users")
+                              //     .doc(uid)
+                              //     .collection('saved recipes')
+                              //     .doc(recipes[index].name)
+                              //     .delete();
+                              setState(() {});
+                            },
+                          )
+                        ],
+                      );
+                    }); // show the dialog
+                // print(recipes[index].name);
+              },
             );
           },
         ),
