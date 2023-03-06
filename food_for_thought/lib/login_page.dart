@@ -8,7 +8,6 @@ import 'home_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   LoginPageState createState() => LoginPageState();
@@ -87,17 +86,10 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white, //main scaffold
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(3))),
+        toolbarHeight: 20,
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
-        title: Text(
-          "Recipeal",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-        ),
-        centerTitle: true,
       ),
-
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -107,14 +99,15 @@ class LoginPageState extends State<LoginPage> {
                 height: 0,
               ),
               SizedBox(
-                width: 200,
+                width: 250,
                 child: Text(
                   'WELCOME BACK',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50,
-                      height: 1.0,
-                      fontFamily: 'Oswald'),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 60,
+                    height: 1.0,
+                    fontFamily: 'Oswald',
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
