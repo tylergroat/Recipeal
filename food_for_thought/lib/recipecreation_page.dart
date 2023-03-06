@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/recipe_instructions_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -205,10 +206,16 @@ class RecipeCreationState extends State<RecipeCreation> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 115, 138, 219)),
                     child: Text(
-                      'Create Recipe',
+                      'Continue',
                       style: TextStyle(fontSize: 20),
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      //TODO: Combine the data from this and the instructions page input and save to the database
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => RecipeInstructionsPage()));
+                    }),
               ),
             )
           ],
