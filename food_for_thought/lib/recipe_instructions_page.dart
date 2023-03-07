@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/edit_recipe.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class RecipeInstructionsPage extends StatefulWidget {
@@ -14,8 +13,8 @@ class RecipeInstructionsPageState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+        // shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
         backgroundColor: Colors.grey,
         toolbarHeight: 35,
         centerTitle: true,
@@ -24,7 +23,7 @@ class RecipeInstructionsPageState extends State {
           style: TextStyle(
               color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
       ),
       body: Center(
         child: Column(
@@ -33,14 +32,14 @@ class RecipeInstructionsPageState extends State {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: TextField(
-                // controller: cookingInstructions,
-                minLines: 6,
-                maxLines: null,
+                // controller: cookingInstructions
+                minLines: 5,
+                maxLines: 8,
+                maxLength: 1500, //character limit
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText:
-                        'Cooking Instructions'),
+                    labelText: 'Cooking Instructions'),
               ),
             ),
             SizedBox(
@@ -58,12 +57,11 @@ class RecipeInstructionsPageState extends State {
                       'Confirm Recipe Creation',
                       style: TextStyle(fontSize: 20),
                     ),
-                    onPressed: () { // async?
-                      // TODO: Save recipe in database
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => HomePage()));
+                    onPressed: () {
+                      // async?
+                      // TODO: Save recipe in database - CreatedRecipe.sendToDatabase();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => HomePage()));
                     }),
               ),
             )

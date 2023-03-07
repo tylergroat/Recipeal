@@ -28,6 +28,8 @@ class RecipeCreationState extends State<RecipeCreation> {
     });
   }
 
+//might need to get rid of this
+//or move it to be the last step when finally submitting the created recipe to the database
   @override
   void dispose() {
     for (final controller in ingredients) {
@@ -122,7 +124,6 @@ class RecipeCreationState extends State<RecipeCreation> {
                   labelText: "Ingredient ${ingredients.length + 1}",
                 ),
               );
-
               setState(() {
                 ingredients.add(ingredientController);
                 fields.add(field);
@@ -195,6 +196,14 @@ class RecipeCreationState extends State<RecipeCreation> {
                         ),
                       )
                     : Text(' ')),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: TextField(
+                controller: servings,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'How many servings?'),
+              ),
+            ),
             addIngredient(),
             Expanded(child: listView()),
             Padding(
@@ -206,7 +215,7 @@ class RecipeCreationState extends State<RecipeCreation> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 115, 138, 219)),
                     child: Text(
-                      'Continue',
+                      'Continue to Cooking Instructions',
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
