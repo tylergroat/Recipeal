@@ -98,7 +98,41 @@ class FeedPageState extends State<FeedPage> {
                       ),
                     ),
                     SizedBox(
-                      width: 50,
+                      width: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        height: 70,
+                        width: 70,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 115, 138, 219),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.filter_list,
+                            size: 35,
+                          ),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text('Filters'),
+                                    actions: [
+                                      // Switch(
+                                      //     value: true,
+                                      //     onChanged: ),
+                                    ],
+                                  );
+                                });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(2.0),
