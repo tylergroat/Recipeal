@@ -84,8 +84,10 @@ class FeedPageState extends State<FeedPage> {
                           ),
                           onPressed: () {
                             if (index >= lastIndex) {
+                              print(index);
                               index = 0;
                               getRecipes();
+                              print('API Call');
                             } else {
                               index++;
                               recipes.removeAt(index);
@@ -117,8 +119,10 @@ class FeedPageState extends State<FeedPage> {
                           ),
                           onPressed: () {
                             if (index >= lastIndex) {
+                              print(index);
                               index = 0;
                               getRecipes();
+                              print('API Call');
                             } else {
                               index++;
                               recipes.removeAt(index);
