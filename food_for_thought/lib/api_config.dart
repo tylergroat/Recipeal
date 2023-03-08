@@ -11,7 +11,7 @@ class RecipeApi {
     });
 
     final response = await http.get(uri, headers: {
-      "x-rapidapi-key": "326cf22eb1mshac86455f9f02e49p136e08jsnb6a08eb83b01",
+      "x-rapidapi-key": "1e2f9da0ebmsh88019d09475fbafp1f5fb5jsn9fb0d28f588a",
       "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
       "useQueryString": "true"
     });
@@ -34,7 +34,31 @@ class RecipeApi {
     });
 
     final response = await http.get(uri, headers: {
-      "x-rapidapi-key": "326cf22eb1mshac86455f9f02e49p136e08jsnb6a08eb83b01",
+      "x-rapidapi-key": "1e2f9da0ebmsh88019d09475fbafp1f5fb5jsn9fb0d28f588a",
+      "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+      "useQueryString": "true"
+    });
+
+    Map data = jsonDecode(response.body);
+    List _temp = [];
+
+    for (var i in data['recipes']) {
+      _temp.add(i);
+    }
+
+    return Recipe.recipesFromSnapshot(_temp);
+  }
+
+  static Future<List<Recipe>> getRecipesByTag(String tag) async {
+    var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+        '/recipes/random', {
+      "tags": tag,
+      "number": "10",
+      "limitLicense": "true",
+    });
+
+    final response = await http.get(uri, headers: {
+      "x-rapidapi-key": "1e2f9da0ebmsh88019d09475fbafp1f5fb5jsn9fb0d28f588a",
       "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
       "useQueryString": "true"
     });

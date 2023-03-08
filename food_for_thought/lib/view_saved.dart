@@ -137,6 +137,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
       body: RefreshIndicator(
         onRefresh: () => getRecipes(),
         child: ListView.builder(
+          scrollDirection: Axis.vertical,
           itemCount: recipes.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
@@ -177,7 +178,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                                 backgroundColor:
                                     Color.fromARGB(255, 115, 138, 219)),
                             child: Text(
-                              "Confirm",
+                              "Delete",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
