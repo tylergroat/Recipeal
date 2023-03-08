@@ -5,6 +5,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_for_thought/authentification.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,27 +15,33 @@ class CreatedRecipe {
   int? servings;
   List<dynamic>? ingredients;
   String? preparationSteps;
-  String? images;
   int? totalTime;
-
+  XFile? image;
   //always want to do CreatedRecipe createdRecipeObject to create an object of this class
-  CreatedRecipe(); //creates an object with default null values
+  CreatedRecipe(
+      // {required this.name,
+      // required this.servings,
+      // required this.ingredients,
+      // required this.preparationSteps,
+      // required this.totalTime,
+      // required this.image}
+      ); //creates an object with default null values
 
   void clearCreatedRecipeValues() {
     name = null;
     servings = null;
     ingredients = null;
     preparationSteps = null;
-    images = null;
+    // images = null;
     totalTime = null;
   }
 
 //when the values are all set, cal this function to submit the recipe to the database
   Future sendToDatabase(FirebaseFirestore databaseObject) async {
     await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('Created Recipes')
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('Created Recipes')
         // .add(databaseObject)
         ;
 

@@ -1,5 +1,3 @@
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe_instructions_page.dart';
 import 'package:image_picker/image_picker.dart';
@@ -227,8 +225,8 @@ class RecipeCreationState extends State<RecipeCreation> {
                     ),
                     onPressed: () {
                       //saving user input to object instance, to be continued on recipe instructions page
-                      createdRecipeObject.name = recipeTitle as String?;
-                      createdRecipeObject.servings = servings as int?;
+                      createdRecipeObject.name = recipeTitle.text;
+                      createdRecipeObject.servings = servings.text as int?;
                       createdRecipeObject.ingredients = ingredients;
                       Navigator.push(
                           context,
