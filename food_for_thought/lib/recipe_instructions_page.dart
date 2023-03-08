@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/edit_recipe.dart';
 import 'dart:io';
+import 'package:food_for_thought/created_recipe.dart';
+import 'package:food_for_thought/recipecreation_page.dart';
 
 class RecipeInstructionsPage extends StatefulWidget {
   @override
@@ -9,6 +11,9 @@ class RecipeInstructionsPage extends StatefulWidget {
 
 @override
 class RecipeInstructionsPageState extends State {
+  TextEditingController cookingInstructions = TextEditingController();
+  TextEditingController cookingTime = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +37,7 @@ class RecipeInstructionsPageState extends State {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: TextField(
-                // controller: cookingInstructions
+                controller: cookingInstructions,
                 minLines: 5,
                 maxLines: 8,
                 maxLength: 1500, //character limit
@@ -40,6 +45,19 @@ class RecipeInstructionsPageState extends State {
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Cooking Instructions'),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              child: TextField(
+                controller: cookingTime,
+                maxLength: 3, //character limit
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'How many minutes does it take to cook?'),
               ),
             ),
             SizedBox(
@@ -59,7 +77,11 @@ class RecipeInstructionsPageState extends State {
                     ),
                     onPressed: () {
                       // async?
+                      createdRecipeObject.preparationSteps =
+                          cookingInstructions as String?;
+                      createdRecipeObject.totalTime = cookingTime as int?;
                       // TODO: Save recipe in database - CreatedRecipe.sendToDatabase();
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => HomePage()));
                     }),

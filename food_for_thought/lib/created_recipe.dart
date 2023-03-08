@@ -30,9 +30,24 @@ class CreatedRecipe {
   }
 
 //when the values are all set, cal this function to submit the recipe to the database
-  Future sendToDatabase() async {
-    // await FirebaseFirestore.instance.collection('users').doc(uid).
+  Future sendToDatabase(FirebaseFirestore databaseObject) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Created Recipes')
+        // .add(databaseObject)
+        ;
+
     //clear values after sending to database
-    // clearCreatedRecipeValues();
+    clearCreatedRecipeValues();
   }
 }
+/**
+ *   FirebaseFirestore db = FirebaseFirestore.instance;
+ *                             db
+                                .collection("users")
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .collection("saved recipes")
+                                .doc(recipes[index].name)
+                                .set(savedRecipe);
+ */

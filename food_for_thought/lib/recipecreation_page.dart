@@ -1,7 +1,13 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/recipe_instructions_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:food_for_thought/created_recipe.dart';
+
+//global (accessed in recipe_instructions_page.dart)
+CreatedRecipe createdRecipeObject = CreatedRecipe();
 
 class RecipeCreation extends StatefulWidget {
   @override
@@ -157,7 +163,7 @@ class RecipeCreationState extends State<RecipeCreation> {
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: TextField(
                 controller: recipeTitle,
-                //Text Field for username/email
+                //Text Field for recipe name
                 decoration: InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Recipe Title'),
               ),
@@ -201,7 +207,8 @@ class RecipeCreationState extends State<RecipeCreation> {
               child: TextField(
                 controller: servings,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'How many servings?'),
+                    border: OutlineInputBorder(),
+                    labelText: 'How many servings?'),
               ),
             ),
             addIngredient(),
@@ -219,7 +226,10 @@ class RecipeCreationState extends State<RecipeCreation> {
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
-                      //TODO: Combine the data from this and the instructions page input and save to the database
+                      //saving user input to object instance, to be continued on recipe instructions page
+                      createdRecipeObject.name = recipeTitle as String?;
+                      createdRecipeObject.servings = servings as int?;
+                      createdRecipeObject.ingredients = ingredients;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
