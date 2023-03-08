@@ -58,7 +58,7 @@ class RecipeApi {
     });
 
     final response = await http.get(uri, headers: {
-      "x-rapidapi-key": "1e2f9da0ebmsh88019d09475fbafp1f5fb5jsn9fb0d28f588a",
+      "x-rapidapi-key": "326cf22eb1mshac86455f9f02e49p136e08jsnb6a08eb83b01",
       "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
       "useQueryString": "true"
     });
