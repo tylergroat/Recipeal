@@ -1,6 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/change_info.dart';
+import 'package:food_for_thought/pinned_recipes.dart';
+import 'package:food_for_thought/profile_page.dart';
 import 'package:food_for_thought/read_data/get_user_name.dart';
+import 'package:food_for_thought/view_created.dart';
+import 'package:food_for_thought/view_saved.dart';
+import 'about_us.dart';
 import 'authentification.dart';
 import 'login_page.dart';
 
@@ -70,6 +76,72 @@ class NavDrawer extends StatelessWidget {
                 },
               ),
             ),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              color: Colors.blue,
+            ),
+            title: Text('User Details'),
+            onTap: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => ProfilePage()))
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.favorite,
+              color: Colors.red,
+            ),
+            title: Text('Liked Recipes'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => ViewSavedRecipesPage()))
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.push_pin,
+              color: Colors.orange,
+            ),
+            title: Text('Pinned Recipes'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => ViewPinnedRecipesPage()))
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.create,
+              color: Colors.green,
+            ),
+            title: Text('Created Recipes'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => CreatedRecipesPage()))
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Update Email'),
+            onTap: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.question_mark,
+              color: Colors.purple,
+            ),
+            title: Text('About Us'),
+            onTap: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => AboutUs()))
+            },
+          ),
+          SizedBox(
+            height: 230,
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

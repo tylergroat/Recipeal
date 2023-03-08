@@ -113,13 +113,17 @@ class RegistrationPageState extends State<RegistrationPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Center(
-              child: Container(
-                  width: 200,
-                  height: 150,
-                  child:
-                      Image.asset('assets/logo/logo.png' //to display the image
-                          )),
+            SizedBox(
+              height: 40,
+            ),
+            Container(
+              width: 150,
+              height: 150,
+              child: Image.asset('assets/logo/logo.png' //to display the image
+                  ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             Padding(
               padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 0),

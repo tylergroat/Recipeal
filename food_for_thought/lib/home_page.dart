@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/authentification.dart';
+import 'package:food_for_thought/discover.dart';
 import 'package:food_for_thought/feed_page.dart';
 import 'package:food_for_thought/login_page.dart';
 import 'package:food_for_thought/profile_page.dart';
@@ -21,7 +22,7 @@ class HomePageState extends State<HomePage> {
   final screens = [
     RecipeCreation(),
     FeedPage(),
-    ProfilePage(),
+    // DiscoverPage(),
   ];
 
   static const logOutMessage = SnackBar(
@@ -65,10 +66,10 @@ class HomePageState extends State<HomePage> {
             icon: Icon(Icons.feed),
             label: 'Feed',
           ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-              backgroundColor: Colors.white),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.web),
+          //   label: 'Discover',
+          // ),
         ],
         currentIndex: selectedIndex,
         onTap: _onItemTapped,

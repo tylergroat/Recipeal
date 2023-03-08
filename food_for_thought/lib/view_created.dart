@@ -14,6 +14,13 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.sort)),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
+          ),
+        ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
