@@ -27,11 +27,18 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    // getRecipes();
+    getRecipes();
   }
 
-  Future<void> getRecipes() async {
-    recipes = await RecipeApi.getRecipes();
+  List<String> _tags = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'];
+  String _selectedTag = 'All';
+
+  Future<void> getRecipes({String? tag}) async {
+    if (tag != null && tag != 'All') {
+      recipes = await RecipeApi.getRecipesByTag(tag);
+    } else {
+      recipes = await RecipeApi.getRecipes();
+    }
     setState(() {
       _isLoading = false;
     });
@@ -89,10 +96,7 @@ class FeedPageState extends State<FeedPage> {
                             } else {
                               index++;
                               recipes.removeAt(index);
-                            }
-                            setState(() {
-                              index = index;
-                            });
+                            };
                           },
                         ),
                       ),
@@ -120,10 +124,37 @@ class FeedPageState extends State<FeedPage> {
                                 builder: (context) {
                                   return AlertDialog(
                                     title: Text('Filters'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('Select a tag:'),
+                                        SizedBox(height: 10),
+                                        DropdownButton<String>(
+                                          value: _selectedTag,
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _selectedTag = value!;
+                                            });
+                                          },
+                                          items: _tags
+                                              .map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
+                                    ),
                                     actions: [
-                                      // Switch(
-                                      //     value: true,
-                                      //     onChanged: ),
+                                      ElevatedButton(
+                                        child: Text('Apply'),
+                                        onPressed: () {
+                                          getRecipes(tag: _selectedTag);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
                                     ],
                                   );
                                 });
