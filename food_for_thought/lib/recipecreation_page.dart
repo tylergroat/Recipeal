@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:food_for_thought/recipe_instructions_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:food_for_thought/created_recipe.dart';
+
+//global (accessed in recipe_instructions_page.dart)
+CreatedRecipe createdRecipeObject = CreatedRecipe();
 
 class RecipeCreation extends StatefulWidget {
   @override
@@ -12,8 +18,10 @@ class RecipeCreationState extends State<RecipeCreation> {
   TextEditingController recipe = TextEditingController();
   TextEditingController timeCook = TextEditingController();
   TextEditingController servings = TextEditingController();
+  TextEditingController preparationSteps = TextEditingController();
+  TextEditingController ingredients = TextEditingController();
+  List<String> ingredientsList = [];
 
-  final List<TextEditingController> ingredients = [];
   List<TextField> fields = [];
 
   XFile? image;
@@ -25,14 +33,6 @@ class RecipeCreationState extends State<RecipeCreation> {
     setState(() {
       image = img;
     });
-  }
-
-  @override
-  void dispose() {
-    for (final controller in ingredients) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 
   void displayImageChoice() {
@@ -88,49 +88,6 @@ class RecipeCreationState extends State<RecipeCreation> {
         });
   }
 
-  Widget listView() {
-    return ListView.builder(
-      itemCount: fields.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: EdgeInsets.all(5),
-          child: fields[index],
-        );
-      },
-    );
-  }
-
-  Widget addIngredient() {
-    return ListTile(
-      title: SizedBox(
-        width: 20.0,
-        height: 50.0,
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 115, 138, 219)),
-            child: Text(
-              'Add Ingredient',
-              style: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              final ingredientController = TextEditingController();
-              final field = TextField(
-                controller: ingredientController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Ingredient ${ingredients.length + 1}",
-                ),
-              );
-
-              setState(() {
-                ingredients.add(ingredientController);
-                fields.add(field);
-              });
-            }),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,72 +105,115 @@ class RecipeCreationState extends State<RecipeCreation> {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              child: TextField(
-                controller: recipeTitle,
-                //Text Field for username/email
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Recipe Title'),
-              ),
-            ),
+        child: SingleChildScrollView(
+          child: Container(
+            width: 300,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 20),
+                TextField(
+                  controller: recipeTitle,
+                  //Text Field for recipe namer
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Recipe Title'),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: servings,
+                  //Text Field for recipe name
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Servings'),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: timeCook,
+                  //Text Field for recipe name
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Cook Time'),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                // addIngredient(),
+                // Flexible(
+                //   fit: FlexFit.loose,
+                //   child: listView(),
+                // ),
+                TextField(
+                  controller: ingredients,
+                  //character limit
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Ingredients'),
+                ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1),
-              child: ElevatedButton(
-                onPressed: () {
-                  displayImageChoice();
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 115, 138, 219)),
-                child: Text('Upload Photo'),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            //if image not null show the image
-            //if image null show text
-            Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: image != null
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(2),
-                          child: Image.file(
-                            //to show image, you type like this.
-                            File(image!.path),
-                            fit: BoxFit.cover,
-                            width: MediaQuery.of(context).size.width,
-                            height: 300,
-                          ),
-                        ),
-                      )
-                    : Text(' ')),
-            addIngredient(),
-            Expanded(child: listView()),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: SizedBox(
-                width: 380.0,
-                height: 50.0,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 115, 138, 219)),
-                    child: Text(
-                      'Create Recipe',
-                      style: TextStyle(fontSize: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        for (int i = 0; i < ingredientsList.length - 1; i++) {
+                          print('$i: ${ingredientsList[i]}');
+                        }
+                        ingredients.clear();
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                      child: Text(
+                        'View All Ingredients',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    onPressed: () {}),
-              ),
-            )
-          ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        ingredientsList.add(ingredients.text.toString());
+                        ingredients.clear();
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                      child: Text(
+                        'Add Ingredient',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: preparationSteps,
+                  minLines: 5,
+                  maxLines: 8,
+                  maxLength: 1500, //character limit
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Cooking Instructions'),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                  child: Text(
+                    'Confirm Recipe Creation',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {},
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+      ), // ),
     );
   }
 }

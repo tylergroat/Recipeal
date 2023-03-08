@@ -41,6 +41,7 @@ class FeedPageState extends State<FeedPage> {
   void initState() {
     super.initState();
     getRecipes(selectedTag);
+
   }
 
   Future<void> getRecipes(String? tag) async {
