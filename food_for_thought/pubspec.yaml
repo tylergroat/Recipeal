@@ -42,6 +42,8 @@ dependencies:
   rounded_loading_button: ^2.0.8
   awesome_snackbar_content: ^0.1.0
   flutter_html: ^3.0.0-alpha.3
+  easy_search_bar: ^2.4.2
+
   
 
   # The following adds the Cupertino Icons font to your application.

@@ -6,7 +6,7 @@ class RecipeApi {
   static Future<List<Recipe>> getRecipes() async {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/random', {
-      "number": "1",
+      "number": "10",
       "limitLicense": "true",
     });
 

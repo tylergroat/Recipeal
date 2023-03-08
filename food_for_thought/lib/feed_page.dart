@@ -107,8 +107,10 @@ class FeedPageState extends State<FeedPage> {
                             print(
                                 'Current Index:  + $index Last Index: $lastIndex');
                             if (index >= lastIndex) {
+                              print(index);
                               index = 0;
                               getRecipes(selectedTag);
+                              print('API Call');
                             } else {
                               index++;
                               recipes.removeAt(index);
@@ -200,8 +202,11 @@ class FeedPageState extends State<FeedPage> {
                             print(
                                 'Current Index:  + $index Last Index: $lastIndex');
                             if (index >= lastIndex) {
+                              print(index);
                               index = 0;
                               getRecipes(selectedTag);
+                              print('API Call');
+
                             } else {
                               index++;
                               recipes.removeAt(index);
