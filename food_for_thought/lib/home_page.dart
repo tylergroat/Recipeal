@@ -22,7 +22,6 @@ class HomePageState extends State<HomePage> {
   final screens = [
     RecipeCreation(),
     FeedPage(),
-    // DiscoverPage(),
   ];
 
   static const logOutMessage = SnackBar(
