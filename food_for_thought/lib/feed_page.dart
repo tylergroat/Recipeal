@@ -20,7 +20,7 @@ class FeedPageState extends State<FeedPage> {
   late List<Recipe> savedRecipes = [];
   late List<Recipe> recipes = [];
   late List<String> ingredients = [];
-  late int lastIndex = recipes.length - 1;
+  late int lastIndex = recipes.length - 3;
   late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
   FirebaseFirestore db = FirebaseFirestore.instance;
   List<String> tags = [
@@ -41,7 +41,6 @@ class FeedPageState extends State<FeedPage> {
   void initState() {
     super.initState();
     getRecipes(selectedTag);
-
   }
 
   Future<void> getRecipes(String? tag) async {
@@ -106,15 +105,15 @@ class FeedPageState extends State<FeedPage> {
                           ),
                           onPressed: () {
                             print(
-                                'Current Index:  + $index Last Index: $lastIndex');
+                                'Current Index: $index Last Index: $lastIndex');
                             if (index >= lastIndex) {
-                              print(index);
                               index = 0;
                               getRecipes(selectedTag);
                               print('API Call');
                             } else {
                               index++;
                               recipes.removeAt(index);
+                              setState(() {});
                             }
                           },
                         ),
@@ -207,7 +206,6 @@ class FeedPageState extends State<FeedPage> {
                               index = 0;
                               getRecipes(selectedTag);
                               print('API Call');
-
                             } else {
                               index++;
                               recipes.removeAt(index);
@@ -219,6 +217,7 @@ class FeedPageState extends State<FeedPage> {
                                       recipes[index].preparationSteps,
                                   images: recipes[index].images,
                                   totalTime: recipes[index].totalTime));
+                              setState(() {});
                             }
 
                             Map<String, dynamic> savedRecipe = {

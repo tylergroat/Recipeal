@@ -6,8 +6,8 @@ class RecipeApi {
   static Future<List<Recipe>> getRecipes() async {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/random', {
-      "number": "10",
-      "limitLicense": "true",
+      "number": "5",
+      "limitLicense": "false",
     });
 
     final response = await http.get(uri, headers: {
@@ -29,7 +29,7 @@ class RecipeApi {
   static Future<List<Recipe>> getFeaturedRecipe() async {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/random', {
-      "number": "1",
+      "number": "5",
       "limitLicense": "true",
     });
 
@@ -53,7 +53,7 @@ class RecipeApi {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/random', {
       "tags": tag,
-      "number": "10",
+      "number": "5",
       "limitLicense": "true",
     });
 

@@ -141,7 +141,7 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           SizedBox(
-            height: 230,
+            height: 180,
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
