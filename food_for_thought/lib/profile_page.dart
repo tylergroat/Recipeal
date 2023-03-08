@@ -175,7 +175,6 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
 ///////////////////////  VIEW CREATED RECIPES BUTTON   /////////////////////////
-              /////////////////////// LOGOUT BUTTON   /////////////////////////
 
               Padding(
                 padding: const EdgeInsets.only(
@@ -193,7 +192,7 @@ class ProfilePageState extends State<ProfilePage> {
                           MaterialPageRoute(builder: (_) => ChangeInfoPage()));
                     },
                     child: Text(
-                      'Change User Info',
+                      'Update Email',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
@@ -202,8 +201,6 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              ///////////////////////  VIEW CHANGE USER INFO BUTTON   /////////////////////////
-              /////////////////////// LOGOUT BUTTON   /////////////////////////
             ],
           ),
         ),
