@@ -52,9 +52,9 @@ class RecipeApi {
   static Future<List<Recipe>> getRecipesByTag(String tag) async {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/random', {
-      "number": "1",
-      "limitLicense": "true",
       "tags": tag,
+      "number": "10",
+      "limitLicense": "true",
     });
 
     final response = await http.get(uri, headers: {

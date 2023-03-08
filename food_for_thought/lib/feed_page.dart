@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,26 +20,35 @@ class FeedPageState extends State<FeedPage> {
   late List<Recipe> savedRecipes = [];
   late List<Recipe> recipes = [];
   late List<String> ingredients = [];
-  late int lastIndex = ingredients.length - 1;
+  late int lastIndex = recipes.length - 1;
   late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
   FirebaseFirestore db = FirebaseFirestore.instance;
+  List<String> tags = [
+    'All',
+    'Breakfast',
+    'Lunch',
+    'Dinner',
+    'Dessert',
+    'Vegan',
+    'Vegetarian',
+    'Dairy Free'
+  ];
+  String? selectedTag = 'All';
 
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    getRecipes(selectedTag);
   }
 
-  List<String> _tags = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'];
-  String _selectedTag = 'All';
-
-  Future<void> getRecipes({String? tag}) async {
-    if (tag != null && tag != 'All') {
-      recipes = await RecipeApi.getRecipesByTag(tag);
-    } else {
+  Future<void> getRecipes(String? tag) async {
+    if (selectedTag == "All") {
       recipes = await RecipeApi.getRecipes();
+    } else {
+      recipes = await RecipeApi.getRecipesByTag(tag!);
+      print(recipes);
     }
     setState(() {
       _isLoading = false;
@@ -46,6 +57,9 @@ class FeedPageState extends State<FeedPage> {
 
   @override
   Widget build(BuildContext context) {
+    final dropDownMenuItems = tags
+        .map((String item) => DropdownMenuItem(value: item, child: Text(item)))
+        .toList();
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -90,13 +104,15 @@ class FeedPageState extends State<FeedPage> {
                             size: 35,
                           ),
                           onPressed: () {
+                            print(
+                                'Current Index:  + $index Last Index: $lastIndex');
                             if (index >= lastIndex) {
                               index = 0;
-                              getRecipes();
+                              getRecipes(selectedTag);
                             } else {
                               index++;
                               recipes.removeAt(index);
-                            };
+                            }
                           },
                         ),
                       ),
@@ -124,34 +140,34 @@ class FeedPageState extends State<FeedPage> {
                                 builder: (context) {
                                   return AlertDialog(
                                     title: Text('Filters'),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text('Select a tag:'),
-                                        SizedBox(height: 10),
-                                        DropdownButton<String>(
-                                          value: _selectedTag,
-                                          onChanged: (String? value) {
+                                    content: Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: StatefulBuilder(
+                                          builder: (context, setState) {
+                                        return DropdownButton<String>(
+                                          onChanged: (s) {
+                                            print(s?.toLowerCase());
                                             setState(() {
-                                              _selectedTag = value!;
+                                              selectedTag = s;
                                             });
                                           },
-                                          items: _tags
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
+                                          items: dropDownMenuItems,
+                                          value: selectedTag,
+                                        );
+                                      }),
                                     ),
                                     actions: [
                                       ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color.fromARGB(
+                                              255, 115, 138, 219),
+                                        ),
                                         child: Text('Apply'),
                                         onPressed: () {
-                                          getRecipes(tag: _selectedTag);
+                                          print(selectedTag?.toLowerCase());
+                                          getRecipes(
+                                              selectedTag?.toLowerCase());
                                           Navigator.of(context).pop();
                                         },
                                       ),
@@ -181,9 +197,11 @@ class FeedPageState extends State<FeedPage> {
                             size: 35,
                           ),
                           onPressed: () {
+                            print(
+                                'Current Index:  + $index Last Index: $lastIndex');
                             if (index >= lastIndex) {
                               index = 0;
-                              getRecipes();
+                              getRecipes(selectedTag);
                             } else {
                               index++;
                               recipes.removeAt(index);
