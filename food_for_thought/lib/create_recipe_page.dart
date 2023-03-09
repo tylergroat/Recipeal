@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/created_recipe.dart';
@@ -31,6 +35,36 @@ class RecipeCreationState extends State<RecipeCreation> {
       image = img;
     });
   }
+
+  final emptyIngredient = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please enter an ingredient first!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+
+  final emptyIngredientList = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty List',
+      message: 'No ingredients have been added to the list!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
 
   void displayImageChoice() {
     showDialog(
@@ -132,27 +166,50 @@ class RecipeCreationState extends State<RecipeCreation> {
                 SizedBox(
                   height: 20,
                 ),
-                // addIngredient(),
-                // Flexible(
-                //   fit: FlexFit.loose,
-                //   child: listView(),
-                // ),
                 TextField(
                   controller: ingredients,
                   //character limit
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Ingredients'),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
                       onPressed: () {
-                        for (int i = 0; i < ingredientsList.length - 1; i++) {
-                          print('$i: ${ingredientsList[i]}');
+                        if (ingredientsList.isNotEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Container(
+                                  width: 300,
+                                  height: 300,
+                                  child: Center(
+                                    child: ListView.builder(
+                                      itemCount: ingredientsList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ListTile(
+                                            title:
+                                                Text(ingredientsList[index]));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentMaterialBanner()
+                            ..showMaterialBanner(emptyIngredientList);
+
+                          Timer(
+                              Duration(seconds: 2),
+                              () => ScaffoldMessenger.of(context)
+                                  .hideCurrentMaterialBanner());
                         }
-                        ingredients.clear();
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 115, 138, 219)),
@@ -166,8 +223,21 @@ class RecipeCreationState extends State<RecipeCreation> {
                     ),
                     TextButton(
                       onPressed: () {
-                        ingredientsList.add(ingredients.text.toString());
-                        ingredients.clear();
+                        if (ingredients.text.isNotEmpty) {
+                          print(ingredients.text);
+                          ingredientsList.add(ingredients.text.toString());
+                          ingredients.clear();
+                        } else {
+                          print('empty ingredient');
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentMaterialBanner()
+                            ..showMaterialBanner(emptyIngredient);
+
+                          Timer(
+                              Duration(seconds: 2),
+                              () => ScaffoldMessenger.of(context)
+                                  .hideCurrentMaterialBanner());
+                        }
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 115, 138, 219)),
