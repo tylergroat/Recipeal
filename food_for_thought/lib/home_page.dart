@@ -1,10 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/authentification.dart';
-import 'package:food_for_thought/discover.dart';
 import 'package:food_for_thought/feed_page.dart';
-import 'package:food_for_thought/login_page.dart';
-import 'package:food_for_thought/profile_page.dart';
+
 import 'package:food_for_thought/recipecreation_page.dart';
 import 'package:food_for_thought/side_menu.dart';
 

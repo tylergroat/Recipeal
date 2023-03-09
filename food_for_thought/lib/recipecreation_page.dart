@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:food_for_thought/created_recipe.dart';
 
 //global (accessed in recipe_instructions_page.dart)

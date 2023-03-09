@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/user.dart';
 
