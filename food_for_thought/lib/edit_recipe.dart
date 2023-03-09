@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
-
-  class Recipe {
+class Recipe {
   String name;
   String image;
   List<String> ingredients;
@@ -38,8 +35,17 @@ class HomePage extends StatelessWidget {
   Recipe myRecipe = Recipe(
     name: "Chocolate Cake",
     image: "https://www.example.com/chocolate_cake.jpg",
-    ingredients: ["flour", "sugar", "cocoa powder", "baking powder", "eggs", "milk", "vegetable oil"],
-    description: "A delicious chocolate cake recipe that is perfect for any occasion.",
+    ingredients: [
+      "flour",
+      "sugar",
+      "cocoa powder",
+      "baking powder",
+      "eggs",
+      "milk",
+      "vegetable oil"
+    ],
+    description:
+        "A delicious chocolate cake recipe that is perfect for any occasion.",
   );
 
   @override
@@ -130,7 +136,10 @@ class _EditRecipePageState extends State<EditRecipePage> {
                 widget.recipe.name = _nameController.text;
                 widget.recipe.image = _imageController.text;
                 widget.recipe.description = _descriptionController.text;
-                widget.recipe.ingredients = _ingredientsController.text.split(",").map((e) => e.trim()).toList();
+                widget.recipe.ingredients = _ingredientsController.text
+                    .split(",")
+                    .map((e) => e.trim())
+                    .toList();
 
                 Navigator.pop(context);
               },
