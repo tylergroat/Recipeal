@@ -6,6 +6,8 @@ import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'api_config.dart';
 
+//class to define how the recipe feed is presented to the user -- Implemented by : Gavin Fromm
+
 class FeedPage extends StatefulWidget {
   @override
   FeedPageState createState() => FeedPageState();

@@ -10,6 +10,8 @@ import 'about_us.dart';
 import 'authentification.dart';
 import 'login_page.dart';
 
+//class that defines the side bar menu of the applicaton -- Implemeted by : Gavin Fromm
+
 class NavDrawer extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser!;
   final String? uid = FirebaseAuth.instance.currentUser?.uid.toString();

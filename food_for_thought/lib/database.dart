@@ -3,13 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/user.dart';
 
+//class to define database operations involivng recipes -- Implemented by : Gavin Fromm
+
 class DatabaseService {
-  static Future<List<Recipe>> getSavedRecipes(String uid) async {
+  static Future<List<Recipe>> getRecipes(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
-        .collection('saved recipes')
+        .collection(path)
         .get();
 
     await docs.then(
@@ -25,33 +27,12 @@ class DatabaseService {
     return recipes;
   }
 
-  static Future<List<Recipe>> getPinnedRecipes(String uid) async {
+  static Future<List<Recipe>> sortByAlpha(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
-        .collection('pinned recipes')
-        .get();
-
-    await docs.then(
-      (querySnapshot) {
-        print("Successfully completed");
-        for (var docSnapshot in querySnapshot.docs) {
-          recipes.add(Recipe.fromFirestore(docSnapshot));
-        }
-      },
-      onError: (e) => print("Error completing: $e"),
-    );
-
-    return recipes;
-  }
-
-  static Future<List<Recipe>> sortByAlpha(String uid) async {
-    late List<Recipe> recipes = [];
-    final docs = FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .collection('saved recipes')
+        .collection(path)
         .orderBy('title')
         .get();
 
@@ -68,12 +49,13 @@ class DatabaseService {
     return recipes;
   }
 
-  static Future<List<Recipe>> sortByAlphaDescending(String uid) async {
+  static Future<List<Recipe>> sortByAlphaDescending(
+      String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
-        .collection('saved recipes')
+        .collection(path)
         .orderBy('title', descending: true)
         .get();
 
@@ -90,12 +72,12 @@ class DatabaseService {
     return recipes;
   }
 
-  static Future<List<Recipe>> sortByTime(String uid) async {
+  static Future<List<Recipe>> sortByTime(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
-        .collection('saved recipes')
+        .collection(path)
         .orderBy('cookTime')
         .get();
 
@@ -112,12 +94,13 @@ class DatabaseService {
     return recipes;
   }
 
-  static Future<List<Recipe>> sortByTimeDescending(String uid) async {
+  static Future<List<Recipe>> sortByTimeDescending(
+      String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
-        .collection('saved recipes')
+        .collection(path)
         .orderBy('cookTime', descending: true)
         .get();
 
@@ -134,12 +117,12 @@ class DatabaseService {
     return recipes;
   }
 
-  static Future<List<Recipe>> sortByServings(String uid) async {
+  static Future<List<Recipe>> sortByServings(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
-        .collection('saved recipes')
+        .collection(path)
         .orderBy('servings')
         .get();
 
@@ -157,12 +140,13 @@ class DatabaseService {
   }
 
   /// method for searching recipes
-  static Future<List<Recipe>> searchRecipes(String uid, String search) async {
+  static Future<List<Recipe>> searchRecipes(
+      String uid, String search, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
-        .collection('saved recipes')
+        .collection(path)
         .where('title', isGreaterThanOrEqualTo: search)
         .where('title', isLessThanOrEqualTo: '$search\uf8ff');
 

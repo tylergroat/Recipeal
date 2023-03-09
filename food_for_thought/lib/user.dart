@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//class to facilitate user operations -- Implemeted by : Gavin Fromm
+
 class UserInformation {
   final String firstName;
   final String lastName;
@@ -15,6 +17,8 @@ class UserInformation {
     required this.uid,
   });
 
+  //creates User object from firestore mapping
+
   factory UserInformation.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
@@ -26,6 +30,8 @@ class UserInformation {
       userName: data?['user name'],
     );
   }
+
+  //handles uploading to firestore
 
   Map<String, dynamic> toFirestore() {
     return {

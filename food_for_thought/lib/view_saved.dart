@@ -6,6 +6,8 @@ import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'database.dart';
 
+//Page for viewing your liked recipes -- Implemeted by : Gavin Fromm
+
 class ViewSavedRecipesPage extends StatefulWidget {
   @override
   ViewSavedRecipesPageState createState() => ViewSavedRecipesPageState();
@@ -15,6 +17,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   late List<Recipe> recipes = [];
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String searchValue = '';
+  String savedRecipes = 'saved recipes';
 
   @override
   void initState() {
@@ -23,35 +26,35 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   }
 
   Future<void> getRecipes() async {
-    recipes = await DatabaseService.getSavedRecipes(uid);
+    recipes = await DatabaseService.getRecipes(uid, savedRecipes);
     setState(() {
       recipes;
     });
   }
 
   Future<void> searchByTitle(String query) async {
-    recipes = await DatabaseService.searchRecipes(uid, query);
+    recipes = await DatabaseService.searchRecipes(uid, query, savedRecipes);
     setState(() {
       recipes;
     });
   }
 
   Future<void> sortByAlpha() async {
-    recipes = await DatabaseService.sortByAlpha(uid);
+    recipes = await DatabaseService.sortByAlpha(uid, savedRecipes);
     setState(() {
       recipes;
     });
   }
 
   Future<void> sortByServings() async {
-    recipes = await DatabaseService.sortByServings(uid);
+    recipes = await DatabaseService.sortByServings(uid, savedRecipes);
     setState(() {
       recipes;
     });
   }
 
   Future<void> sortByTime() async {
-    recipes = await DatabaseService.sortByTime(uid);
+    recipes = await DatabaseService.sortByTime(uid, savedRecipes);
     setState(() {
       recipes;
     });

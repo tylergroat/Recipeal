@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//Page for viewing your created recipes
+
 class CreatedRecipesPage extends StatefulWidget {
   @override
   CreatedRecipesPageState createState() => CreatedRecipesPageState();

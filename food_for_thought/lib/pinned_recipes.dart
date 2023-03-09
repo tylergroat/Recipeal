@@ -6,12 +6,15 @@ import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'database.dart';
 
+//class to define how pinned recipes are presented to the user -- Implemented by : Gavin Fromm
+
 class ViewPinnedRecipesPage extends StatefulWidget {
   @override
   ViewPinnedRecipesPageState createState() => ViewPinnedRecipesPageState();
 }
 
 class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
+  String pinnedRecipes = 'pinned recipes';
   @override
   void initState() {
     super.initState();
@@ -19,7 +22,7 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
   }
 
   Future<void> getRecipes() async {
-    recipes = await DatabaseService.getPinnedRecipes(uid);
+    recipes = await DatabaseService.getRecipes(uid, pinnedRecipes);
     setState(() {
       recipes;
     });
@@ -65,28 +68,28 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
   String searchValue = '';
 
   Future<void> searchByTitle(String query) async {
-    recipes = await DatabaseService.searchRecipes(uid, query);
+    recipes = await DatabaseService.searchRecipes(uid, query, pinnedRecipes);
     setState(() {
       recipes;
     });
   }
 
   Future<void> sortByAlpha() async {
-    recipes = await DatabaseService.sortByAlpha(uid);
+    recipes = await DatabaseService.sortByAlpha(uid, pinnedRecipes);
     setState(() {
       recipes;
     });
   }
 
   Future<void> sortByServings() async {
-    recipes = await DatabaseService.sortByServings(uid);
+    recipes = await DatabaseService.sortByServings(uid, pinnedRecipes);
     setState(() {
       recipes;
     });
   }
 
   Future<void> sortByTime() async {
-    recipes = await DatabaseService.sortByTime(uid);
+    recipes = await DatabaseService.sortByTime(uid, pinnedRecipes);
     setState(() {
       recipes;
     });

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+//class to define how the recipes are presented to the user -- Implemented by : Gavin Fromm
+
 class RecipeCard extends StatelessWidget {
   final String title;
   final int servings;
