@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//class to facilitate operations involving recipes -- Implemeted by : Gavin Fromm
+
 class Recipe {
   final String name;
   final int servings;
@@ -16,6 +18,8 @@ class Recipe {
       required this.images,
       required this.totalTime});
 
+  //method to create recipe object from json object
+
   factory Recipe.fromJson(dynamic json) {
     return Recipe(
       name: json['title'] as String,
@@ -26,6 +30,8 @@ class Recipe {
       totalTime: json['readyInMinutes'],
     );
   }
+
+  //method to create recipe object from firestore mapping
 
   factory Recipe.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -49,6 +55,8 @@ class Recipe {
       if (totalTime != totalTime) "regions": totalTime,
     };
   }
+
+  //method to turn recipes created from JSON, into a List of Recipe objects
 
   static List<Recipe> recipesFromSnapshot(List snapshot) {
     return snapshot.map((data) {

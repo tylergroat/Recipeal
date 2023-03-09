@@ -8,11 +8,14 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 String? uid;
 String? userEmail;
 
+//registers user to firebase auth
+
 Future<User?> registerWithEmailPassword(String firstName, String lastName,
     String userName, String email, String password) async {
   // Initialize Firebase
   await Firebase.initializeApp();
   User? user;
+  // try to create user with user inputs
 
   try {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
@@ -26,7 +29,7 @@ Future<User?> registerWithEmailPassword(String firstName, String lastName,
       uid = user.uid;
       userEmail = user.email;
       await user.updateDisplayName(userName);
-
+//creates user document in the Firestore database
       addUserDetails(firstName, lastName, userName, email);
 
       print('Successfully Registered');
@@ -54,6 +57,8 @@ Future addUserDetails(
   });
 }
 
+//method for updating user email
+
 Future updateUserDetails(String email, String uid) async {
   await FirebaseFirestore.instance.collection('users').doc(uid).update({
     'email': email,
@@ -61,6 +66,7 @@ Future updateUserDetails(String email, String uid) async {
 }
 
 Future<User?> signInWithEmailPassword(String email, String password) async {
+  //method for handling log in functionality
   await Firebase.initializeApp();
   User? user;
 
@@ -89,6 +95,8 @@ Future<User?> signInWithEmailPassword(String email, String password) async {
   }
   return user;
 }
+
+//method to handle sign out functionality
 
 Future<String> signOut() async {
   await _auth.signOut();

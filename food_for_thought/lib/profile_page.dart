@@ -4,9 +4,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/user.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+//class to define how the profile information is presented to the user -- Implemented by : Gavin Fromm
 
 class ProfilePage extends StatefulWidget {
   @override
