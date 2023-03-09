@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/created_recipe.dart';
 
@@ -21,6 +22,14 @@ class RecipeCreationState extends State<RecipeCreation> {
 
   List<TextField> fields = [];
 
+  ///For the image:
+  ///This is going to be saved in firebase "Storage" using a folder system.
+  ///Each user has a folder created for them, and the image name will be set to the name of the recipe and stored within the user-specific folder.
+  ///In the created recipe within the firestore database, there needs to be a "foreign key" to the corresponding image in the cloud storage.
+  ///In code, this would look like:
+  ///(1) get the foreign key(for the image) from the selected created recipe
+  ///(2) get the image from the cloud storage
+  ///(3) display the image within the app appropriately
   XFile? image;
   final ImagePicker picker = ImagePicker();
 
@@ -112,6 +121,7 @@ class RecipeCreationState extends State<RecipeCreation> {
                 TextField(
                   controller: recipeTitle,
                   //Text Field for recipe namer
+                  maxLength: 50, //50 character limit
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Recipe Title'),
                 ),
@@ -119,6 +129,13 @@ class RecipeCreationState extends State<RecipeCreation> {
                 TextField(
                   controller: servings,
                   //Text Field for recipe name
+                  maxLength: 3, // 3 digit number max length
+                  keyboardType:
+                      TextInputType.number, // number keyboard for easy input
+                  // allows only numbers in the input, useful in the case of preventing copy/pasting text into the field
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  ],
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Servings'),
                 ),
@@ -126,8 +143,16 @@ class RecipeCreationState extends State<RecipeCreation> {
                 TextField(
                   controller: timeCook,
                   //Text Field for recipe name
+                  maxLength: 3, // 3 digit number max length
+                  keyboardType:
+                      TextInputType.number, // number keyboard for easy input
+                  // allows only numbers in the input, useful in the case of preventing copy/pasting text into the field
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  ],
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Cook Time'),
+                      border: OutlineInputBorder(),
+                      labelText: 'Cook Time (Minutes)'),
                 ),
                 SizedBox(
                   height: 20,
@@ -139,7 +164,7 @@ class RecipeCreationState extends State<RecipeCreation> {
                 // ),
                 TextField(
                   controller: ingredients,
-                  //character limit
+                  maxLength: 50, //50 character max per ingredient entry
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Ingredients'),
                 ),
@@ -201,7 +226,10 @@ class RecipeCreationState extends State<RecipeCreation> {
                     'Confirm Recipe Creation',
                     style: TextStyle(fontSize: 20),
                   ),
-                  onPressed: () {},
+                  //TODO: either wrap onPressed with while(all inputs not null){onPressed(){}} OR inside onPressed say if(input1==null || input2==null || ...) {give user empty input error}
+                  onPressed: () {
+                    //TODO: send the created recipe to database
+                  },
                 ),
                 SizedBox(
                   height: 20,
