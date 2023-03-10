@@ -100,6 +100,7 @@ class FeedPageState extends State<FeedPage> {
                           icon: Icon(
                             Icons.thumb_down,
                             size: 35,
+                            color: Colors.black,
                           ),
                           onPressed: () {
                             print(
@@ -123,57 +124,27 @@ class FeedPageState extends State<FeedPage> {
                     Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
-                        height: 70,
-                        width: 70,
+                        height: 50,
+                        width: 150,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(50),
+                          color: Color.fromARGB(255, 190, 189, 189),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.filter_list,
-                            size: 35,
-                          ),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text('Filters'),
-                                    content: Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: StatefulBuilder(
-                                          builder: (context, setState) {
-                                        return DropdownButton<String>(
-                                          onChanged: (s) {
-                                            print(s?.toLowerCase());
-                                            setState(() {
-                                              selectedTag = s;
-                                            });
-                                          },
-                                          items: dropDownMenuItems,
-                                          value: selectedTag,
-                                        );
-                                      }),
-                                    ),
-                                    actions: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color.fromARGB(
-                                              255, 115, 138, 219),
-                                        ),
-                                        child: Text('Apply'),
-                                        onPressed: () {
-                                          print(selectedTag?.toLowerCase());
-                                          getRecipes(
-                                              selectedTag?.toLowerCase());
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
+                        child: StatefulBuilder(
+                          builder: (context, setState) {
+                            return Center(
+                              child: DropdownButton<String>(
+                                onChanged: (s) {
+                                  print(s?.toLowerCase());
+                                  getRecipes(selectedTag?.toLowerCase());
+                                  setState(() {
+                                    selectedTag = s;
+                                  });
+                                },
+                                items: dropDownMenuItems,
+                                value: selectedTag,
+                              ),
+                            );
                           },
                         ),
                       ),

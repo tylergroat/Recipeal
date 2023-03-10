@@ -174,71 +174,77 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
           ? Center(child: Text('No Pinned Recipes'))
           : RefreshIndicator(
               onRefresh: () => getRecipes(),
-              child: ListView.builder(
-                itemCount: recipes.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    child: RecipeCard(
-                      title: recipes[index].name,
-                      servings: recipes[index].servings,
-                      ingredients: recipes[index].ingredients,
-                      preparationSteps: recipes[index].preparationSteps,
-                      cookTime: recipes[index].totalTime,
-                      thumbnailUrl: recipes[index].images,
-                    ),
-                    onLongPress: () {
-                      print(recipes[index].name);
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Confirm"),
-                            content: Text(
-                                "Are you sure you want to remove ${recipes[index].name} from your pinned recipes?"),
-                            actions: [
-                              TextButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 115, 138, 219)),
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+              child: Scrollbar(
+                interactive: true,
+                thumbVisibility: true,
+                thickness: 12,
+                radius: Radius.circular(12),
+                child: ListView.builder(
+                  itemCount: recipes.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      child: RecipeCard(
+                        title: recipes[index].name,
+                        servings: recipes[index].servings,
+                        ingredients: recipes[index].ingredients,
+                        preparationSteps: recipes[index].preparationSteps,
+                        cookTime: recipes[index].totalTime,
+                        thumbnailUrl: recipes[index].images,
+                      ),
+                      onLongPress: () {
+                        print(recipes[index].name);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Confirm"),
+                              content: Text(
+                                  "Are you sure you want to remove ${recipes[index].name} from your pinned recipes?"),
+                              actions: [
+                                TextButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 115, 138, 219)),
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              TextButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 115, 138, 219)),
-                                child: Text(
-                                  "Confirm",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  final docs = FirebaseFirestore.instance
-                                      .collection("users")
-                                      .doc(uid)
-                                      .collection('pinned recipes')
-                                      .doc(recipes[index].name)
-                                      .delete();
-                                  getRecipes();
-                                  setState(() {});
-                                },
-                              )
-                            ],
-                          );
-                        },
-                      ); // show the dialog
-                    },
-                  );
-                },
+                                TextButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 115, 138, 219)),
+                                  child: Text(
+                                    "Confirm",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    final docs = FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(uid)
+                                        .collection('pinned recipes')
+                                        .doc(recipes[index].name)
+                                        .delete();
+                                    getRecipes();
+                                    setState(() {});
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                        ); // show the dialog
+                      },
+                    );
+                  },
+                ),
               ),
             ),
     );

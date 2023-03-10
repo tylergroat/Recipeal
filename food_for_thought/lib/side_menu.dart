@@ -124,16 +124,16 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Update Email'),
-            onTap: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
-            },
+            leading: Icon(
+              Icons.help,
+              color: Colors.blueGrey,
+            ),
+            title: Text('Help'),
+            onTap: () => {},
           ),
           ListTile(
             leading: Icon(
-              Icons.question_mark,
+              Icons.people,
               color: Colors.purple,
             ),
             title: Text('About Us'),
@@ -142,8 +142,16 @@ class NavDrawer extends StatelessWidget {
                   context, MaterialPageRoute(builder: (_) => AboutUs()))
             },
           ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () => {
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
+            },
+          ),
           SizedBox(
-            height: 180,
+            height: 120,
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
