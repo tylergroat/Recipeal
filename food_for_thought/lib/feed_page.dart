@@ -38,7 +38,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    // getRecipes(selectedTag);
+    getRecipes(selectedTag);
   }
 
   Future<void> getRecipes(String? tag) async {
@@ -100,6 +100,7 @@ class FeedPageState extends State<FeedPage> {
                           icon: Icon(
                             Icons.thumb_down,
                             size: 35,
+                            color: Colors.black,
                           ),
                           onPressed: () {
                             print(
@@ -126,8 +127,8 @@ class FeedPageState extends State<FeedPage> {
                         height: 50,
                         width: 150,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromARGB(255, 190, 189, 189),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         child: StatefulBuilder(
                           builder: (context, setState) {
@@ -146,55 +147,6 @@ class FeedPageState extends State<FeedPage> {
                             );
                           },
                         ),
-
-                        // IconButton(
-                        //   icon: Icon(
-                        //     Icons.filter_list,
-                        //     size: 35,
-                        //   ),
-                        //   onPressed: () {
-                        //     showDialog(
-                        //       context: context,
-                        //       builder: (context) {
-                        //         return AlertDialog(
-                        //           title: Text('Filters'),
-                        //           content: Container(
-                        //             height: 50,
-                        //             width: 50,
-                        //             child: StatefulBuilder(
-                        //               builder: (context, setState) {
-                        //                 return DropdownButton<String>(
-                        //                   onChanged: (s) {
-                        //                     print(s?.toLowerCase());
-                        //                     setState(() {
-                        //                       selectedTag = s;
-                        //                     });
-                        //                   },
-                        //                   items: dropDownMenuItems,
-                        //                   value: selectedTag,
-                        //                 );
-                        //               },
-                        //             ),
-                        //           ),
-                        //           actions: [
-                        //             ElevatedButton(
-                        //               style: ElevatedButton.styleFrom(
-                        //                 backgroundColor:
-                        //                     Color.fromARGB(255, 115, 138, 219),
-                        //               ),
-                        //               child: Text('Apply'),
-                        //               onPressed: () {
-                        //                 print(selectedTag?.toLowerCase());
-                        //                 getRecipes(selectedTag?.toLowerCase());
-                        //                 Navigator.of(context).pop();
-                        //               },
-                        //             ),
-                        //           ],
-                        //         );
-                        //       },
-                        //     );
-                        //   },
-                        // ),
                       ),
                     ),
                     SizedBox(
