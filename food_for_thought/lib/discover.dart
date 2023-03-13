@@ -59,6 +59,9 @@ class DiscoverPageState extends State<DiscoverPage> {
                     preparationSteps: recipes[index].preparationSteps,
                     cookTime: recipes[index].totalTime,
                     thumbnailUrl: recipes[index].images,
+                    isVegetarian: recipes[index].isVegetarian,
+                    isDairyFree: recipes[index].isDairyFree,
+                    isHealthy: recipes[index].isVeryHealthy,
                   ),
                   Container(
                     height: 70,

@@ -83,6 +83,9 @@ class FeedPageState extends State<FeedPage> {
                   preparationSteps: recipes[index].preparationSteps,
                   cookTime: recipes[index].totalTime,
                   thumbnailUrl: recipes[index].images,
+                  isVegetarian: recipes[index].isVegetarian,
+                  isDairyFree: recipes[index].isDairyFree,
+                  isHealthy: recipes[index].isVeryHealthy,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
