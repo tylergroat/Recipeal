@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/created_recipe.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as Path;
 
-//global (accessed in recipe_instructions_page.dart)
-CreatedRecipe createdRecipeObject = CreatedRecipe();
+////global (accessed in recipe_instructions_page.dart)
+////CreatedRecipe createdRecipeObject = CreatedRecipe();
 
 class RecipeCreation extends StatefulWidget {
   @override
@@ -30,14 +34,31 @@ class RecipeCreationState extends State<RecipeCreation> {
   ///(1) get the foreign key(for the image) from the selected created recipe
   ///(2) get the image from the cloud storage
   ///(3) display the image within the app appropriately
-  XFile? image;
-  final ImagePicker picker = ImagePicker();
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  //This function takes the user's selected image for the created recipe and
+  //saves it to firebase storage with parameter recipeName as the file name
+  Future<void> uploadImageToFirebase(XFile imageFile, String recipeName) async {
+    Reference ref = storage.ref().child('images/$recipeName');
+    await ref.putFile(File(imageFile.path));
+  }
 
+  //This returns the url of the image that was saved in the firebase cloud storage
+  //Note: recipeName should be the same as the argument passed to the uploadImageToFirebase
+  //function so the correct reference is made
+  Future<String> getImageUrl(String recipeName) async {
+    Reference ref = storage.ref().child('images/$recipeName');
+    String imageUrl = await ref.getDownloadURL();
+    return imageUrl;
+  }
+
+  late XFile image;
+  final ImagePicker picker = ImagePicker();
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
     setState(() {
-      image = img;
+      image = img!;
     });
   }
 
@@ -229,6 +250,12 @@ class RecipeCreationState extends State<RecipeCreation> {
                   //TODO: either wrap onPressed with while(all inputs not null){onPressed(){}} OR inside onPressed say if(input1==null || input2==null || ...) {give user empty input error}
                   onPressed: () {
                     //TODO: send the created recipe to database
+                    uploadImageToFirebase(
+                        image,
+                        recipeTitle
+                            as String); //First upload the image to firebase
+                    //Next save the recipe to firebase
+                    //
                   },
                 ),
                 SizedBox(
