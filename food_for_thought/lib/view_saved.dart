@@ -252,6 +252,14 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                                           recipes[index].preparationSteps,
                                       'cookTime': recipes[index].totalTime,
                                       'thumbnailUrl': recipes[index].images,
+                                      'isVegetarian':
+                                          recipes[index].isVegetarian,
+                                      'isVegan': recipes[index].isVegan,
+                                      'isGlutenFree':
+                                          recipes[index].isGlutenFree,
+                                      'isDairyFree': recipes[index].isDairyFree,
+                                      'isVeryHealthy':
+                                          recipes[index].isVeryHealthy,
                                     };
                                     final docs = FirebaseFirestore.instance
                                         .collection("users")

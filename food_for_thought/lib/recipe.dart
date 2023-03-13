@@ -9,14 +9,25 @@ class Recipe {
   final String preparationSteps;
   final String images;
   final int totalTime;
+  final bool isVegetarian;
+  final bool isVegan;
+  final bool isGlutenFree;
+  final bool isDairyFree;
+  final bool isVeryHealthy;
 
-  Recipe(
-      {required this.name,
-      required this.servings,
-      required this.ingredients,
-      required this.preparationSteps,
-      required this.images,
-      required this.totalTime});
+  Recipe({
+    required this.name,
+    required this.servings,
+    required this.ingredients,
+    required this.preparationSteps,
+    required this.images,
+    required this.totalTime,
+    required this.isVegetarian,
+    required this.isVegan,
+    required this.isGlutenFree,
+    required this.isDairyFree,
+    required this.isVeryHealthy,
+  });
 
   //method to create recipe object from json object
 
@@ -28,6 +39,11 @@ class Recipe {
       preparationSteps: json['instructions'] as String,
       images: json['image'] as String,
       totalTime: json['readyInMinutes'],
+      isVegetarian: json['vegetarian'],
+      isVegan: json['vegan'],
+      isGlutenFree: json['glutenFree'],
+      isDairyFree: json['dairyFree'],
+      isVeryHealthy: json['veryHealthy'],
     );
   }
 
@@ -37,12 +53,18 @@ class Recipe {
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return Recipe(
-        name: data?['title'],
-        servings: data?['servings'],
-        ingredients: data?['ingredients'],
-        preparationSteps: data?['preparationSteps'],
-        images: data?['thumbnailUrl'],
-        totalTime: data?['cookTime']);
+      name: data?['title'],
+      servings: data?['servings'],
+      ingredients: data?['ingredients'],
+      preparationSteps: data?['preparationSteps'],
+      images: data?['thumbnailUrl'],
+      totalTime: data?['cookTime'],
+      isVegetarian: data?['isVegetarian'],
+      isVegan: data?['isVegan'],
+      isGlutenFree: data?['isGlutenFree'],
+      isDairyFree: data?['isDairyFree'],
+      isVeryHealthy: data?['isVeryHealthy'],
+    );
   }
 
   Map<String, dynamic> toFirestore() {

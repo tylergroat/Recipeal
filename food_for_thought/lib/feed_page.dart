@@ -178,14 +178,22 @@ class FeedPageState extends State<FeedPage> {
                             } else {
                               index++;
                               recipes.removeAt(index);
-                              savedRecipes.add(Recipe(
+                              savedRecipes.add(
+                                Recipe(
                                   name: recipes[index].name,
                                   servings: recipes[index].servings,
                                   ingredients: recipes[index].ingredients,
                                   preparationSteps:
                                       recipes[index].preparationSteps,
                                   images: recipes[index].images,
-                                  totalTime: recipes[index].totalTime));
+                                  totalTime: recipes[index].totalTime,
+                                  isVegetarian: recipes[index].isVegetarian,
+                                  isVegan: recipes[index].isVegan,
+                                  isGlutenFree: recipes[index].isGlutenFree,
+                                  isDairyFree: recipes[index].isDairyFree,
+                                  isVeryHealthy: recipes[index].isVeryHealthy,
+                                ),
+                              );
                               setState(() {});
                             }
 
@@ -197,6 +205,11 @@ class FeedPageState extends State<FeedPage> {
                                   recipes[index].preparationSteps,
                               'cookTime': recipes[index].totalTime,
                               'thumbnailUrl': recipes[index].images,
+                              'isVegetarian': recipes[index].isVegetarian,
+                              'isVegan': recipes[index].isVegan,
+                              'isGlutenFree': recipes[index].isGlutenFree,
+                              'isDairyFree': recipes[index].isDairyFree,
+                              'isVeryHealthy': recipes[index].isVeryHealthy,
                             };
 
                             db
