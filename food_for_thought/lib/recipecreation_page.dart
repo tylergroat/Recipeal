@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,6 +42,62 @@ class RecipeCreationState extends State<RecipeCreation> {
   Future<void> uploadImageToFirebase(XFile imageFile, String recipeName) async {
     Reference ref = storage.ref().child('images/$recipeName');
     await ref.putFile(File(imageFile.path));
+  }
+
+  //This function takes the text input from the fields and saves the created recipe info
+  //to firestore as collection:users > [current user] > collection:created recipes > [adding this recipe here]
+  Future<void> uploadRecipeToFirebase(
+      String recipeName,
+      int servings,
+      String ingredients,
+      String preparationSteps,
+      int cookTime,
+      String thumbnailUrl) async {
+    Map<String, dynamic> createdRecipe = {
+      'title': recipeName,
+      'servings': servings,
+      'ingredients': ingredients,
+      'preparationSteps': preparationSteps,
+      'cookTime': cookTime,
+      'thumbnailUrl': thumbnailUrl,
+    };
+    await db
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('created recipes')
+        .add(createdRecipe);
+  }
+
+  Future<void> deleteRecipeFromFirebase(String recipeName) async {
+    //First delete the fields of the created recipe.
+    //This does not happen automatically when delete() is called on the parent.
+    final recipe = db
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('created recipes')
+        .doc(recipeName);
+    final deleteTheFields = <String, dynamic>{
+      'title': FieldValue.delete(),
+      'servings': FieldValue.delete(),
+      'ingredients': FieldValue.delete(),
+      'preparationSteps': FieldValue.delete(),
+      'cookTime': FieldValue.delete(),
+      'thumbnailUrl': FieldValue.delete(),
+    };
+    recipe.update(deleteTheFields);
+
+    //Next, delete the created recipe parent document after all fields are deleted
+    await db
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('created recipes')
+        .doc(recipeName)
+        .delete()
+        .then(
+          (doc) => print("Document deleted: $recipeName"),
+          onError: (e) => print("Error updating document $e"),
+        );
+    //TODO:Finally, delete the image from the storage
   }
 
   //This returns the url of the image that was saved in the firebase cloud storage
@@ -250,6 +307,7 @@ class RecipeCreationState extends State<RecipeCreation> {
                   //TODO: either wrap onPressed with while(all inputs not null){onPressed(){}} OR inside onPressed say if(input1==null || input2==null || ...) {give user empty input error}
                   onPressed: () {
                     //TODO: send the created recipe to database
+
                     uploadImageToFirebase(
                         image,
                         recipeTitle
