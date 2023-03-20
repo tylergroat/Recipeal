@@ -152,21 +152,33 @@ class LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: passwordController,
                   //Text Field for password
-                  obscureText: true, //to hide text (password field)
+                  obscureText: isHidden, //to hide text (password field)
                   decoration: InputDecoration(
-                    icon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText:
-                        'Password must have at least 6 alphanumeric characters',
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        togglePasswordView();
-                        setState(() {});
-                      },
-                      child: Icon(Icons.visibility),
-                    ),
-                  ),
+                      icon: Icon(Icons.lock),
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      hintText:
+                          'Password must have at least 6 alphanumeric characters',
+                      suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.visibility,
+                          ),
+                          onPressed: () {
+                            print(isHidden);
+                            togglePasswordView();
+                            setState(() {
+                              isHidden;
+                            });
+                          })
+
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     togglePasswordView();
+                      //     setState(() {});
+                      //   },
+                      //   child: Icon(Icons.visibility),
+                      // ),
+                      ),
                 ),
               ),
               TextButton(
