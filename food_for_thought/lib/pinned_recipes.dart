@@ -95,6 +95,51 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
     });
   }
 
+  Future<void> filterByVegan() async {
+    recipes = await DatabaseService.filterBy(uid, pinnedRecipes, 'isVegan');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByVegetarian() async {
+    recipes =
+        await DatabaseService.filterBy(uid, pinnedRecipes, 'isVegetarian');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByDairyFree() async {
+    recipes = await DatabaseService.filterBy(uid, pinnedRecipes, 'isDairyFree');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByPopular() async {
+    recipes = await DatabaseService.filterBy(uid, pinnedRecipes, 'isPopular');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByHealthy() async {
+    recipes =
+        await DatabaseService.filterBy(uid, pinnedRecipes, 'isVeryHealty');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByGlutenFree() async {
+    recipes =
+        await DatabaseService.filterBy(uid, pinnedRecipes, 'isGlutenFree');
+    setState(() {
+      recipes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,52 +151,192 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Sort Options'),
+                      title: Text('Sorting/Filtering'),
                       content: Text('Sort data:'),
                       actions: [
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
-                          child: Text(
-                            "Alphabetically",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            sortByAlpha();
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Alphabetically",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                sortByAlpha();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Cook Time",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                sortByTime();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Servings",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                sortByServings();
+                              },
+                            ),
+                          ],
                         ),
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
-                          child: Text(
-                            "Cook Time",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                        SizedBox(
+                          height: 10,
                         ),
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
+                        Align(
+                          alignment: Alignment(-.85, 0),
                           child: Text(
-                            "Servings",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                            'Filter by:',
+                            style: TextStyle(fontSize: 15),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            sortByServings();
-                          },
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Vegan",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByVegan();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Gluten Free",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByGlutenFree();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Popular",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByPopular();
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Vegetarian",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByVegetarian();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Healthy",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByHealthy();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 115, 138, 219)),
+                              child: Text(
+                                "Dairy Free",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByDairyFree();
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                       ],
                     );
@@ -190,6 +375,12 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
                         preparationSteps: recipes[index].preparationSteps,
                         cookTime: recipes[index].totalTime,
                         thumbnailUrl: recipes[index].images,
+                        isVegetarian: recipes[index].isVegetarian,
+                        isDairyFree: recipes[index].isDairyFree,
+                        isPopular: recipes[index].isPopular,
+                        isGlutenFree: recipes[index].isGlutenFree,
+                        isVegan: recipes[index].isVegan,
+                        isVeryHealthy: recipes[index].isVeryHealthy,
                       ),
                       onLongPress: () {
                         print(recipes[index].name);

@@ -14,6 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  bool isHidden = true;
+
   final enterEmailMessage = MaterialBanner(
     backgroundColor: Colors.transparent,
     elevation: 0,
@@ -81,6 +83,12 @@ class LoginPageState extends State<LoginPage> {
   final RoundedLoadingButtonController registerButton =
       RoundedLoadingButtonController();
 
+  void togglePasswordView() {
+    setState(() {
+      isHidden = !isHidden;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,14 +152,33 @@ class LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: passwordController,
                   //Text Field for password
-                  obscureText: true, //to hide text (password field)
+                  obscureText: isHidden, //to hide text (password field)
                   decoration: InputDecoration(
-                    icon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText:
-                        'Password must have at least 6 alphanumeric characters',
-                  ),
+                      icon: Icon(Icons.lock),
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      hintText:
+                          'Password must have at least 6 alphanumeric characters',
+                      suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.visibility,
+                          ),
+                          onPressed: () {
+                            print(isHidden);
+                            togglePasswordView();
+                            setState(() {
+                              isHidden;
+                            });
+                          })
+
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     togglePasswordView();
+                      //     setState(() {});
+                      //   },
+                      //   child: Icon(Icons.visibility),
+                      // ),
+                      ),
                 ),
               ),
               TextButton(
@@ -165,7 +192,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               RoundedLoadingButton(
-                borderRadius: 10,
+                borderRadius: 30,
                 animateOnTap: true,
                 successColor: Colors.green,
                 errorColor: Colors.red,
@@ -244,7 +271,7 @@ class LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 10, bottom: 0),
                 child: RoundedLoadingButton(
-                  borderRadius: 10,
+                  borderRadius: 30,
                   animateOnTap: false,
                   resetDuration: Duration(seconds: 3),
                   color: Color.fromARGB(255, 115, 138, 219),
