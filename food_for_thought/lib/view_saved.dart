@@ -159,7 +159,10 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                         thumbnailUrl: recipes[index].images,
                         isVegetarian: recipes[index].isVegetarian,
                         isDairyFree: recipes[index].isDairyFree,
-                        isHealthy: recipes[index].isVeryHealthy,
+                        isPopular: recipes[index].isPopular,
+                        isGlutenFree: recipes[index].isGlutenFree,
+                        isVegan: recipes[index].isVegan,
+                        isVeryHealthy: recipes[index].isVeryHealthy,
                       ),
                       onLongPress: () {
                         print(recipes[index].name);

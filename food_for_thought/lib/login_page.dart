@@ -165,7 +165,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               RoundedLoadingButton(
-                borderRadius: 10,
+                borderRadius: 30,
                 animateOnTap: true,
                 successColor: Colors.green,
                 errorColor: Colors.red,
@@ -244,7 +244,7 @@ class LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 10, bottom: 0),
                 child: RoundedLoadingButton(
-                  borderRadius: 10,
+                  borderRadius: 30,
                   animateOnTap: false,
                   resetDuration: Duration(seconds: 3),
                   color: Color.fromARGB(255, 115, 138, 219),

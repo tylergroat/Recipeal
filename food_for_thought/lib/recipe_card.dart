@@ -15,8 +15,10 @@ class RecipeCard extends StatelessWidget {
   final String thumbnailUrl;
   final bool isVegetarian;
   final bool isDairyFree;
-  final bool isHealthy;
-
+  final bool isPopular;
+  final bool isVegan;
+  final bool isGlutenFree;
+  final bool isVeryHealthy;
   RecipeCard({
     required this.title,
     required this.servings,
@@ -26,7 +28,10 @@ class RecipeCard extends StatelessWidget {
     required this.thumbnailUrl,
     required this.isVegetarian,
     required this.isDairyFree,
-    required this.isHealthy,
+    required this.isPopular,
+    required this.isGlutenFree,
+    required this.isVegan,
+    required this.isVeryHealthy,
   });
   @override
   Widget build(BuildContext context) {
@@ -42,6 +47,7 @@ class RecipeCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 330,
       decoration: BoxDecoration(
+        border: Border.all(color: Color.fromARGB(255, 190, 189, 189)),
         color: Colors.black,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
@@ -96,6 +102,9 @@ class RecipeCard extends StatelessWidget {
                         'Vegetarian',
                         style: TextStyle(color: Colors.white),
                       ),
+                      SizedBox(
+                        width: 5,
+                      ),
                     ],
                   ),
                 ),
@@ -124,6 +133,9 @@ class RecipeCard extends StatelessWidget {
                         'Dairy Free',
                         style: TextStyle(color: Colors.white),
                       ),
+                      SizedBox(
+                        width: 5,
+                      ),
                     ],
                   ),
                 ),
@@ -136,7 +148,7 @@ class RecipeCard extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      isHealthy
+                      isPopular
                           ? Icon(
                               Icons.check_circle,
                               color: Colors.green,
@@ -149,8 +161,11 @@ class RecipeCard extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        'Healthy',
+                        'Popular',
                         style: TextStyle(color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 5,
                       ),
                     ],
                   ),
@@ -235,6 +250,7 @@ class RecipeCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 330,
       decoration: BoxDecoration(
+        border: Border.all(color: Color.fromARGB(255, 190, 189, 189)),
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
@@ -324,7 +340,7 @@ class RecipeCard extends StatelessWidget {
                       decoration: TextDecoration.underline),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Container(
                   width: 350,
@@ -334,6 +350,219 @@ class RecipeCard extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 15,
+                ),
+                Text(
+                  'Additional Information',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      decoration: TextDecoration.underline),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                /////////////////////////top row//////////////////////////////////////////////////
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          isVegetarian
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Vegetarian',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          isDairyFree
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Dairy Free',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          isPopular
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Popular',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                ////////////bottom row////////////////////////////////////////////////////////
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          isVegan
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Vegan',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          isGlutenFree
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Gluten Free',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          isVeryHealthy
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Very Healthy',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),

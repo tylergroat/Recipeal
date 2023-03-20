@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //class to facilitate operations involving recipes -- Implemeted by : Gavin Fromm
 
 class Recipe {
+  final int id;
   final String name;
   final int servings;
   final List<dynamic> ingredients;
@@ -14,8 +15,10 @@ class Recipe {
   final bool isGlutenFree;
   final bool isDairyFree;
   final bool isVeryHealthy;
+  final bool isPopular;
 
   Recipe({
+    required this.id,
     required this.name,
     required this.servings,
     required this.ingredients,
@@ -27,12 +30,14 @@ class Recipe {
     required this.isGlutenFree,
     required this.isDairyFree,
     required this.isVeryHealthy,
+    required this.isPopular,
   });
 
   //method to create recipe object from json object
 
   factory Recipe.fromJson(dynamic json) {
     return Recipe(
+      id: json['id'],
       name: json['title'] as String,
       servings: json['servings'],
       ingredients: json['extendedIngredients'],
@@ -44,6 +49,7 @@ class Recipe {
       isGlutenFree: json['glutenFree'],
       isDairyFree: json['dairyFree'],
       isVeryHealthy: json['veryHealthy'],
+      isPopular: json['veryPopular'],
     );
   }
 
@@ -53,18 +59,19 @@ class Recipe {
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return Recipe(
-      name: data?['title'],
-      servings: data?['servings'],
-      ingredients: data?['ingredients'],
-      preparationSteps: data?['preparationSteps'],
-      images: data?['thumbnailUrl'],
-      totalTime: data?['cookTime'],
-      isVegetarian: data?['isVegetarian'],
-      isVegan: data?['isVegan'],
-      isGlutenFree: data?['isGlutenFree'],
-      isDairyFree: data?['isDairyFree'],
-      isVeryHealthy: data?['isVeryHealthy'],
-    );
+        id: data?['id'],
+        name: data?['title'],
+        servings: data?['servings'],
+        ingredients: data?['ingredients'],
+        preparationSteps: data?['preparationSteps'],
+        images: data?['thumbnailUrl'],
+        totalTime: data?['cookTime'],
+        isVegetarian: data?['isVegetarian'],
+        isVegan: data?['isVegan'],
+        isGlutenFree: data?['isGlutenFree'],
+        isDairyFree: data?['isDairyFree'],
+        isVeryHealthy: data?['isVeryHealthy'],
+        isPopular: data?['isPopular']);
   }
 
   Map<String, dynamic> toFirestore() {
