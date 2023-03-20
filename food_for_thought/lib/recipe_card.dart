@@ -45,7 +45,7 @@ class RecipeCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       width: MediaQuery.of(context).size.width,
-      height: 330,
+      height: 340,
       decoration: BoxDecoration(
         border: Border.all(color: Color.fromARGB(255, 190, 189, 189)),
         color: Colors.black,
@@ -248,7 +248,7 @@ class RecipeCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       width: MediaQuery.of(context).size.width,
-      height: 330,
+      height: 340,
       decoration: BoxDecoration(
         border: Border.all(color: Color.fromARGB(255, 190, 189, 189)),
         color: Colors.white,

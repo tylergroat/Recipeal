@@ -139,6 +139,29 @@ class DatabaseService {
     return recipes;
   }
 
+  static Future<List<Recipe>> filterBy(
+      String uid, String path, String filter) async {
+    late List<Recipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection(path)
+        .where(filter, isEqualTo: true)
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(Recipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
   /// method for searching recipes
   static Future<List<Recipe>> searchRecipes(
       String uid, String search, String path) async {

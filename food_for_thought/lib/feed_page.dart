@@ -38,7 +38,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    getRecipes(selectedTag);
+    // getRecipes(selectedTag);
   }
 
   Future<void> getRecipes(String? tag) async {
@@ -59,24 +59,12 @@ class FeedPageState extends State<FeedPage> {
         .map((String item) => DropdownMenuItem(value: item, child: Text(item)))
         .toList();
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
-        backgroundColor: Colors.grey,
-        toolbarHeight: 30,
-        centerTitle: true,
-        title: Text(
-          'Feed',
-          style: TextStyle(
-              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-        ),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: appBar(),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : Column(children: [
               SizedBox(
-                height: 10,
+                height: 15,
               ),
               Align(
                 alignment: Alignment(-.85, 0),
@@ -85,7 +73,7 @@ class FeedPageState extends State<FeedPage> {
                   width: 150,
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 190, 189, 189),
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +127,7 @@ class FeedPageState extends State<FeedPage> {
                     padding: const EdgeInsets.all(2.0),
                     child: Container(
                       height: 70,
-                      width: 100,
+                      width: 110,
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 190, 189, 189),
                         // Color.fromARGB(255, 115, 138, 219),
@@ -148,7 +136,7 @@ class FeedPageState extends State<FeedPage> {
                       child: IconButton(
                         icon: Icon(
                           Icons.thumb_down,
-                          size: 35,
+                          size: 40,
                           color: Colors.black,
                         ),
                         onPressed: () {
@@ -174,7 +162,7 @@ class FeedPageState extends State<FeedPage> {
                     padding: const EdgeInsets.all(2.0),
                     child: Container(
                       height: 70,
-                      width: 100,
+                      width: 110,
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 190, 189, 189),
                         borderRadius: BorderRadius.circular(30),
@@ -183,7 +171,7 @@ class FeedPageState extends State<FeedPage> {
                         icon: Icon(
                           Icons.favorite,
                           color: Colors.red,
-                          size: 35,
+                          size: 40,
                         ),
                         onPressed: () {
                           print(
@@ -234,6 +222,22 @@ class FeedPageState extends State<FeedPage> {
                 ],
               ),
             ]),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+      backgroundColor: Colors.grey,
+      toolbarHeight: 30,
+      centerTitle: true,
+      title: Text(
+        'Feed',
+        style:
+            TextStyle(color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+      ),
+      automaticallyImplyLeading: false,
     );
   }
 }

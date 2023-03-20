@@ -35,6 +35,7 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
+        toolbarHeight: 45,
         backgroundColor: Color.fromARGB(255, 115, 138, 219),
         centerTitle: true,
         title: const Text(
