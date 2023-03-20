@@ -44,6 +44,11 @@ class RecipeCreationState extends State<RecipeCreation> {
     await ref.putFile(File(imageFile.path));
   }
 
+  //This deletes the image of the created recipe from firebase storage
+  Future<void> deleteImageFromFirebase(String recipeName) async {
+    storage.ref().child('images/$recipeName').delete();
+  }
+
   //This function takes the text input from the fields and saves the created recipe info
   //to firestore as collection:users > [current user] > collection:created recipes > [adding this recipe here]
   Future<void> uploadRecipeToFirebase(
@@ -97,7 +102,9 @@ class RecipeCreationState extends State<RecipeCreation> {
           (doc) => print("Document deleted: $recipeName"),
           onError: (e) => print("Error updating document $e"),
         );
-    //TODO:Finally, delete the image from the storage
+
+    //Finally, delete the image from Firebase storage
+    deleteImageFromFirebase(recipeName);
   }
 
   //This returns the url of the image that was saved in the firebase cloud storage
@@ -109,6 +116,7 @@ class RecipeCreationState extends State<RecipeCreation> {
     return imageUrl;
   }
 
+  //For user to input an image
   late XFile image;
   final ImagePicker picker = ImagePicker();
   //we can upload image from camera or from gallery based on parameter
