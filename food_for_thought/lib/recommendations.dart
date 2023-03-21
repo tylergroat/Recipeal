@@ -11,7 +11,8 @@ class RecommendationPage extends StatefulWidget {
 }
 
 class RecommendationPageState extends State<RecommendationPage> {
-  late List<SimilarRecipe> urls = [];
+  late List<SimilarRecipe> similarRecipes = [];
+  late List<String> urls = [];
   late List<Recipe> recipes = [];
   bool _isLoading = true;
   int index = 0;
@@ -22,11 +23,17 @@ class RecommendationPageState extends State<RecommendationPage> {
     recipes = await DatabaseService.getRecipes(uid, 'saved recipes');
     print(recipes[0].id);
 
-    urls = await RecipeApi.getSimilarRecipes(recipes[0].id);
+    similarRecipes = await RecipeApi.getSimilarRecipes(recipes[0].id);
 
-    for (int i = 0; i < urls.length - 1; i++) {
-      print(urls[i].title);
+    for (int i = 0; i < similarRecipes.length - 1; i++) {
+      print(similarRecipes[i].title);
+      urls.add(similarRecipes[i].sourceUrl);
     }
+
+    for (int i = 0; i < urls.length; i++) {
+      print('$i: ${urls[i]}');
+    }
+
     setState(() {
       _isLoading = false;
     });
