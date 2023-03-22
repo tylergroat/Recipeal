@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/feed_page.dart';
 import 'package:food_for_thought/side_menu.dart';
+import 'package:food_for_thought/recommendations.dart';
 import 'package:food_for_thought/create_recipe_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,6 +19,7 @@ class HomePageState extends State<HomePage> {
   final screens = [
     RecipeCreation(),
     FeedPage(),
+    RecommendationPage(),
   ];
 
   static const logOutMessage = SnackBar(
@@ -62,10 +64,10 @@ class HomePageState extends State<HomePage> {
             icon: Icon(Icons.feed),
             label: 'Feed',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.web),
-          //   label: 'Discover',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.recommend),
+            label: 'Recommendations',
+          ),
         ],
         currentIndex: selectedIndex,
         onTap: _onItemTapped,

@@ -67,7 +67,7 @@ class FeedPageState extends State<FeedPage> {
                 height: 15,
               ),
               Align(
-                alignment: Alignment(-.85, 0),
+                alignment: Alignment(.75, 0),
                 child: Container(
                   height: 40,
                   width: 150,
