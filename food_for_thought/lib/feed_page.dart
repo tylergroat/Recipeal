@@ -38,7 +38,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    // getRecipes(selectedTag);
+    getRecipes(selectedTag);
   }
 
   Future<void> getRecipes(String? tag) async {
