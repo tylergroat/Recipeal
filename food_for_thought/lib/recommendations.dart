@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/api_config.dart';
@@ -51,7 +52,7 @@ class RecommendationPageState extends State<RecommendationPage> {
 
     //extractiung that recipe into usable form
     displayRecipes = await RecipeApi.extractFromUrl(
-        similarRecipes[randomNumForRecipes].sourceUrl);
+        similarRecipes[randomNumForRecommendations].sourceUrl);
 
     print(
         'Liked Recipe: ${recipes[randomNumForRecipes].name}  Recommendation: ${displayRecipes[0].name}');
@@ -88,19 +89,94 @@ class RecommendationPageState extends State<RecommendationPage> {
           : Center(
               child: Column(
                 children: [
-                  RecipeCard(
-                    title: displayRecipes[index].name,
-                    servings: displayRecipes[index].servings,
-                    ingredients: displayRecipes[index].ingredients,
-                    preparationSteps: displayRecipes[index].preparationSteps,
-                    cookTime: displayRecipes[index].totalTime,
-                    thumbnailUrl: displayRecipes[index].images,
-                    isVegetarian: displayRecipes[index].isVegetarian,
-                    isDairyFree: displayRecipes[index].isDairyFree,
-                    isPopular: displayRecipes[index].isPopular,
-                    isGlutenFree: displayRecipes[index].isGlutenFree,
-                    isVegan: displayRecipes[index].isVegan,
-                    isVeryHealthy: displayRecipes[index].isVeryHealthy,
+                  GestureDetector(
+                    child: RecipeCard(
+                      title: displayRecipes[index].name,
+                      servings: displayRecipes[index].servings,
+                      ingredients: displayRecipes[index].ingredients,
+                      preparationSteps: displayRecipes[index].preparationSteps,
+                      cookTime: displayRecipes[index].totalTime,
+                      thumbnailUrl: displayRecipes[index].images,
+                      isVegetarian: displayRecipes[index].isVegetarian,
+                      isDairyFree: displayRecipes[index].isDairyFree,
+                      isPopular: displayRecipes[index].isPopular,
+                      isGlutenFree: displayRecipes[index].isGlutenFree,
+                      isVegan: displayRecipes[index].isVegan,
+                      isVeryHealthy: displayRecipes[index].isVeryHealthy,
+                    ),
+                    onDoubleTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Confirm'),
+                            content: Text(
+                                'Do you want to add ${displayRecipes[index].name} to your saved recipes?'),
+                            actions: [
+                              TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 115, 138, 219)),
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 115, 138, 219)),
+                                child: Text(
+                                  "Confirm",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Map<String, dynamic> savedRecipe = {
+                                    'id': displayRecipes[index].id,
+                                    'title': displayRecipes[index].name,
+                                    'servings': displayRecipes[index].servings,
+                                    'ingredients':
+                                        displayRecipes[index].ingredients,
+                                    'preparationSteps':
+                                        displayRecipes[index].preparationSteps,
+                                    'cookTime': displayRecipes[index].totalTime,
+                                    'thumbnailUrl':
+                                        displayRecipes[index].images,
+                                    'isVegetarian':
+                                        displayRecipes[index].isVegetarian,
+                                    'isVegan': displayRecipes[index].isVegan,
+                                    'isGlutenFree':
+                                        displayRecipes[index].isGlutenFree,
+                                    'isDairyFree':
+                                        displayRecipes[index].isDairyFree,
+                                    'isVeryHealthy':
+                                        displayRecipes[index].isVeryHealthy,
+                                    'isPopular': displayRecipes[index].isPopular
+                                  };
+                                  final docs = FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(uid)
+                                      .collection('saved recipes')
+                                      .doc(recipes[index].name)
+                                      .set(savedRecipe);
+
+                                  getRecipes();
+                                  setState(() {});
+                                },
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),
