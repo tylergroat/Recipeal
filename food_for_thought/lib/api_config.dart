@@ -30,7 +30,7 @@ class RecipeApi {
   static Future<List<SimilarRecipe>> getSimilarRecipes(int id) async {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/$id/similar', {
-      "number": "2",
+      "number": "7",
       "limitLicense": "false",
     });
 
@@ -44,7 +44,7 @@ class RecipeApi {
     return SimilarRecipe.similarRecipesFromSnapshot(dataList);
   }
 
-  static Future<List<Recipe>> extractFromUr(String url) async {
+  static Future<List<Recipe>> extractFromUrl(String url) async {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/extract', {
       "url": url,
@@ -56,8 +56,11 @@ class RecipeApi {
       "useQueryString": "true"
     });
 
-    final dataList = jsonDecode(response.body);
-    return Recipe.recipesFromSnapshot(dataList);
+    Map data = jsonDecode(response.body);
+    List temp = [];
+    temp.add(data);
+
+    return Recipe.recipesFromSnapshot(temp);
   }
 
   static Future<List<Recipe>> getRecipesByTag(String tag) async {

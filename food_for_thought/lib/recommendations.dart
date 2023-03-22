@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/api_config.dart';
 import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/recipe.dart';
+import 'package:food_for_thought/recipe_card.dart';
 import 'package:food_for_thought/similar_recipe.dart';
 
 class RecommendationPage extends StatefulWidget {
@@ -12,27 +14,47 @@ class RecommendationPage extends StatefulWidget {
 
 class RecommendationPageState extends State<RecommendationPage> {
   late List<SimilarRecipe> similarRecipes = [];
-  late List<String> urls = [];
+  late List<Recipe> displayRecipes = [];
   late List<Recipe> recipes = [];
-  bool _isLoading = true;
+  Random random = new Random();
+  int randomNumForRecipes = 0;
+  int randomNumForRecommendations = 0;
+  int maxForRecipes = 0;
+  int maxForRecommendations = 0;
+  int min = 0;
   int index = 0;
-  int count = 0;
+  bool _isLoading = true;
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
   Future<void> getRecipes() async {
+    //get recipes from users liked/saved recipes
     recipes = await DatabaseService.getRecipes(uid, 'saved recipes');
-    print(recipes[0].id);
 
-    similarRecipes = await RecipeApi.getSimilarRecipes(recipes[0].id);
+    //getting the length of array, for random choice selection
+    maxForRecipes = recipes.length - 1;
 
-    for (int i = 0; i < similarRecipes.length - 1; i++) {
-      print(similarRecipes[i].title);
-      urls.add(similarRecipes[i].sourceUrl);
-    }
+    //getting random number in range
+    randomNumForRecipes = min + random.nextInt(maxForRecipes - min);
+    print('Range: $min - $maxForRecipes, Random Number: $randomNumForRecipes');
 
-    for (int i = 0; i < urls.length; i++) {
-      print('$i: ${urls[i]}');
-    }
+    //getting random recipes based on randomly chosen liked recipe
+    similarRecipes =
+        await RecipeApi.getSimilarRecipes(recipes[randomNumForRecipes].id);
+
+    maxForRecommendations = similarRecipes.length - 1;
+    randomNumForRecommendations =
+        min + random.nextInt(maxForRecommendations - min);
+    print(
+        'Range: $min - $maxForRecommendations, Random Number: $randomNumForRecommendations');
+
+    print('similar recipes: ${similarRecipes.length}');
+
+    //extractiung that recipe into usable form
+    displayRecipes = await RecipeApi.extractFromUrl(
+        similarRecipes[randomNumForRecipes].sourceUrl);
+
+    print(
+        'Liked Recipe: ${recipes[randomNumForRecipes].name}  Recommendation: ${displayRecipes[0].name}');
 
     setState(() {
       _isLoading = false;
@@ -55,7 +77,7 @@ class RecommendationPageState extends State<RecommendationPage> {
         toolbarHeight: 30,
         centerTitle: true,
         title: Text(
-          'Discover',
+          'Recommendations',
           style: TextStyle(
               color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
@@ -66,10 +88,20 @@ class RecommendationPageState extends State<RecommendationPage> {
           : Center(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 20,
+                  RecipeCard(
+                    title: displayRecipes[index].name,
+                    servings: displayRecipes[index].servings,
+                    ingredients: displayRecipes[index].ingredients,
+                    preparationSteps: displayRecipes[index].preparationSteps,
+                    cookTime: displayRecipes[index].totalTime,
+                    thumbnailUrl: displayRecipes[index].images,
+                    isVegetarian: displayRecipes[index].isVegetarian,
+                    isDairyFree: displayRecipes[index].isDairyFree,
+                    isPopular: displayRecipes[index].isPopular,
+                    isGlutenFree: displayRecipes[index].isGlutenFree,
+                    isVegan: displayRecipes[index].isVegan,
+                    isVeryHealthy: displayRecipes[index].isVeryHealthy,
                   ),
-                  Text('${recipes[0].id}')
                 ],
               ),
             ),
