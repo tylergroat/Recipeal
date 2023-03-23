@@ -38,7 +38,7 @@ class HomePageState extends State<HomePage> {
       drawer: NavDrawer(),
       appBar: AppBar(
         toolbarHeight: 45,
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
         centerTitle: true,
         title: const Text(
           'Recipeal',
@@ -50,11 +50,11 @@ class HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 151, 151, 151),
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         showUnselectedLabels: false,
-        showSelectedLabels: false,
+        showSelectedLabels: true,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.create),

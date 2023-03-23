@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class HelpPage extends StatelessWidget {
   void _showFeedExplanation(BuildContext context) {
@@ -244,14 +245,29 @@ class HelpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
+        toolbarHeight: 40,
+        centerTitle: true,
+        title: Text(
+          'Help',
+          style: TextStyle(
+              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+        ),
         automaticallyImplyLeading: true,
-        title: Text('Help Page'),
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Divider(
+              thickness: 1,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              height: 20,
+            ),
             CarouselSlider(
               options: CarouselOptions(height: 400.0),
               items: [
@@ -268,7 +284,7 @@ class HelpPage extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 115, 138, 219),
+                        color: Color.fromARGB(255, 151, 151, 151),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: i,
@@ -276,6 +292,13 @@ class HelpPage extends StatelessWidget {
                   },
                 );
               }).toList(),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey,
             ),
           ],
         ),

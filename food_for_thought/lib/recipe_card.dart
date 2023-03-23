@@ -41,7 +41,7 @@ class RecipeCard extends StatelessWidget {
 
   Widget buildFront(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+      margin: EdgeInsets.symmetric(horizontal: 18, vertical: 1),
       width: MediaQuery.of(context).size.width,
       height: 340,
       decoration: BoxDecoration(

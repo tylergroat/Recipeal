@@ -66,7 +66,7 @@ class ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
@@ -128,7 +128,7 @@ class ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(30)),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 115, 138, 219),
+                          color: Color.fromARGB(255, 244, 4, 4),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         height: 130,
@@ -180,11 +180,11 @@ class ProfilePageState extends State<ProfilePage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 115, 138, 219),
-                            borderRadius: BorderRadius.circular(30),
+                            color: Color.fromARGB(255, 151, 151, 151),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          height: 40,
-                          width: 150,
+                          height: 50,
+                          width: 160,
                           child: TextButton(
                             onPressed: () {
                               Navigator.push(
@@ -206,11 +206,11 @@ class ProfilePageState extends State<ProfilePage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 115, 138, 219),
-                            borderRadius: BorderRadius.circular(30),
+                            color: Color.fromARGB(255, 151, 151, 151),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          height: 40,
-                          width: 150,
+                          height: 50,
+                          width: 160,
                           child: TextButton(
                             onPressed: () {},
                             child: Text(
@@ -233,11 +233,11 @@ class ProfilePageState extends State<ProfilePage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 115, 138, 219),
-                            borderRadius: BorderRadius.circular(30),
+                            color: Color.fromARGB(255, 151, 151, 151),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          height: 40,
-                          width: 150,
+                          height: 50,
+                          width: 160,
                           child: TextButton(
                             onPressed: () {},
                             child: Text(
@@ -254,11 +254,11 @@ class ProfilePageState extends State<ProfilePage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 115, 138, 219),
-                            borderRadius: BorderRadius.circular(30),
+                            color: Color.fromARGB(255, 151, 151, 151),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          height: 40,
-                          width: 150,
+                          height: 50,
+                          width: 160,
                           child: TextButton(
                             onPressed: () {},
                             child: Text(

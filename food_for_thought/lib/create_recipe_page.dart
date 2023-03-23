@@ -212,7 +212,7 @@ class RecipeCreationState extends State<RecipeCreation> {
                         }
                       },
                       style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                       child: Text(
                         'View All Ingredients',
                         style: TextStyle(color: Colors.white),
@@ -240,7 +240,7 @@ class RecipeCreationState extends State<RecipeCreation> {
                         }
                       },
                       style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                       child: Text(
                         'Add Ingredient',
                         style: TextStyle(color: Colors.white),
@@ -266,9 +266,9 @@ class RecipeCreationState extends State<RecipeCreation> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                      backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                   child: Text(
-                    'Confirm Recipe Creation',
+                    'Create Recipe',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {},

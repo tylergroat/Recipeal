@@ -283,7 +283,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                           TextButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
+                                    Color.fromARGB(255, 244, 4, 4)),
                             child: Text(
                               "Alphabetically",
                               style: TextStyle(
@@ -301,7 +301,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                           TextButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
+                                    Color.fromARGB(255, 244, 4, 4)),
                             child: Text(
                               "Cook Time",
                               style: TextStyle(
@@ -319,7 +319,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                           TextButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
+                                    Color.fromARGB(255, 244, 4, 4)),
                             child: Text(
                               "Servings",
                               style: TextStyle(
@@ -349,112 +349,139 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
-                            child: Text(
-                              "Vegan",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          SizedBox(
+                            height: 35,
+                            width: 90,
+                            child: TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Vegan",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByVegan();
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              filterByVegan();
-                            },
                           ),
                           SizedBox(
                             width: 5,
                           ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
-                            child: Text(
-                              "Gluten Free",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          SizedBox(
+                            height: 35,
+                            width: 90,
+                            child: TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Gluten Free",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByGlutenFree();
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              filterByGlutenFree();
-                            },
                           ),
                           SizedBox(
                             width: 5,
                           ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
-                            child: Text(
-                              "Popular",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          SizedBox(
+                            height: 35,
+                            width: 90,
+                            child: TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Popular",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByPopular();
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              filterByPopular();
-                            },
                           ),
                         ],
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
-                            child: Text(
-                              "Vegetarian",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          SizedBox(
+                            height: 35,
+                            width: 90,
+                            child: TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Vegetarian",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByVegetarian();
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              filterByVegetarian();
-                            },
                           ),
                           SizedBox(
                             width: 5,
                           ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
-                            child: Text(
-                              "Healthy",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          SizedBox(
+                            height: 35,
+                            width: 90,
+                            child: TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Healthy",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByHealthy();
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              filterByHealthy();
-                            },
                           ),
                           SizedBox(
                             width: 5,
                           ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 115, 138, 219)),
-                            child: Text(
-                              "Dairy Free",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          SizedBox(
+                            height: 35,
+                            width: 90,
+                            child: TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Dairy Free",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                filterByDairyFree();
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              filterByDairyFree();
-                            },
                           ),
                         ],
                       ),
@@ -468,12 +495,14 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
             },
             icon: Icon(Icons.sort))
       ],
-      backgroundColor: Color.fromARGB(255, 115, 138, 219),
+      backgroundColor: Color.fromARGB(255, 244, 4, 4),
       foregroundColor: Colors.white,
-      title: Text(
-        'Liked Recipes',
-        style:
-            TextStyle(color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+      title: Center(
+        child: Text(
+          'Liked Recipes',
+          style: TextStyle(
+              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+        ),
       ),
       onSearch: (value) {
         setState(() => searchValue = value);

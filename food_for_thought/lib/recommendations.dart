@@ -39,6 +39,7 @@ class RecommendationPageState extends State<RecommendationPage> {
     print('Range: $min - $maxForRecipes, Random Number: $randomNumForRecipes');
 
     //getting random recipes based on randomly chosen liked recipe
+    print('Getting similar recipes to: ${recipes[randomNumForRecipes].name}');
     similarRecipes =
         await RecipeApi.getSimilarRecipes(recipes[randomNumForRecipes].id);
 
@@ -50,7 +51,10 @@ class RecommendationPageState extends State<RecommendationPage> {
 
     print('similar recipes: ${similarRecipes.length}');
 
-    //extractiung that recipe into usable form
+    //extracting that recipe into usable form
+    print(
+        'Extracting recipe: ${similarRecipes[randomNumForRecommendations].title} from  ${similarRecipes[randomNumForRecommendations].sourceUrl}');
+
     displayRecipes = await RecipeApi.extractFromUrl(
         similarRecipes[randomNumForRecommendations].sourceUrl);
 
@@ -89,6 +93,9 @@ class RecommendationPageState extends State<RecommendationPage> {
           : Center(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 30,
+                  ),
                   GestureDetector(
                     child: RecipeCard(
                       title: displayRecipes[index].name,
@@ -177,6 +184,36 @@ class RecommendationPageState extends State<RecommendationPage> {
                         },
                       );
                     },
+                  ),
+                  SizedBox(
+                    height: 1,
+                  ),
+                  Container(
+                    width: 400,
+                    child: Center(
+                      child: Text(
+                        'Recomendation based on: \n${recipes[randomNumForRecipes].name}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 50,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: IconButton(
+                      onPressed: getRecipes,
+                      icon: Icon(
+                        Icons.refresh_outlined,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
                   ),
                 ],
               ),

@@ -38,7 +38,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    // getRecipes(selectedTag);
+    getRecipes(selectedTag);
   }
 
   Future<void> getRecipes(String? tag) async {
@@ -78,7 +78,11 @@ class FeedPageState extends State<FeedPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.filter_list),
+                      Icon(
+                        Icons.filter_list,
+                        color: Colors.white,
+                        weight: 40,
+                      ),
                       SizedBox(
                         width: 5,
                       ),
@@ -126,10 +130,10 @@ class FeedPageState extends State<FeedPage> {
                   Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: Container(
-                      height: 70,
-                      width: 110,
+                      height: 65,
+                      width: 100,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 190, 189, 189),
+                        color: Color.fromARGB(255, 244, 4, 4),
                         // Color.fromARGB(255, 115, 138, 219),
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -137,7 +141,7 @@ class FeedPageState extends State<FeedPage> {
                         icon: Icon(
                           Icons.thumb_down,
                           size: 40,
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
                         onPressed: () {
                           print('Current Index: $index Last Index: $lastIndex');
@@ -161,16 +165,16 @@ class FeedPageState extends State<FeedPage> {
                   Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: Container(
-                      height: 70,
-                      width: 110,
+                      height: 65,
+                      width: 100,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 190, 189, 189),
+                        color: Color.fromARGB(255, 244, 4, 4),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: IconButton(
                         icon: Icon(
                           Icons.favorite,
-                          color: Colors.red,
+                          color: Colors.white,
                           size: 40,
                         ),
                         onPressed: () {

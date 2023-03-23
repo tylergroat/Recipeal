@@ -69,7 +69,7 @@ class NavDrawer extends StatelessWidget {
             height: 110,
             child: DrawerHeader(
               decoration:
-                  BoxDecoration(color: Color.fromARGB(255, 115, 138, 219)),
+                  BoxDecoration(color: Color.fromARGB(255, 151, 151, 151)),
               child: FutureBuilder(
                 builder: (context, snapshot) {
                   return SizedBox(
