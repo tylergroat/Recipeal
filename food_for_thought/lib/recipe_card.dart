@@ -295,12 +295,9 @@ class RecipeCard extends StatelessWidget {
           return AlertDialog(
               title: Text('Nutrion Facts'),
               content: Container(
-                height: 400,
+                height: 350,
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 30,
-                    ),
                     Container(
                       width: 200,
                       height: 70,
@@ -412,8 +409,8 @@ class RecipeCard extends StatelessWidget {
               ),
             ),
             Container(
-              height: 175,
-              width: 275,
+              height: 200,
+              width: 325,
               decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(15),

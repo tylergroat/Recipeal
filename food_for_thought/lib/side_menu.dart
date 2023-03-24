@@ -23,7 +23,7 @@ class NavDrawer extends StatelessWidget {
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
       child: Text(
         "Cancel",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -35,7 +35,7 @@ class NavDrawer extends StatelessWidget {
 
     Widget confirmButton = TextButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
       child: Text(
         "Logout",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
