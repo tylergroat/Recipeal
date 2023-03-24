@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:food_for_thought/nutrition.dart';
+
+import 'api_config.dart';
 
 //class to define how the recipes are presented to the user -- Implemented by : Gavin Fromm
 
 class RecipeCard extends StatelessWidget {
+  final int id;
   final String title;
   final int servings;
   final List<dynamic> ingredients;
@@ -18,6 +22,7 @@ class RecipeCard extends StatelessWidget {
   final bool isGlutenFree;
   final bool isVeryHealthy;
   RecipeCard({
+    required this.id,
     required this.title,
     required this.servings,
     required this.ingredients,
@@ -190,7 +195,7 @@ class RecipeCard extends StatelessWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   padding: EdgeInsets.all(5),
@@ -209,9 +214,43 @@ class RecipeCard extends StatelessWidget {
                       SizedBox(width: 7),
                       Text(
                         'Serves $servings',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ],
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    // Color.fromARGB(255, 244, 4, 4),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      showNutrition(context, id);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          'Nutrition',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -229,8 +268,10 @@ class RecipeCard extends StatelessWidget {
                         size: 18,
                       ),
                       SizedBox(width: 7),
-                      Text('$cookTime minutes',
-                          style: TextStyle(color: Colors.white)),
+                      Text('$cookTime min',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -240,6 +281,92 @@ class RecipeCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<dynamic> showNutrition(BuildContext context, int id) async {
+    Nutrition nutrition = await RecipeApi.nutritionById(id);
+    String calories = nutrition.calories;
+    String carbs = nutrition.carbs;
+    String fat = nutrition.fat;
+    // ignore: use_build_context_synchronously
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text('Nutrion Facts'),
+              content: Container(
+                height: 400,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      width: 200,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Center(
+                          child: Text(
+                        'Calories: ${nutrition.calories}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      width: 200,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Center(
+                          child: Text(
+                        'Carbs: ${nutrition.carbs}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      width: 200,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Center(
+                        child: Text(
+                          'Fat: ${nutrition.fat}',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      width: 200,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Center(
+                          child: Text(
+                        'Protein: ${nutrition.protein}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                  ],
+                ),
+              ));
+        });
   }
 
   Widget buildBack(BuildContext context) {

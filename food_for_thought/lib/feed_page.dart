@@ -108,6 +108,7 @@ class FeedPageState extends State<FeedPage> {
                 ),
               ),
               RecipeCard(
+                id: recipes[index].id,
                 title: recipes[index].name,
                 servings: recipes[index].servings,
                 ingredients: recipes[index].ingredients,
