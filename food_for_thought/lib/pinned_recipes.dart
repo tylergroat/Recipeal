@@ -398,6 +398,7 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       child: RecipeCard(
+                        id: recipes[index].id,
                         title: recipes[index].name,
                         servings: recipes[index].servings,
                         ingredients: recipes[index].ingredients,

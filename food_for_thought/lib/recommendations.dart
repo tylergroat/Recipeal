@@ -98,6 +98,7 @@ class RecommendationPageState extends State<RecommendationPage> {
                   ),
                   GestureDetector(
                     child: RecipeCard(
+                      id: recipes[index].id,
                       title: displayRecipes[index].name,
                       servings: displayRecipes[index].servings,
                       ingredients: displayRecipes[index].ingredients,
