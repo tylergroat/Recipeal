@@ -103,7 +103,7 @@ class RegistrationPageState extends State<RegistrationPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Colors.grey,
         centerTitle: true,
         title: Text(
           'Register',
@@ -113,13 +113,17 @@ class RegistrationPageState extends State<RegistrationPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Center(
-              child: Container(
-                  width: 200,
-                  height: 150,
-                  child:
-                      Image.asset('assets/logo/logo.png' //to display the image
-                          )),
+            SizedBox(
+              height: 40,
+            ),
+            Container(
+              width: 150,
+              height: 150,
+              child: Image.asset('assets/logo/2.png' //to display the image
+                  ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             Padding(
               padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 0),
@@ -163,6 +167,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                 controller: emailController,
                 //Text Field for username/email
                 decoration: InputDecoration(
+                    focusColor: Colors.black,
                     border: OutlineInputBorder(),
                     icon: Icon(Icons.mail),
                     labelText: 'Email',
@@ -177,8 +182,11 @@ class RegistrationPageState extends State<RegistrationPage> {
                 //Text Field for password
                 obscureText: true, //to hide text (password field)
                 decoration: InputDecoration(
+                  focusColor: Colors.black,
                   icon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(244, 4, 4, 255))),
                   labelText: 'Password',
                   hintText:
                       'Password must have at least 6 alphanumeric characters',
@@ -209,7 +217,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                   left: 40.0, right: 40.0, top: 20, bottom: 30),
               child: RoundedLoadingButton(
                 borderRadius: 8,
-                color: Color.fromARGB(255, 115, 138, 219),
+                width: 250,
+                color: Color.fromARGB(255, 244, 4, 4),
                 controller: registerButton,
                 onPressed: () async {
                   if (emailController.text.isEmpty ||

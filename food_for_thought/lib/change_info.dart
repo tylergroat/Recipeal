@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/login_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'authentification.dart';
+
+//UI screen for updating user emails
 
 class ChangeInfoPage extends StatefulWidget {
   @override
@@ -131,7 +132,7 @@ class ChangeInfoPageState extends State<ChangeInfoPage> {
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
-          'Change User Info',
+          'Update Email',
           style: TextStyle(
               color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),

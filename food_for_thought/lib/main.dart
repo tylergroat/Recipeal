@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/forgot_password.dart';
+import 'package:food_for_thought/help_me.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 import 'registration_page.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         'login_page': (context) => LoginPage(),
         'home_page': (context) => HomePage(),
         'forgot_pasword_page': (context) => ForgotPasswordPage(),
+        'help_page':(context) => HelpPage(),
       },
     );
   }

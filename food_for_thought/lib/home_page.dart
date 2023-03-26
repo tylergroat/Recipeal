@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/authentification.dart';
 import 'package:food_for_thought/feed_page.dart';
-import 'package:food_for_thought/login_page.dart';
-import 'package:food_for_thought/profile_page.dart';
-import 'package:food_for_thought/recipecreation_page.dart';
 import 'package:food_for_thought/side_menu.dart';
+import 'package:food_for_thought/recommendations.dart';
+import 'package:food_for_thought/create_recipe_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +19,7 @@ class HomePageState extends State<HomePage> {
   final screens = [
     RecipeCreation(),
     FeedPage(),
-    ProfilePage(),
+    RecommendationPage(),
   ];
 
   static const logOutMessage = SnackBar(
@@ -39,7 +37,8 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        toolbarHeight: 45,
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
         centerTitle: true,
         title: const Text(
           'Recipeal',
@@ -51,11 +50,11 @@ class HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 151, 151, 151),
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         showUnselectedLabels: false,
-        showSelectedLabels: false,
+        showSelectedLabels: true,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.create),
@@ -66,9 +65,9 @@ class HomePageState extends State<HomePage> {
             label: 'Feed',
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-              backgroundColor: Colors.white),
+            icon: Icon(Icons.recommend),
+            label: 'Recommendations',
+          ),
         ],
         currentIndex: selectedIndex,
         onTap: _onItemTapped,
