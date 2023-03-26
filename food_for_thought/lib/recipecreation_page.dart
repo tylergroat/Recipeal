@@ -8,9 +8,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
 
-////global (accessed in recipe_instructions_page.dart)
-////CreatedRecipe createdRecipeObject = CreatedRecipe();
-
 class RecipeCreation extends StatefulWidget {
   @override
   RecipeCreationState createState() => RecipeCreationState();
@@ -27,14 +24,6 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
 
   List<TextField> fields = [];
 
-  ///For the image:
-  ///This is going to be saved in firebase "Storage" using a folder system.
-  ///Each user has a folder created for them, and the image name will be set to the name of the recipe and stored within the user-specific folder.
-  ///In the created recipe within the firestore database, there needs to be a "foreign key" to the corresponding image in the cloud storage.
-  ///In code, this would look like:
-  ///(1) get the foreign key(for the image) from the selected created recipe
-  ///(2) get the image from the cloud storage
-  ///(3) display the image within the app appropriately
   final FirebaseStorage storage = FirebaseStorage.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -234,13 +223,35 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
                     'Confirm Recipe Creation',
                     style: TextStyle(fontSize: 20),
                   ),
-                  //TODO: either wrap onPressed with while(all inputs not null){onPressed(){}} OR inside onPressed say if(input1==null || input2==null || ...) {give user empty input error}
-                  onPressed: () {
-                    //TODO: send the created recipe to database
+                  onPressed: () async {
+                    //checking if there is another recipe with the same name
+                    final DocumentSnapshot recipeDoc = await FirebaseFirestore
+                        .instance
+                        .collection('created recipes')
+                        .doc(recipeTitle as String)
+                        .get();
+                    //if recipe does not already exist
+                    if (!recipeDoc.exists) {
+                      //send the image to cloud storage
+                      await uploadImageToFirebase(
+                          image: image, recipeName: recipeTitle as String);
 
-                    //First upload the image to firebase
-                    //Next save the recipe to firebase
-                    //Next...
+                      //temporary variables hold recipe data
+                      String url = await getImageUrl(recipeTitle as String);
+                      Map<String, dynamic> data = {
+                        'title': recipeTitle as String,
+                        'servings': servings as int,
+                        'ingredients': ingredientsList as List<String>,
+                        'preparationSteps': preparationSteps as String,
+                        'thumbnailUrl': url as String,
+                        'cookTime': timeCook as String
+                      };
+
+                      //send the recipe to firestore
+                      await uploadRecipeToFirebase(
+                          recipeData: data, imageUrl: url);
+                    }
+                    //else: notify user that they already created that recipe (duplicate name)
                   },
                 ),
                 SizedBox(
