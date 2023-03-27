@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/change_info.dart';
+import 'package:food_for_thought/change_email.dart';
+import 'package:food_for_thought/help_me.dart';
 import 'package:food_for_thought/pinned_recipes.dart';
 import 'package:food_for_thought/profile_page.dart';
 import 'package:food_for_thought/read_data/get_user_name.dart';
@@ -22,7 +23,7 @@ class NavDrawer extends StatelessWidget {
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
       child: Text(
         "Cancel",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -34,7 +35,7 @@ class NavDrawer extends StatelessWidget {
 
     Widget confirmButton = TextButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
       child: Text(
         "Logout",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -68,7 +69,7 @@ class NavDrawer extends StatelessWidget {
             height: 110,
             child: DrawerHeader(
               decoration:
-                  BoxDecoration(color: Color.fromARGB(255, 115, 138, 219)),
+                  BoxDecoration(color: Color.fromARGB(255, 151, 151, 151)),
               child: FutureBuilder(
                 builder: (context, snapshot) {
                   return SizedBox(
@@ -124,16 +125,19 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Update Email'),
+            leading: Icon(
+              Icons.help,
+              color: Colors.blueGrey,
+            ),
+            title: Text('Help'),
             onTap: () => {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
+                  context, MaterialPageRoute(builder: (_) => HelpPage()))
             },
           ),
           ListTile(
             leading: Icon(
-              Icons.question_mark,
+              Icons.people,
               color: Colors.purple,
             ),
             title: Text('About Us'),
@@ -142,6 +146,14 @@ class NavDrawer extends StatelessWidget {
                   context, MaterialPageRoute(builder: (_) => AboutUs()))
             },
           ),
+          // ListTile(
+          //   leading: Icon(Icons.settings),
+          //   title: Text('Settings'),
+          //   onTap: () => {
+          //     // Navigator.push(
+          //     //     context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
+          //   },
+          //),
           SizedBox(
             height: 180,
           ),

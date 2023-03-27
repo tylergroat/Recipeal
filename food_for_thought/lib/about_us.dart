@@ -12,7 +12,7 @@ class AboutUsState extends State<AboutUs> {
       appBar: AppBar(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
@@ -33,7 +33,7 @@ class AboutUsState extends State<AboutUs> {
           child: Card(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            color: Color.fromARGB(255, 115, 138, 219),
+            color: Color.fromARGB(255, 151, 151, 151),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -54,9 +54,9 @@ class AboutUsState extends State<AboutUs> {
                   Text(
                     'We are students at Wayne State University working on our Senior Capstone Project.',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 20,
@@ -64,9 +64,9 @@ class AboutUsState extends State<AboutUs> {
                   Text(
                     'As someone who loves to cook, I know how frusterating and convoluted finding recipes has become. Our goal is to provide you with recipes of all types, in a quick and easy fashion.',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 20,
@@ -74,9 +74,9 @@ class AboutUsState extends State<AboutUs> {
                   Text(
                     'We hope to replace traditional recipe finding methods, and to become your personal cookbook.',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 20,
@@ -84,9 +84,9 @@ class AboutUsState extends State<AboutUs> {
                   Text(
                     'Developers: Gavin Fromm, Tyler Groat, Jaideep Chunduri, Waheedalam Laskar',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 10,
@@ -94,9 +94,9 @@ class AboutUsState extends State<AboutUs> {
                   Text(
                     'School: Wayne State University',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 5,
@@ -104,9 +104,9 @@ class AboutUsState extends State<AboutUs> {
                   Text(
                     'Class: CSC 4996 Section 010',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

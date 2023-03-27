@@ -14,6 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  bool isHidden = true;
+
   final enterEmailMessage = MaterialBanner(
     backgroundColor: Colors.transparent,
     elevation: 0,
@@ -81,6 +83,12 @@ class LoginPageState extends State<LoginPage> {
   final RoundedLoadingButtonController registerButton =
       RoundedLoadingButtonController();
 
+  void togglePasswordView() {
+    setState(() {
+      isHidden = !isHidden;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,42 +96,17 @@ class LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         toolbarHeight: 20,
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Colors.grey,
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               SizedBox(
-                width: 10000,
-                height: 0,
-              ),
-              SizedBox(
                 width: 250,
-                child: Text(
-                  'WELCOME BACK',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 60,
-                    height: 1.0,
-                    fontFamily: 'Oswald',
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                width: 10000,
-                height: 5,
-              ),
-              SizedBox(
-                width: 200,
-                height: 90,
-                child: Image.asset('assets/logo/logo.png' //to display the image
+                height: 250,
+                child: Image.asset('assets/logo/1.png' //to display the image
                     ),
-              ),
-              SizedBox(
-                width: 10000,
-                height: 20,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40),
@@ -144,13 +127,27 @@ class LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: passwordController,
                   //Text Field for password
-                  obscureText: true, //to hide text (password field)
+                  obscureText: isHidden, //to hide text (password field)
                   decoration: InputDecoration(
                     icon: Icon(Icons.lock),
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText:
                         'Password must have at least 6 alphanumeric characters',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        Icons.visibility,
+                      ),
+                      onPressed: () {
+                        print(isHidden);
+                        togglePasswordView();
+                        setState(
+                          () {
+                            isHidden;
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -165,12 +162,13 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               RoundedLoadingButton(
-                borderRadius: 10,
+                width: 250,
+                borderRadius: 8,
                 animateOnTap: true,
                 successColor: Colors.green,
                 errorColor: Colors.red,
                 resetDuration: Duration(seconds: 2),
-                color: Color.fromARGB(255, 115, 138, 219),
+                color: Color.fromARGB(255, 244, 4, 4),
                 controller: loginButton,
                 onPressed: () async {
                   if (emailController.text.isEmpty) {
@@ -244,10 +242,11 @@ class LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 10, bottom: 0),
                 child: RoundedLoadingButton(
-                  borderRadius: 10,
+                  width: 250,
+                  borderRadius: 8,
                   animateOnTap: false,
                   resetDuration: Duration(seconds: 3),
-                  color: Color.fromARGB(255, 115, 138, 219),
+                  color: Color.fromARGB(255, 244, 4, 4),
                   controller: registerButton,
                   onPressed: () async {
                     Navigator.push(context,

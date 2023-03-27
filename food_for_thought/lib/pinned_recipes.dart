@@ -95,6 +95,51 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
     });
   }
 
+  Future<void> filterByVegan() async {
+    recipes = await DatabaseService.filterBy(uid, pinnedRecipes, 'isVegan');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByVegetarian() async {
+    recipes =
+        await DatabaseService.filterBy(uid, pinnedRecipes, 'isVegetarian');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByDairyFree() async {
+    recipes = await DatabaseService.filterBy(uid, pinnedRecipes, 'isDairyFree');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByPopular() async {
+    recipes = await DatabaseService.filterBy(uid, pinnedRecipes, 'isPopular');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByHealthy() async {
+    recipes =
+        await DatabaseService.filterBy(uid, pinnedRecipes, 'isVeryHealty');
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> filterByGlutenFree() async {
+    recipes =
+        await DatabaseService.filterBy(uid, pinnedRecipes, 'isGlutenFree');
+    setState(() {
+      recipes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,52 +151,219 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Sort Options'),
+                      title: Text('Sorting/Filtering'),
                       content: Text('Sort data:'),
                       actions: [
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
-                          child: Text(
-                            "Alphabetically",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            sortByAlpha();
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Alphabetically",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                sortByAlpha();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Cook Time",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                sortByTime();
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            TextButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 244, 4, 4)),
+                              child: Text(
+                                "Servings",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                sortByServings();
+                              },
+                            ),
+                          ],
                         ),
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
-                          child: Text(
-                            "Cook Time",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                        SizedBox(
+                          height: 10,
                         ),
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
+                        Align(
+                          alignment: Alignment(-.85, 0),
                           child: Text(
-                            "Servings",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                            'Filter by:',
+                            style: TextStyle(fontSize: 15),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            sortByServings();
-                          },
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 35,
+                              width: 90,
+                              child: TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 244, 4, 4)),
+                                child: Text(
+                                  "Vegan",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  filterByVegan();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            SizedBox(
+                              height: 35,
+                              width: 90,
+                              child: TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 244, 4, 4)),
+                                child: Text(
+                                  "Gluten Free",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  filterByGlutenFree();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            SizedBox(
+                              height: 35,
+                              width: 90,
+                              child: TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 244, 4, 4)),
+                                child: Text(
+                                  "Popular",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  filterByPopular();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 35,
+                              width: 90,
+                              child: TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 244, 4, 4)),
+                                child: Text(
+                                  "Vegetarian",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  filterByVegetarian();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            SizedBox(
+                              height: 35,
+                              width: 90,
+                              child: TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 244, 4, 4)),
+                                child: Text(
+                                  "Healthy",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  filterByHealthy();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            SizedBox(
+                              height: 35,
+                              width: 90,
+                              child: TextButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 244, 4, 4)),
+                                child: Text(
+                                  "Dairy Free",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  filterByDairyFree();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                       ],
                     );
@@ -160,11 +372,13 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
               },
               icon: Icon(Icons.sort))
         ],
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
         foregroundColor: Colors.white,
-        title: Text('Pinned Recipes',
-            style: TextStyle(
-                color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+        title: Center(
+          child: Text('Pinned Recipes',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+        ),
         onSearch: (value) {
           setState(() => searchValue = value);
           searchByTitle(value);
@@ -174,71 +388,84 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
           ? Center(child: Text('No Pinned Recipes'))
           : RefreshIndicator(
               onRefresh: () => getRecipes(),
-              child: ListView.builder(
-                itemCount: recipes.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    child: RecipeCard(
-                      title: recipes[index].name,
-                      servings: recipes[index].servings,
-                      ingredients: recipes[index].ingredients,
-                      preparationSteps: recipes[index].preparationSteps,
-                      cookTime: recipes[index].totalTime,
-                      thumbnailUrl: recipes[index].images,
-                    ),
-                    onLongPress: () {
-                      print(recipes[index].name);
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Confirm"),
-                            content: Text(
-                                "Are you sure you want to remove ${recipes[index].name} from your pinned recipes?"),
-                            actions: [
-                              TextButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 115, 138, 219)),
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+              child: Scrollbar(
+                interactive: true,
+                thumbVisibility: true,
+                thickness: 12,
+                radius: Radius.circular(12),
+                child: ListView.builder(
+                  itemCount: recipes.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      child: RecipeCard(
+                        id: recipes[index].id,
+                        title: recipes[index].name,
+                        servings: recipes[index].servings,
+                        ingredients: recipes[index].ingredients,
+                        preparationSteps: recipes[index].preparationSteps,
+                        cookTime: recipes[index].totalTime,
+                        thumbnailUrl: recipes[index].images,
+                        isVegetarian: recipes[index].isVegetarian,
+                        isDairyFree: recipes[index].isDairyFree,
+                        isPopular: recipes[index].isPopular,
+                        isGlutenFree: recipes[index].isGlutenFree,
+                        isVegan: recipes[index].isVegan,
+                        isVeryHealthy: recipes[index].isVeryHealthy,
+                      ),
+                      onLongPress: () {
+                        print(recipes[index].name);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Confirm"),
+                              content: Text(
+                                  "Are you sure you want to remove ${recipes[index].name} from your pinned recipes?"),
+                              actions: [
+                                TextButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 244, 4, 4)),
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              TextButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 115, 138, 219)),
-                                child: Text(
-                                  "Confirm",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  final docs = FirebaseFirestore.instance
-                                      .collection("users")
-                                      .doc(uid)
-                                      .collection('pinned recipes')
-                                      .doc(recipes[index].name)
-                                      .delete();
-                                  getRecipes();
-                                  setState(() {});
-                                },
-                              )
-                            ],
-                          );
-                        },
-                      ); // show the dialog
-                    },
-                  );
-                },
+                                TextButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 244, 4, 4)),
+                                  child: Text(
+                                    "Confirm",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    final docs = FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(uid)
+                                        .collection('pinned recipes')
+                                        .doc(recipes[index].name)
+                                        .delete();
+                                    getRecipes();
+                                    setState(() {});
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                        ); // show the dialog
+                      },
+                    );
+                  },
+                ),
               ),
             ),
     );

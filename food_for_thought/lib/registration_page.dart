@@ -103,7 +103,7 @@ class RegistrationPageState extends State<RegistrationPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Colors.grey,
         centerTitle: true,
         title: Text(
           'Register',
@@ -119,7 +119,7 @@ class RegistrationPageState extends State<RegistrationPage> {
             Container(
               width: 150,
               height: 150,
-              child: Image.asset('assets/logo/logo.png' //to display the image
+              child: Image.asset('assets/logo/2.png' //to display the image
                   ),
             ),
             SizedBox(
@@ -167,6 +167,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                 controller: emailController,
                 //Text Field for username/email
                 decoration: InputDecoration(
+                    focusColor: Colors.black,
                     border: OutlineInputBorder(),
                     icon: Icon(Icons.mail),
                     labelText: 'Email',
@@ -181,8 +182,11 @@ class RegistrationPageState extends State<RegistrationPage> {
                 //Text Field for password
                 obscureText: true, //to hide text (password field)
                 decoration: InputDecoration(
+                  focusColor: Colors.black,
                   icon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(244, 4, 4, 255))),
                   labelText: 'Password',
                   hintText:
                       'Password must have at least 6 alphanumeric characters',
@@ -213,7 +217,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                   left: 40.0, right: 40.0, top: 20, bottom: 30),
               child: RoundedLoadingButton(
                 borderRadius: 8,
-                color: Color.fromARGB(255, 115, 138, 219),
+                width: 250,
+                color: Color.fromARGB(255, 244, 4, 4),
                 controller: registerButton,
                 onPressed: () async {
                   if (emailController.text.isEmpty ||

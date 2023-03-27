@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/android.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
 import 'api_config.dart';
@@ -15,14 +16,13 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage> {
   int index = 0;
-  late List<Recipe> savedRecipes = [];
   late List<Recipe> recipes = [];
   late List<String> ingredients = [];
   late int lastIndex = recipes.length - 3;
   late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
   FirebaseFirestore db = FirebaseFirestore.instance;
   List<String> tags = [
-    'All',
+    'Random',
     'Breakfast',
     'Lunch',
     'Dinner',
@@ -31,7 +31,7 @@ class FeedPageState extends State<FeedPage> {
     'Vegetarian',
     'Dairy Free'
   ];
-  String? selectedTag = 'All';
+  String? selectedTag = 'Random';
 
   bool _isLoading = true;
 
@@ -42,11 +42,11 @@ class FeedPageState extends State<FeedPage> {
   }
 
   Future<void> getRecipes(String? tag) async {
-    if (selectedTag == "All") {
+    if (selectedTag == "Random") {
       recipes = await RecipeApi.getRecipes();
     } else {
       recipes = await RecipeApi.getRecipesByTag(tag!);
-      print(recipes);
+      print(recipes[index].name);
     }
     setState(() {
       _isLoading = false;
@@ -59,193 +59,190 @@ class FeedPageState extends State<FeedPage> {
         .map((String item) => DropdownMenuItem(value: item, child: Text(item)))
         .toList();
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
-        backgroundColor: Colors.grey,
-        toolbarHeight: 35,
-        centerTitle: true,
-        title: Text(
-          'Feed',
-          style: TextStyle(
-              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-        ),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: appBar(),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Center(
-              child: Column(children: [
-                RecipeCard(
-                  title: recipes[index].name,
-                  servings: recipes[index].servings,
-                  ingredients: recipes[index].ingredients,
-                  preparationSteps: recipes[index].preparationSteps,
-                  cookTime: recipes[index].totalTime,
-                  thumbnailUrl: recipes[index].images,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.thumb_down,
-                            size: 35,
-                          ),
-                          onPressed: () {
-                            print(
-                                'Current Index: $index Last Index: $lastIndex');
-                            if (index >= lastIndex) {
-                              index = 0;
-                              getRecipes(selectedTag);
-                              print('API Call');
-                            } else {
-                              index++;
-                              recipes.removeAt(index);
-                              setState(() {});
-                            }
-                          },
-                        ),
+          : Column(children: [
+              SizedBox(
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment(.75, 0),
+                child: Container(
+                  height: 40,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 190, 189, 189),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.filter_list,
+                        color: Colors.white,
+                        weight: 40,
                       ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.filter_list,
-                            size: 35,
-                          ),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text('Filters'),
-                                    content: Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: StatefulBuilder(
-                                          builder: (context, setState) {
-                                        return DropdownButton<String>(
-                                          onChanged: (s) {
-                                            print(s?.toLowerCase());
-                                            setState(() {
-                                              selectedTag = s;
-                                            });
-                                          },
-                                          items: dropDownMenuItems,
-                                          value: selectedTag,
-                                        );
-                                      }),
-                                    ),
-                                    actions: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color.fromARGB(
-                                              255, 115, 138, 219),
-                                        ),
-                                        child: Text('Apply'),
-                                        onPressed: () {
-                                          print(selectedTag?.toLowerCase());
-                                          getRecipes(
-                                              selectedTag?.toLowerCase());
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
+                      SizedBox(
+                        width: 5,
+                      ),
+                      StatefulBuilder(
+                        builder: (context, setState) {
+                          return Center(
+                            child: DropdownButton<String>(
+                              onChanged: (s) {
+                                print(s?.toLowerCase());
+                                getRecipes(selectedTag?.toLowerCase());
+                                setState(() {
+                                  selectedTag = s;
                                 });
-                          },
-                        ),
+                              },
+                              items: dropDownMenuItems,
+                              value: selectedTag,
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 115, 138, 219),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                            size: 35,
-                          ),
-                          onPressed: () {
-                            print(
-                                'Current Index:  + $index Last Index: $lastIndex');
-                            if (index >= lastIndex) {
-                              print(index);
-                              index = 0;
-                              getRecipes(selectedTag);
-                              print('API Call');
-                            } else {
-                              index++;
-                              recipes.removeAt(index);
-                              savedRecipes.add(Recipe(
-                                  name: recipes[index].name,
-                                  servings: recipes[index].servings,
-                                  ingredients: recipes[index].ingredients,
-                                  preparationSteps:
-                                      recipes[index].preparationSteps,
-                                  images: recipes[index].images,
-                                  totalTime: recipes[index].totalTime));
-                              setState(() {});
-                            }
-
-                            Map<String, dynamic> savedRecipe = {
-                              'title': recipes[index].name,
-                              'servings': recipes[index].servings,
-                              'ingredients': recipes[index].ingredients,
-                              'preparationSteps':
-                                  recipes[index].preparationSteps,
-                              'cookTime': recipes[index].totalTime,
-                              'thumbnailUrl': recipes[index].images,
-                            };
-
-                            db
-                                .collection("users")
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .collection("saved recipes")
-                                .doc(recipes[index].name)
-                                .set(savedRecipe);
-
-                            setState(() {
-                              index = index;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ]),
-            ),
+              ),
+              RecipeCard(
+                id: recipes[index].id,
+                title: recipes[index].name,
+                servings: recipes[index].servings,
+                ingredients: recipes[index].ingredients,
+                preparationSteps: recipes[index].preparationSteps,
+                cookTime: recipes[index].totalTime,
+                thumbnailUrl: recipes[index].images,
+                isVegetarian: recipes[index].isVegetarian,
+                isDairyFree: recipes[index].isDairyFree,
+                isPopular: recipes[index].isPopular,
+                isGlutenFree: recipes[index].isGlutenFree,
+                isVegan: recipes[index].isVegan,
+                isVeryHealthy: recipes[index].isVeryHealthy,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Container(
+                      height: 65,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 244, 4, 4),
+                        // Color.fromARGB(255, 115, 138, 219),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.thumb_down,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          print('Current Index: $index Last Index: $lastIndex');
+                          if (index >= lastIndex) {
+                            index = 0;
+                            getRecipes(selectedTag?.toLowerCase());
+                            print('Getting ${selectedTag} recipes');
+                            print('API Call');
+                          } else {
+                            index++;
+                            recipes.removeAt(index);
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Container(
+                      height: 65,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 244, 4, 4),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.favorite,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          print(
+                              'Current Index:  + $index Last Index: $lastIndex');
+
+                          Map<String, dynamic> savedRecipe = {
+                            'id': recipes[index].id,
+                            'title': recipes[index].name,
+                            'servings': recipes[index].servings,
+                            'ingredients': recipes[index].ingredients,
+                            'preparationSteps': recipes[index].preparationSteps,
+                            'cookTime': recipes[index].totalTime,
+                            'thumbnailUrl': recipes[index].images,
+                            'isVegetarian': recipes[index].isVegetarian,
+                            'isVegan': recipes[index].isVegan,
+                            'isGlutenFree': recipes[index].isGlutenFree,
+                            'isDairyFree': recipes[index].isDairyFree,
+                            'isVeryHealthy': recipes[index].isVeryHealthy,
+                            'isPopular': recipes[index].isPopular,
+                          };
+
+                          db
+                              .collection("users")
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection("saved recipes")
+                              .doc(recipes[index].name)
+                              .set(savedRecipe);
+
+                          if (index >= lastIndex) {
+                            print(index);
+                            index = 0;
+                            getRecipes(selectedTag?.toLowerCase());
+                            print('Getting : ${selectedTag} recipes');
+                            print('API Call');
+                          } else {
+                            recipes.removeAt(index);
+                            index++;
+                            setState(
+                              () {
+                                index = index;
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+      backgroundColor: Colors.grey,
+      toolbarHeight: 30,
+      centerTitle: true,
+      title: Text(
+        'Feed',
+        style:
+            TextStyle(color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+      ),
+      automaticallyImplyLeading: false,
     );
   }
 }

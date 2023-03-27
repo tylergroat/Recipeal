@@ -61,7 +61,7 @@ class ForgotPasswordPage extends StatelessWidget {
           'Reset Password',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Colors.grey,
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -99,10 +99,11 @@ class ForgotPasswordPage extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 10, bottom: 0),
                 child: RoundedLoadingButton(
-                  borderRadius: 10,
+                  width: 250,
+                  borderRadius: 8,
                   animateOnTap: true,
                   resetDuration: Duration(seconds: 3),
-                  color: Color.fromARGB(255, 115, 138, 219),
+                  color: Color.fromARGB(255, 244, 4, 4),
                   controller: forgotPasswordButton,
                   onPressed: () async {
                     if (await passwordReset()) {

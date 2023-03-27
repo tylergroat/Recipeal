@@ -1,12 +1,22 @@
+<<<<<<< HEAD:food_for_thought/lib/recipecreation_page.dart
+=======
+import 'dart:async';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+>>>>>>> main:food_for_thought/lib/create_recipe_page.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+<<<<<<< HEAD:food_for_thought/lib/recipecreation_page.dart
 import 'package:food_for_thought/created_recipe.dart'; //mixin with functions for firebase
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
+=======
+
+//global (accessed in recipe_instructions_page.dart)
+>>>>>>> main:food_for_thought/lib/create_recipe_page.dart
 
 class RecipeCreation extends StatefulWidget {
   @override
@@ -20,7 +30,12 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
   TextEditingController servings = TextEditingController();
   TextEditingController preparationSteps = TextEditingController();
   TextEditingController ingredients = TextEditingController();
+<<<<<<< HEAD:food_for_thought/lib/recipecreation_page.dart
   List<dynamic> ingredientsList = [];
+=======
+  List<String> ingredientsList = [];
+  FirebaseFirestore db = FirebaseFirestore.instance;
+>>>>>>> main:food_for_thought/lib/create_recipe_page.dart
 
   List<TextField> fields = [];
 
@@ -41,6 +56,7 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
     });
   }
 
+<<<<<<< HEAD:food_for_thought/lib/recipecreation_page.dart
   Future<String> uploadImageToFirebase({
     required XFile? image,
     required String recipeName,
@@ -64,6 +80,37 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
       throw Exception("Error uploading image to Firebase: $e");
     }
   }
+=======
+  final emptyIngredient = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please enter an ingredient first!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+
+  final emptyIngredientList = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty List',
+      message: 'No ingredients have been added to the list!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+>>>>>>> main:food_for_thought/lib/create_recipe_page.dart
 
   void displayImageChoice() {
     showDialog(
@@ -125,7 +172,7 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
         backgroundColor: Colors.grey,
-        toolbarHeight: 35,
+        toolbarHeight: 30,
         centerTitle: true,
         title: Text(
           'Create a Recipe',
@@ -181,27 +228,50 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
                 SizedBox(
                   height: 20,
                 ),
-                // addIngredient(),
-                // Flexible(
-                //   fit: FlexFit.loose,
-                //   child: listView(),
-                // ),
                 TextField(
                   controller: ingredients,
                   maxLength: 50, //50 character max per ingredient entry
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Ingredients'),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
                       onPressed: () {
-                        for (int i = 0; i < ingredientsList.length - 1; i++) {
-                          print('$i: ${ingredientsList[i]}');
+                        if (ingredientsList.isNotEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Container(
+                                  width: 300,
+                                  height: 300,
+                                  child: Center(
+                                    child: ListView.builder(
+                                      itemCount: ingredientsList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ListTile(
+                                            title:
+                                                Text(ingredientsList[index]));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentMaterialBanner()
+                            ..showMaterialBanner(emptyIngredientList);
+
+                          Timer(
+                              Duration(seconds: 2),
+                              () => ScaffoldMessenger.of(context)
+                                  .hideCurrentMaterialBanner());
                         }
-                        ingredients.clear();
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 244, 4, 4)),
@@ -215,8 +285,21 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
                     ),
                     TextButton(
                       onPressed: () {
-                        ingredientsList.add(ingredients.text.toString());
-                        ingredients.clear();
+                        if (ingredients.text.isNotEmpty) {
+                          print(ingredients.text);
+                          ingredientsList.add(ingredients.text.toString());
+                          ingredients.clear();
+                        } else {
+                          print('empty ingredient');
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentMaterialBanner()
+                            ..showMaterialBanner(emptyIngredient);
+
+                          Timer(
+                              Duration(seconds: 2),
+                              () => ScaffoldMessenger.of(context)
+                                  .hideCurrentMaterialBanner());
+                        }
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 244, 4, 4)),
@@ -280,9 +363,10 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                   child: Text(
-                    'Confirm Recipe Creation',
+                    'Create Recipe',
                     style: TextStyle(fontSize: 20),
                   ),
+<<<<<<< HEAD:food_for_thought/lib/recipecreation_page.dart
                   onPressed: () async {
                     //checking if there is another recipe with the same name
                     final DocumentSnapshot recipeDoc = await FirebaseFirestore
@@ -312,6 +396,27 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
                   }
                   //else: notify user that they already created that recipe (duplicate name)
                   ,
+=======
+                  onPressed: () {
+                    Map<String, dynamic> createdRecipe = {
+                      'title': recipeTitle.text,
+                      'servings': servings.text,
+                      'cookTime': timeCook.text,
+                      'ingredients': ingredientsList,
+                      'preparationSteps': preparationSteps.text,
+                    };
+
+                    db
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .collection("created recipes")
+                        .doc()
+                        .set(createdRecipe);
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+>>>>>>> main:food_for_thought/lib/create_recipe_page.dart
                 ),
               ],
             ),
