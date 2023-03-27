@@ -3,6 +3,7 @@ import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_for_thought/created_recipe_card.dart';
 import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
@@ -22,8 +23,8 @@ class CreatedRecipesPage extends StatefulWidget {
 
 //Class with mixin CreatedRecipe because it can edit and delete created recipes
 class CreatedRecipesPageState extends State<CreatedRecipesPage>
-    with CreatedRecipe {
-  late List<Recipe> recipes = [];
+    with CreatedRecipeMixin {
+  late List<CreatedRecipe> recipes = [];
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String searchValue = '';
   String createdRecipes = 'created recipes';
@@ -36,41 +37,41 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
 
   //Load the created recipes from firebase
   Future<void> getRecipes() async {
-    recipes = await DatabaseService.getRecipes(uid, createdRecipes);
+    recipes = await DatabaseService.getCreatedRecipes(uid);
     setState(() {
       recipes;
     });
   }
 
   //Search for UI
-  Future<void> searchByTitle(String query) async {
-    recipes = await DatabaseService.searchRecipes(uid, query, createdRecipes);
-    setState(() {
-      recipes;
-    });
-  }
+  // Future<void> searchByTitle(String query) async {
+  //   recipes = await DatabaseService.searchCreatedRecipes(uid, query, createdRecipes);
+  //   setState(() {
+  //     recipes;
+  //   });
+  // }
 
-  //Sort for UI
-  Future<void> sortByAlpha() async {
-    recipes = await DatabaseService.sortByAlpha(uid, createdRecipes);
-    setState(() {
-      recipes;
-    });
-  }
+  // //Sort for UI
+  // Future<void> sortByAlpha() async {
+  //   recipes = await DatabaseService.sortByAlpha(uid, createdRecipes);
+  //   setState(() {
+  //     recipes;
+  //   });
+  // }
 
-  Future<void> sortByServings() async {
-    recipes = await DatabaseService.sortByServings(uid, createdRecipes);
-    setState(() {
-      recipes;
-    });
-  }
+  // Future<void> sortByServings() async {
+  //   recipes = await DatabaseService.sortByServings(uid, createdRecipes);
+  //   setState(() {
+  //     recipes;
+  //   });
+  // }
 
-  Future<void> sortByTime() async {
-    recipes = await DatabaseService.sortByTime(uid, createdRecipes);
-    setState(() {
-      recipes;
-    });
-  }
+  // Future<void> sortByTime() async {
+  //   recipes = await DatabaseService.sortByTime(uid, createdRecipes);
+  //   setState(() {
+  //     recipes;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                         TextButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
+                                  Color.fromARGB(255, 244, 4, 4)),
                           child: Text(
                             "Alphabetically",
                             style: TextStyle(
@@ -98,13 +99,13 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-                            sortByAlpha();
+                            // sortByAlpha();
                           },
                         ),
                         TextButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
+                                  Color.fromARGB(255, 244, 4, 4)),
                           child: Text(
                             "Cook Time",
                             style: TextStyle(
@@ -113,13 +114,13 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-                            sortByTime();
+                            // sortByTime();
                           },
                         ),
                         TextButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Color.fromARGB(255, 115, 138, 219)),
+                                  Color.fromARGB(255, 244, 4, 4)),
                           child: Text(
                             "Servings",
                             style: TextStyle(
@@ -128,7 +129,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-                            sortByServings();
+                            // sortByServings();
                           },
                         ),
                       ],
@@ -138,14 +139,14 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
               },
               icon: Icon(Icons.sort))
         ],
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
         foregroundColor: Colors.white,
         title: Text('Created Recipes',
             style: TextStyle(
                 color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
         onSearch: (value) {
           setState(() => searchValue = value);
-          searchByTitle(value);
+          // searchByTitle(value);
         },
       ),
       body: RefreshIndicator(
@@ -157,13 +158,13 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                 itemCount: recipes.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    child: RecipeCard(
+                    child: CreatedRecipeCard(
                       title: recipes[index].name,
                       servings: recipes[index].servings,
                       ingredients: recipes[index].ingredients,
                       preparationSteps: recipes[index].preparationSteps,
                       cookTime: recipes[index].totalTime,
-                      thumbnailUrl: recipes[index].images,
+                      // thumbnailUrl: recipes[index].images,
                     ),
                     onLongPress: () {
                       print(recipes[index].name);
@@ -178,7 +179,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                 TextButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
-                                          Color.fromARGB(255, 115, 138, 219)),
+                                          Color.fromARGB(255, 244, 4, 4)),
                                   child: Text(
                                     "Cancel",
                                     style: TextStyle(
@@ -192,7 +193,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                 TextButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
-                                          Color.fromARGB(255, 115, 138, 219)),
+                                          Color.fromARGB(255, 244, 4, 4)),
                                   child: Text(
                                     "Delete",
                                     style: TextStyle(
@@ -226,7 +227,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                               TextButton(
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        Color.fromARGB(255, 115, 138, 219)),
+                                        Color.fromARGB(255, 244, 4, 4)),
                                 child: Text(
                                   "Cancel",
                                   style: TextStyle(
@@ -240,7 +241,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                               TextButton(
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        Color.fromARGB(255, 115, 138, 219)),
+                                        Color.fromARGB(255, 244, 4, 4)),
                                 child: Text(
                                   "Confirm",
                                   style: TextStyle(
@@ -256,7 +257,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                     'preparationSteps':
                                         recipes[index].preparationSteps,
                                     'cookTime': recipes[index].totalTime,
-                                    'thumbnailUrl': recipes[index].images,
+                                    // 'thumbnailUrl': recipes[index].images,
                                   };
                                   //Add this created recipe to the pinned recipes doc in firebase
                                   FirebaseFirestore.instance

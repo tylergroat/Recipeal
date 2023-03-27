@@ -6,7 +6,36 @@ import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-mixin CreatedRecipe {
+class CreatedRecipe {
+  final String name;
+  final String servings;
+  final List<dynamic> ingredients;
+  final String preparationSteps;
+  // final String images;
+  final String totalTime;
+
+  CreatedRecipe(
+      {required this.name,
+      required this.servings,
+      required this.ingredients,
+      required this.preparationSteps,
+      // required this.images,
+      required this.totalTime});
+
+  factory CreatedRecipe.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data();
+    return CreatedRecipe(
+        name: data?['title'],
+        servings: data?['servings'],
+        ingredients: data?['ingredients'],
+        preparationSteps: data?['preparationSteps'],
+        // images: data?['thumbnailUrl'],
+        totalTime: data?['cookTime']);
+  }
+}
+
+mixin CreatedRecipeMixin {
   //Gets entire doc of a created recipe
   Future<Map<String, dynamic>> getCreatedRecipeData(
       {required String recipeName}) async {
@@ -59,29 +88,29 @@ mixin CreatedRecipe {
     }
   }
 
-//Uploads image in cloud storage
-  Future<void> uploadImageToFirebase(
-      {required XFile image, required String recipeName}) async {
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) throw Exception("User not logged in");
+// //Uploads image in cloud storage
+//   Future<void> uploadImageToFirebase(
+//       {required File image, required String recipeName}) async {
+//     try {
+//       final User? user = FirebaseAuth.instance.currentUser;
+//       if (user == null) throw Exception("User not logged in");
 
-      final Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('created recipes')
-          .child(recipeName);
+//       final Reference firebaseStorageRef = FirebaseStorage.instance
+//           .ref()
+//           .child('created recipes')
+//           .child(recipeName);
 
-      //Uploading with the following line
-      firebaseStorageRef.putFile(image as File);
-    } catch (e) {
-      throw Exception("Error uploading image to Firebase: $e");
-    }
-  }
+//       //Uploading with the following line
+//       firebaseStorageRef.putFile(image);
+//     } catch (e) {
+//       throw Exception("Error uploading image to Firebase: $e");
+//     }
+//   }
 
 //Uploads recipe data in firestore
-  Future<void> uploadRecipeToFirebase(
-      {required Map<String, dynamic> recipeData,
-      required String imageUrl}) async {
+  Future<void> uploadRecipeToFirebase({
+    required Map<String, dynamic> recipeData,
+  }) async {
     try {
       final User? user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception("User not logged in");
@@ -94,7 +123,7 @@ mixin CreatedRecipe {
           .collection('created recipes');
       final DocumentReference documentReference =
           createdRecipesCollection.doc();
-      await documentReference.set({...recipeData, imageUrl: imageUrl});
+      await documentReference.set({...recipeData});
     } catch (e) {
       throw Exception('Failed to upload recipe to Firebase: $e');
     }
@@ -153,25 +182,25 @@ mixin CreatedRecipe {
 
   //TODO: NEEDS TO BE UPDATED
   //updates the image for the recipe and deletes the old image
-  Future<void> updateImageInFirebase(String recipeName, XFile newImage) async {
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) throw Exception("User not logged in");
-      final String userId = user.uid;
+  // Future<void> updateImageInFirebase(String recipeName, XFile newImage) async {
+  //   try {
+  //     final User? user = FirebaseAuth.instance.currentUser;
+  //     if (user == null) throw Exception("User not logged in");
+  //     final String userId = user.uid;
 
-      //Overwrite the image
-      await uploadImageToFirebase(image: newImage, recipeName: recipeName);
+  //     //Overwrite the image
+  //     await uploadImageToFirebase(image: newImage, recipeName: recipeName);
 
-      String newImageUrl = await getImageUrl(recipeName);
-      //update the imageUrl field in the recipes collection in Firebase Firestore
-      final DocumentReference recipeDocRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('created recipes')
-          .doc(recipeName);
-      await recipeDocRef.update({'imageUrl': newImageUrl});
-    } catch (e) {
-      throw Exception('Failed to update image in Firebase: $e');
-    }
-  }
+  //     String newImageUrl = await getImageUrl(recipeName);
+  //     //update the imageUrl field in the recipes collection in Firebase Firestore
+  //     final DocumentReference recipeDocRef = FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(userId)
+  //         .collection('created recipes')
+  //         .doc(recipeName);
+  //     await recipeDocRef.update({'imageUrl': newImageUrl});
+  //   } catch (e) {
+  //     throw Exception('Failed to update image in Firebase: $e');
+  //   }
+  // }
 }

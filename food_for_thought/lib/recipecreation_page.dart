@@ -13,29 +13,56 @@ class RecipeCreation extends StatefulWidget {
   RecipeCreationState createState() => RecipeCreationState();
 }
 
-class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
+class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin {
   TextEditingController recipeTitle = TextEditingController();
   TextEditingController recipe = TextEditingController();
   TextEditingController timeCook = TextEditingController();
   TextEditingController servings = TextEditingController();
   TextEditingController preparationSteps = TextEditingController();
   TextEditingController ingredients = TextEditingController();
-  List<String> ingredientsList = [];
+  List<dynamic> ingredientsList = [];
 
   List<TextField> fields = [];
 
   final FirebaseStorage storage = FirebaseStorage.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  final User? user = FirebaseAuth.instance.currentUser;
 
   //For user to input an image
-  late XFile image;
-  final ImagePicker picker = ImagePicker();
+  final picker = ImagePicker();
+  // final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+  XFile? xfileImage;
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
     setState(() {
-      image = img!;
+      xfileImage = img!;
     });
+  }
+
+  Future<String> uploadImageToFirebase({
+    required XFile? image,
+    required String recipeName,
+  }) async {
+    try {
+      if (user == null) throw Exception("User not logged in");
+
+      final Reference firebaseStorageRef =
+          storage.ref().child('created recipes').child(recipeName);
+
+      // Uploading with the following line
+      if (image != null) {
+        final File file = File(image.path);
+        await firebaseStorageRef.putFile(file);
+        final String downloadUrl = await firebaseStorageRef.getDownloadURL();
+        return downloadUrl;
+      } else {
+        throw Exception("Image file is null");
+      }
+    } catch (e) {
+      throw Exception("Error uploading image to Firebase: $e");
+    }
   }
 
   void displayImageChoice() {
@@ -58,7 +85,7 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
                         getImage(ImageSource.gallery);
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                       child: Row(
                         children: [
                           Icon(Icons.image),
@@ -75,7 +102,7 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
                         getImage(ImageSource.camera);
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                       child: Row(
                         children: [
                           Icon(Icons.camera),
@@ -177,7 +204,7 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
                         ingredients.clear();
                       },
                       style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                       child: Text(
                         'View All Ingredients',
                         style: TextStyle(color: Colors.white),
@@ -192,7 +219,7 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
                         ingredients.clear();
                       },
                       style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                          backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                       child: Text(
                         'Add Ingredient',
                         style: TextStyle(color: Colors.white),
@@ -216,9 +243,42 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
                 SizedBox(
                   height: 20,
                 ),
+
+                SizedBox(
+                  height: 20,
+                ),
+                // ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //         backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                //     child: Text(
+                //       'Choose a Photo!',
+                //       style: TextStyle(fontSize: 20),
+                //     ),
+                //     onPressed: () {
+                //       displayImageChoice();
+                //     }),
+                // //if image not null show the image
+                // //if image null show text
+                // Padding(
+                //     padding: const EdgeInsets.all(4.0),
+                //     child: xfileImage != null
+                //         ? Padding(
+                //             padding: const EdgeInsets.symmetric(horizontal: 20),
+                //             child: ClipRRect(
+                //               borderRadius: BorderRadius.circular(2),
+                //               child: Image.file(
+                //                 //to show image, you type like this.
+                //                 File(xfileImage!.path),
+                //                 fit: BoxFit.cover,
+                //                 width: MediaQuery.of(context).size.width,
+                //                 height: 300,
+                //               ),
+                //             ),
+                //           )
+                //         : Text(' ')),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 115, 138, 219)),
+                      backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                   child: Text(
                     'Confirm Recipe Creation',
                     style: TextStyle(fontSize: 20),
@@ -228,34 +288,30 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipe {
                     final DocumentSnapshot recipeDoc = await FirebaseFirestore
                         .instance
                         .collection('created recipes')
-                        .doc(recipeTitle as String)
+                        .doc(recipeTitle.text)
                         .get();
                     //if recipe does not already exist
-                    if (!recipeDoc.exists) {
-                      //send the image to cloud storage
-                      await uploadImageToFirebase(
-                          image: image, recipeName: recipeTitle as String);
 
-                      //temporary variables hold recipe data
-                      String url = await getImageUrl(recipeTitle as String);
-                      Map<String, dynamic> data = {
-                        'title': recipeTitle as String,
-                        'servings': servings as int,
-                        'ingredients': ingredientsList as List<String>,
-                        'preparationSteps': preparationSteps as String,
-                        'thumbnailUrl': url as String,
-                        'cookTime': timeCook as String
-                      };
+                    // //send the image to cloud storage
+                    // String downloadUrl = await uploadImageToFirebase(
+                    //     image: xfileImage, recipeName: recipeTitle.text);
 
-                      //send the recipe to firestore
-                      await uploadRecipeToFirebase(
-                          recipeData: data, imageUrl: url);
-                    }
-                    //else: notify user that they already created that recipe (duplicate name)
-                  },
-                ),
-                SizedBox(
-                  height: 20,
+                    //temporary variables hold recipe data
+                    Map<String, dynamic> data = {
+                      'title': recipeTitle.text,
+                      'servings': servings.text,
+                      'ingredients': ingredientsList,
+                      'preparationSteps': preparationSteps.text,
+                      // 'thumbnailUrl': downloadUrl,
+                      'cookTime': timeCook.text
+                    };
+
+                    //send the recipe to firestore
+                    await uploadRecipeToFirebase(
+                        recipeData: data);
+                  }
+                  //else: notify user that they already created that recipe (duplicate name)
+                  ,
                 ),
               ],
             ),
