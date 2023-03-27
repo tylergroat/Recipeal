@@ -425,7 +425,7 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
                                 TextButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
-                                          Color.fromARGB(255, 115, 138, 219)),
+                                          Color.fromARGB(255, 244, 4, 4)),
                                   child: Text(
                                     "Cancel",
                                     style: TextStyle(
@@ -439,7 +439,7 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
                                 TextButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
-                                          Color.fromARGB(255, 115, 138, 219)),
+                                          Color.fromARGB(255, 244, 4, 4)),
                                   child: Text(
                                     "Confirm",
                                     style: TextStyle(

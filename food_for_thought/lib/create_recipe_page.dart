@@ -1,13 +1,11 @@
 import 'dart:async';
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:food_for_thought/created_recipe.dart';
 
 //global (accessed in recipe_instructions_page.dart)
-CreatedRecipe createdRecipeObject = CreatedRecipe();
 
 class RecipeCreation extends StatefulWidget {
   @override
@@ -22,6 +20,7 @@ class RecipeCreationState extends State<RecipeCreation> {
   TextEditingController preparationSteps = TextEditingController();
   TextEditingController ingredients = TextEditingController();
   List<String> ingredientsList = [];
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   List<TextField> fields = [];
 
@@ -271,7 +270,22 @@ class RecipeCreationState extends State<RecipeCreation> {
                     'Create Recipe',
                     style: TextStyle(fontSize: 20),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Map<String, dynamic> createdRecipe = {
+                      'title': recipeTitle.text,
+                      'servings': servings.text,
+                      'cookTime': timeCook.text,
+                      'ingredients': ingredientsList,
+                      'preparationSteps': preparationSteps.text,
+                    };
+
+                    db
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .collection("created recipes")
+                        .doc()
+                        .set(createdRecipe);
+                  },
                 ),
                 SizedBox(
                   height: 20,

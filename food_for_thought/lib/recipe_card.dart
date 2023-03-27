@@ -293,7 +293,7 @@ class RecipeCard extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-              title: Text('Nutrion Facts'),
+              title: Text('Nutrition Facts'),
               content: Container(
                 height: 350,
                 child: Column(

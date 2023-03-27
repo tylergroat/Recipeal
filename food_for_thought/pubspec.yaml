@@ -100,13 +100,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/logo/logo.png
     - assets/logo/1.png
     - assets/logo/2.png
-    - assets/logo/3.png
-    - assets/logo/8.png
-    - assets/logo/9.png
-    - assets/logo/10.png
+    - assets/logo/logo.png
+
     # - assets/images/splash_screen.png
     # - assets/images/background_color_screen.png
 
@@ -115,23 +112,25 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/logo/logo.png"
-  adaptive_icon_background: "#738adb"
+  adaptive_icon_background: "##FFFFFF"
   adaptive_icon_foreground: "assets/logo/logo.png"
   web:
     generate: true
     image_path: "assets/logo/logo.png"
-    background_color: "#ffffff"
-    theme_color: "#738adb"
+    background_color: "#FFFFFF"
+    theme_color: "##000000"
 
 # Splash Screen Settings
 flutter_native_splash:
   # background_image: "assets/images/splash_screen.png"
-  color: "#738adb"
-  image: assets/logo/logo.png
+  color: "##FFFFFF"
+  image: assets/logo/2.png
+  android: true
+  ios: true
   android_12:
     image: assets/logo/logo.png
     # icon_background_color: "#738adb"
-    color: "#738adb"
+    color: "##FFFFFF"
 
 # An image asset can refer to one or more resolution-specific "variants", see
 # https://flutter.dev/assets-and-images/#resolution-aware
