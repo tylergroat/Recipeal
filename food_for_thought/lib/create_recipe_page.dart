@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +68,21 @@ class RecipeCreationState extends State<RecipeCreation>
       throw Exception("Error uploading image to Firebase: $e");
     }
   }
+
+  final emptyIngredientList = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please enter an ingredient first!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
 
   void displayImageChoice() {
     showDialog(
@@ -203,6 +221,41 @@ class RecipeCreationState extends State<RecipeCreation>
                           print('$i: ${ingredientsList[i]}');
                         }
                         ingredients.clear();
+
+                        if (ingredientsList.isNotEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Container(
+                                  width: 300,
+                                  height: 300,
+                                  child: Center(
+                                    child: ListView.builder(
+                                      itemCount: ingredientsList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ListTile(
+                                            title:
+                                                Text(ingredientsList[index]));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentMaterialBanner()
+                            ..showMaterialBanner(emptyIngredientList);
+
+                          Timer(
+                              Duration(seconds: 2),
+                              () => ScaffoldMessenger.of(context)
+                                  .hideCurrentMaterialBanner());
+                        }
+                        ;
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 244, 4, 4)),
@@ -241,10 +294,6 @@ class RecipeCreationState extends State<RecipeCreation>
                       border: OutlineInputBorder(),
                       labelText: 'Cooking Instructions'),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-
                 SizedBox(
                   height: 20,
                 ),
@@ -343,6 +392,9 @@ class RecipeCreationState extends State<RecipeCreation>
                   //else: notify user that they already created that recipe (duplicate name)
                   ,
                 ),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),
