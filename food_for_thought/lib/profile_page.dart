@@ -2,11 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/change_info.dart';
+import 'package:food_for_thought/change_email.dart';
 import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/user.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'change_name.dart';
+import 'change_password.dart';
+import 'change_username.dart';
 
 //class to define how the profile information is presented to the user -- Implemented by : Gavin Fromm
 
@@ -190,7 +194,7 @@ class ProfilePageState extends State<ProfilePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => ChangeInfoPage()));
+                                      builder: (_) => ChangeEmailPage()));
                             },
                             child: Text(
                               'Change Email',
@@ -212,7 +216,12 @@ class ProfilePageState extends State<ProfilePage> {
                           height: 50,
                           width: 160,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ChangeUsernamePage()));
+                            },
                             child: Text(
                               'Change Username',
                               style: TextStyle(
@@ -239,7 +248,12 @@ class ProfilePageState extends State<ProfilePage> {
                           height: 50,
                           width: 160,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ChangeNamePage()));
+                            },
                             child: Text(
                               'Change Name',
                               style: TextStyle(
@@ -260,7 +274,12 @@ class ProfilePageState extends State<ProfilePage> {
                           height: 50,
                           width: 160,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ChangePasswordPage()));
+                            },
                             child: Text(
                               'Change Password',
                               style: TextStyle(

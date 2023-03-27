@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/change_info.dart';
+import 'package:food_for_thought/change_email.dart';
 import 'package:food_for_thought/help_me.dart';
 import 'package:food_for_thought/pinned_recipes.dart';
 import 'package:food_for_thought/profile_page.dart';

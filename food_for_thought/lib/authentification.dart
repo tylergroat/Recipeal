@@ -59,9 +59,22 @@ Future addUserDetails(
 
 //method for updating user email
 
-Future updateUserDetails(String email, String uid) async {
+Future updateUserEmail(String email, String uid) async {
   await FirebaseFirestore.instance.collection('users').doc(uid).update({
     'email': email,
+  });
+}
+
+Future updateUsername(String uname, String uid) async {
+  await FirebaseFirestore.instance.collection('users').doc(uid).update({
+    'user name': uname,
+  });
+}
+
+Future updateName(String fName, String lName, String uid) async {
+  await FirebaseFirestore.instance.collection('users').doc(uid).update({
+    'first name': fName,
+    'last name': lName,
   });
 }
 
