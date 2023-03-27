@@ -309,6 +309,36 @@ class RecipeCreationState extends State<RecipeCreation>
 
                     //send the recipe to firestore
                     await uploadRecipeToFirebase(recipeData: data);
+                    // ignore: use_build_context_synchronously
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Recipe Created"),
+                          content: Text(
+                              "Your recipe has been created successfully!"),
+                          actions: [
+                            TextButton(
+                              child: Text("OK"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      },
+                    );
+                    // Clear all fields
+                    recipeTitle.clear();
+                    recipe.clear();
+                    timeCook.clear();
+                    servings.clear();
+                    ingredients.clear();
+                    ingredientsList.clear();
+                    preparationSteps.clear();
+                    setState(() {
+                      xfileImage = null;
+                    });
                   }
                   //else: notify user that they already created that recipe (duplicate name)
                   ,
