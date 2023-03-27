@@ -89,8 +89,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                       actions: [
                         TextButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 244, 4, 4)),
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                           child: Text(
                             "Alphabetically",
                             style: TextStyle(
@@ -104,8 +103,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                         ),
                         TextButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 244, 4, 4)),
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                           child: Text(
                             "Cook Time",
                             style: TextStyle(
@@ -119,8 +117,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                         ),
                         TextButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 244, 4, 4)),
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
                           child: Text(
                             "Servings",
                             style: TextStyle(
@@ -141,9 +138,11 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
         ],
         backgroundColor: Color.fromARGB(255, 244, 4, 4),
         foregroundColor: Colors.white,
-        title: Text('Created Recipes',
-            style: TextStyle(
-                color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+        title: Center(
+          child: Text('Created Recipes',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+        ),
         onSearch: (value) {
           setState(() => searchValue = value);
           // searchByTitle(value);

@@ -31,9 +31,9 @@ class CreatedRecipeCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       width: MediaQuery.of(context).size.width,
-      height: 375,
+      height: 250,
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.grey,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -46,14 +46,6 @@ class CreatedRecipeCard extends StatelessWidget {
             spreadRadius: -6.0,
           ),
         ],
-        // image: DecorationImage(
-        //   colorFilter: ColorFilter.mode(
-        //     Colors.black.withOpacity(0.35),
-        //     BlendMode.multiply,
-        //   ),
-        //   image: NetworkImage(thumbnailUrl),
-        //   fit: BoxFit.cover,
-        // ),
       ),
       child: Stack(
         children: [
@@ -64,7 +56,7 @@ class CreatedRecipeCard extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(
-                    fontSize: 19,
+                    fontSize: 25,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
                 overflow: TextOverflow.ellipsis,
@@ -132,7 +124,7 @@ class CreatedRecipeCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       width: MediaQuery.of(context).size.width,
-      height: 375,
+      height: 250,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -169,33 +161,6 @@ class CreatedRecipeCard extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: 175,
-              width: 275,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.6),
-                    offset: Offset(
-                      0.0,
-                      10.0,
-                    ),
-                    blurRadius: 10.0,
-                    spreadRadius: -6.0,
-                  ),
-                ],
-                // image: DecorationImage(
-                //   colorFilter: ColorFilter.mode(
-                //     Colors.black.withOpacity(0.35),
-                //     BlendMode.multiply,
-                //   ),
-                //   image: NetworkImage(thumbnailUrl),
-                //   fit: BoxFit.cover,
-                // ),
-              ),
-            ),
             Column(
               children: [
                 Text(
@@ -208,12 +173,12 @@ class CreatedRecipeCard extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                for (int i = 1; i <= ingredients.length - 1; i++) ...[
-                  // Container(
-                  //   width: 200,
-                  //   child: Text(("$i. ${ingredients[i]['original']}\n"),
-                  //       style: TextStyle()),
-                  // )
+                for (int i = 0; i <= ingredients.length - 1; i++) ...[
+                  Container(
+                    width: 200,
+                    child: Text(("${i + 1}. ${ingredients[i]}\n"),
+                        style: TextStyle()),
+                  )
                 ],
                 Text(
                   '\nPreparation Steps',
