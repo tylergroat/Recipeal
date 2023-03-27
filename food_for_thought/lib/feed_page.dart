@@ -22,7 +22,7 @@ class FeedPageState extends State<FeedPage> {
   late DatabaseReference dbRef = FirebaseDatabase.instance.ref();
   FirebaseFirestore db = FirebaseFirestore.instance;
   List<String> tags = [
-    'All',
+    'Random',
     'Breakfast',
     'Lunch',
     'Dinner',
@@ -31,7 +31,7 @@ class FeedPageState extends State<FeedPage> {
     'Vegetarian',
     'Dairy Free'
   ];
-  String? selectedTag = 'All';
+  String? selectedTag = 'Random';
 
   bool _isLoading = true;
 
@@ -42,7 +42,7 @@ class FeedPageState extends State<FeedPage> {
   }
 
   Future<void> getRecipes(String? tag) async {
-    if (selectedTag == "All") {
+    if (selectedTag == "Random") {
       recipes = await RecipeApi.getRecipes();
     } else {
       recipes = await RecipeApi.getRecipesByTag(tag!);

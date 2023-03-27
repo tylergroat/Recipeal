@@ -20,6 +20,8 @@ class ChangeInfoPageState extends State<ChangeInfoPage> {
 
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
+      style:
+          TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 244, 4, 4)),
       child: Text(
         "Cancel",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -29,6 +31,8 @@ class ChangeInfoPageState extends State<ChangeInfoPage> {
       },
     );
     Widget confirmButton = TextButton(
+      style:
+          TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 244, 4, 4)),
       child: Text(
         "Confirm change",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -128,7 +132,7 @@ class ChangeInfoPageState extends State<ChangeInfoPage> {
       appBar: AppBar(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-        backgroundColor: Color.fromARGB(255, 115, 138, 219),
+        backgroundColor: Color.fromARGB(255, 244, 4, 4),
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
@@ -193,10 +197,11 @@ class ChangeInfoPageState extends State<ChangeInfoPage> {
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, top: 10, bottom: 0),
               child: RoundedLoadingButton(
-                borderRadius: 10,
+                borderRadius: 8,
+                width: 250,
                 animateOnTap: false,
                 resetDuration: Duration(seconds: 3),
-                color: Color.fromARGB(255, 115, 138, 219),
+                color: Color.fromARGB(255, 244, 4, 4),
                 controller: updateInfoButton,
                 onPressed: () async {
                   if (oldEmailController.text.isEmpty ||

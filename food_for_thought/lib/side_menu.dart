@@ -146,16 +146,16 @@ class NavDrawer extends StatelessWidget {
                   context, MaterialPageRoute(builder: (_) => AboutUs()))
             },
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.settings),
+          //   title: Text('Settings'),
+          //   onTap: () => {
+          //     // Navigator.push(
+          //     //     context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
+          //   },
+          //),
           SizedBox(
-            height: 120,
+            height: 180,
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
