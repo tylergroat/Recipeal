@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/user.dart';
 
+import 'created_recipe.dart';
+
 //class to define database operations involivng recipes -- Implemented by : Gavin Fromm
 
 class DatabaseService {
@@ -19,6 +21,27 @@ class DatabaseService {
         print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
           recipes.add(Recipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
+  static Future<List<CreatedRecipe>> getCreatedRecipes(String uid) async {
+    late List<CreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection('created recipes')
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
         }
       },
       onError: (e) => print("Error completing: $e"),
