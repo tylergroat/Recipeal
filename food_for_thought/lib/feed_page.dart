@@ -48,6 +48,27 @@ class FeedPageState extends State<FeedPage> {
       recipes = await RecipeApi.getRecipesByTag(tag!);
       print(recipes[index].name);
     }
+
+    for (int i = 0; i < recipes.length; i++) {
+      print(i);
+      Map<String, dynamic> savedRecipe = {
+        'id': recipes[i].id,
+        'title': recipes[i].name,
+        'servings': recipes[i].servings,
+        'ingredients': recipes[i].ingredients,
+        'preparationSteps': recipes[i].preparationSteps,
+        'cookTime': recipes[i].totalTime,
+        'thumbnailUrl': recipes[i].images,
+        'isVegetarian': recipes[i].isVegetarian,
+        'isVegan': recipes[i].isVegan,
+        'isGlutenFree': recipes[i].isGlutenFree,
+        'isDairyFree': recipes[i].isDairyFree,
+        'isVeryHealthy': recipes[i].isVeryHealthy,
+        'isPopular': recipes[i].isPopular,
+      };
+      db.collection("recipes").doc(recipes[i].name).set(savedRecipe);
+    }
+
     setState(() {
       _isLoading = false;
     });
