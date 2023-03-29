@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,8 @@ class RecipeCreation extends StatefulWidget {
   RecipeCreationState createState() => RecipeCreationState();
 }
 
-class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin {
+class RecipeCreationState extends State<RecipeCreation>
+    with CreatedRecipeMixin {
   TextEditingController recipeTitle = TextEditingController();
   TextEditingController recipe = TextEditingController();
   TextEditingController timeCook = TextEditingController();
@@ -309,7 +309,7 @@ class RecipeCreationState extends State<RecipeCreation> with CreatedRecipeMixin 
 
                     //send the recipe to firestore
                     await uploadRecipeToFirebase(
-                        recipeData: data);
+                        recipeData: data, name: recipeTitle.text);
                   }
                   //else: notify user that they already created that recipe (duplicate name)
                   ,

@@ -43,36 +43,6 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
     });
   }
 
-  //Search for UI
-  // Future<void> searchByTitle(String query) async {
-  //   recipes = await DatabaseService.searchCreatedRecipes(uid, query, createdRecipes);
-  //   setState(() {
-  //     recipes;
-  //   });
-  // }
-
-  // //Sort for UI
-  // Future<void> sortByAlpha() async {
-  //   recipes = await DatabaseService.sortByAlpha(uid, createdRecipes);
-  //   setState(() {
-  //     recipes;
-  //   });
-  // }
-
-  // Future<void> sortByServings() async {
-  //   recipes = await DatabaseService.sortByServings(uid, createdRecipes);
-  //   setState(() {
-  //     recipes;
-  //   });
-  // }
-
-  // Future<void> sortByTime() async {
-  //   recipes = await DatabaseService.sortByTime(uid, createdRecipes);
-  //   setState(() {
-  //     recipes;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

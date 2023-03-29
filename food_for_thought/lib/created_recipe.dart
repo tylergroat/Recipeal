@@ -108,9 +108,8 @@ mixin CreatedRecipeMixin {
 //   }
 
 //Uploads recipe data in firestore
-  Future<void> uploadRecipeToFirebase({
-    required Map<String, dynamic> recipeData,
-  }) async {
+  Future<void> uploadRecipeToFirebase(
+      {required Map<String, dynamic> recipeData, required String name}) async {
     try {
       final User? user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception("User not logged in");
@@ -122,7 +121,7 @@ mixin CreatedRecipeMixin {
           .doc(userId)
           .collection('created recipes');
       final DocumentReference documentReference =
-          createdRecipesCollection.doc();
+          createdRecipesCollection.doc(name);
       await documentReference.set({...recipeData});
     } catch (e) {
       throw Exception('Failed to upload recipe to Firebase: $e');
@@ -149,35 +148,18 @@ mixin CreatedRecipeMixin {
 
   //Deletes both the recipe and recipe image (in firestore and cloud storage)
   Future<void> deleteRecipeFromFirebase({required String recipeName}) async {
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) throw Exception("User not logged in");
-      final String userId = user.uid;
+    final User? user = FirebaseAuth.instance.currentUser;
+    final String? userId = user?.uid;
 
-      //Check if the recipe exists
-      final DocumentSnapshot recipeDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('created recipes')
-          .doc(recipeName)
-          .get();
-      if (!recipeDoc.exists) {
-        throw Exception('Recipe not found');
-      }
+    //Check if the recipe exists
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('created recipes')
+        .doc(recipeName)
+        .delete();
 
-      //Delete the image
-      await deleteImageFromFirebase(recipeName: recipeName);
-
-      //Delete the recipe
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('created recipes')
-          .doc(recipeName)
-          .delete();
-    } catch (e) {
-      throw Exception('Failed to delete recipe: $e');
-    }
+    //Delete the recipe
   }
 
   //TODO: NEEDS TO BE UPDATED

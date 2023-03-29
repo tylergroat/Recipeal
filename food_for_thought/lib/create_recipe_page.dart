@@ -34,7 +34,7 @@ class RecipeCreationState extends State<RecipeCreation>
         servings.text.toString().isNotEmpty &&
         timeCook.text.toString().isNotEmpty &&
         // ingredientsList.isNotEmpty &&
-        preparationSteps.text.toString().isNotEmpty) {
+        preparationSteps.text.isNotEmpty) {
       setState(() {
         allFieldsAreFilled = true;
       });
@@ -416,7 +416,8 @@ class RecipeCreationState extends State<RecipeCreation>
                         };
 
                         //send the recipe to firestore
-                        await uploadRecipeToFirebase(recipeData: data);
+                        await uploadRecipeToFirebase(
+                            recipeData: data, name: recipeTitle.text);
                         // ignore: use_build_context_synchronously
                         showDialog(
                           context: context,
