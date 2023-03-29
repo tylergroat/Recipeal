@@ -43,8 +43,10 @@ class FeedPageState extends State<FeedPage> {
 
   Future<void> getRecipes(String? tag) async {
     if (selectedTag == "Random") {
+      print('getting random recipes');
       recipes = await RecipeApi.getRecipes();
     } else {
+      print('getting $tag recipes');
       recipes = await RecipeApi.getRecipesByTag(tag!);
       print(recipes[index].name);
     }
@@ -113,7 +115,7 @@ class FeedPageState extends State<FeedPage> {
                             child: DropdownButton<String>(
                               onChanged: (s) {
                                 print(s?.toLowerCase());
-                                getRecipes(selectedTag?.toLowerCase());
+                                getRecipes(s?.toLowerCase());
                                 setState(() {
                                   selectedTag = s;
                                 });
