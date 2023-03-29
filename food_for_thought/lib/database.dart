@@ -29,6 +29,27 @@ class DatabaseService {
     return recipes;
   }
 
+  static Future<List<Recipe>> getAllRecipes(String filter) async {
+    late List<Recipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("recipes")
+        .where(filter, isEqualTo: true)
+        .where('isPopular', isEqualTo: true)
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(Recipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
   static Future<List<CreatedRecipe>> getCreatedRecipes(String uid) async {
     late List<CreatedRecipe> recipes = [];
     final docs = FirebaseFirestore.instance
