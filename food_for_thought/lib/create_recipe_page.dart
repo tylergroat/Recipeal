@@ -26,7 +26,24 @@ class RecipeCreationState extends State<RecipeCreation>
   TextEditingController ingredients = TextEditingController();
   List<dynamic> ingredientsList = [];
 
-  List<TextField> fields = [];
+  //variable to hold value after calling areAllFieldsFilled()
+  bool allFieldsAreFilled = false;
+  void areAllFieldsFilled() {
+    //all controllers except ingredients because ingredients controller is cleared after 'add ingredient' button is clicked
+    if (recipeTitle.text.toString().isNotEmpty &&
+        servings.text.toString().isNotEmpty &&
+        timeCook.text.toString().isNotEmpty &&
+        // ingredientsList.isNotEmpty &&
+        preparationSteps.text.toString().isNotEmpty) {
+      setState(() {
+        allFieldsAreFilled = true;
+      });
+    }
+    //else
+    setState(() {
+      allFieldsAreFilled = false;
+    });
+  }
 
   final FirebaseStorage storage = FirebaseStorage.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -77,6 +94,20 @@ class RecipeCreationState extends State<RecipeCreation>
       color: Colors.red,
       title: 'Empty Input',
       message: 'Please enter an ingredient first!',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+  final emptyInput = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Field',
+      message: 'Please input all fields first!',
 
       contentType: ContentType.failure,
       // to configure for material banner
@@ -167,20 +198,27 @@ class RecipeCreationState extends State<RecipeCreation>
                   maxLength: 50, //50 character limit
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Recipe Title'),
+                  onChanged: (value) {
+                    // didChangeDependencies();
+                    areAllFieldsFilled();
+                  },
                 ),
                 SizedBox(height: 20),
                 TextField(
                   controller: servings,
-                  //Text Field for recipe name
-                  maxLength: 3, // 3 digit number max length
-                  keyboardType:
-                      TextInputType.number, // number keyboard for easy input
-                  // allows only numbers in the input, useful in the case of preventing copy/pasting text into the field
+                  maxLength: 3,
+                  keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ],
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Servings'),
+                    border: OutlineInputBorder(),
+                    labelText: 'Servings',
+                  ),
+                  onChanged: (value) {
+                    // didChangeDependencies();
+                    areAllFieldsFilled();
+                  },
                 ),
                 SizedBox(height: 20),
                 TextField(
@@ -196,6 +234,10 @@ class RecipeCreationState extends State<RecipeCreation>
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Cook Time (Minutes)'),
+                  onChanged: (value) {
+                    // didChangeDependencies();
+                    areAllFieldsFilled();
+                  },
                 ),
                 SizedBox(
                   height: 20,
@@ -210,6 +252,10 @@ class RecipeCreationState extends State<RecipeCreation>
                   maxLength: 50, //50 character max per ingredient entry
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Ingredients'),
+                  onChanged: (value) {
+                    // didChangeDependencies();
+                    areAllFieldsFilled();
+                  },
                 ),
 
                 Row(
@@ -251,11 +297,10 @@ class RecipeCreationState extends State<RecipeCreation>
                             ..showMaterialBanner(emptyIngredientList);
 
                           Timer(
-                              Duration(seconds: 2),
+                              Duration(seconds: 3),
                               () => ScaffoldMessenger.of(context)
                                   .hideCurrentMaterialBanner());
                         }
-                        ;
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 244, 4, 4)),
@@ -269,8 +314,17 @@ class RecipeCreationState extends State<RecipeCreation>
                     ),
                     TextButton(
                       onPressed: () {
-                        ingredientsList.add(ingredients.text.toString());
-                        ingredients.clear();
+                        if (ingredients.text.toString().isNotEmpty) {
+                          ingredientsList.add(ingredients.text.toString());
+                          ingredients.clear();
+                          // didChangeDependencies();
+                          areAllFieldsFilled();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text('Please enter an ingredient.')),
+                          );
+                        }
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 244, 4, 4)),
@@ -293,6 +347,10 @@ class RecipeCreationState extends State<RecipeCreation>
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Cooking Instructions'),
+                  onChanged: (value) {
+                    // didChangeDependencies();
+                    areAllFieldsFilled();
+                  },
                 ),
                 SizedBox(
                   height: 20,
@@ -327,71 +385,86 @@ class RecipeCreationState extends State<RecipeCreation>
                 //           )
                 //         : Text(' ')),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                  child: Text(
-                    'Confirm Recipe Creation',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () async {
-                    //checking if there is another recipe with the same name
-                    final DocumentSnapshot recipeDoc = await FirebaseFirestore
-                        .instance
-                        .collection('created recipes')
-                        .doc(recipeTitle.text)
-                        .get();
-                    //if recipe does not already exist
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                    onPressed: () async {
+                      if (recipeTitle.text.toString().isNotEmpty &&
+                          servings.text.toString().isNotEmpty &&
+                          timeCook.text.toString().isNotEmpty &&
+                          // ingredientsList.toString().isNotEmpty &&
+                          preparationSteps.text.toString().isNotEmpty) {
+                        //checking if there is another recipe with the same name
+                        final DocumentSnapshot recipeDoc =
+                            await FirebaseFirestore.instance
+                                .collection('created recipes')
+                                .doc(recipeTitle.text)
+                                .get();
+                        //if recipe does not already exist
 
-                    // //send the image to cloud storage
-                    // String downloadUrl = await uploadImageToFirebase(
-                    //     image: xfileImage, recipeName: recipeTitle.text);
+                        // //send the image to cloud storage
+                        // String downloadUrl = await uploadImageToFirebase(
+                        //     image: xfileImage, recipeName: recipeTitle.text);
 
-                    //temporary variables hold recipe data
-                    Map<String, dynamic> data = {
-                      'title': recipeTitle.text,
-                      'servings': servings.text,
-                      'ingredients': ingredientsList,
-                      'preparationSteps': preparationSteps.text,
-                      // 'thumbnailUrl': downloadUrl,
-                      'cookTime': timeCook.text
-                    };
+                        //temporary variables hold recipe data
+                        Map<String, dynamic> data = {
+                          'title': recipeTitle.text,
+                          'servings': servings.text,
+                          'ingredients': ingredientsList,
+                          'preparationSteps': preparationSteps.text,
+                          // 'thumbnailUrl': downloadUrl,
+                          'cookTime': timeCook.text
+                        };
 
-                    //send the recipe to firestore
-                    await uploadRecipeToFirebase(recipeData: data);
-                    // ignore: use_build_context_synchronously
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Recipe Created"),
-                          content: Text(
-                              "Your recipe has been created successfully!"),
-                          actions: [
-                            TextButton(
-                              child: Text("OK"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            )
-                          ],
+                        //send the recipe to firestore
+                        await uploadRecipeToFirebase(recipeData: data);
+                        // ignore: use_build_context_synchronously
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Recipe Created"),
+                              content: Text(
+                                  "Your recipe has been created successfully!"),
+                              actions: [
+                                TextButton(
+                                  child: Text("OK"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          },
                         );
-                      },
-                    );
-                    // Clear all fields
-                    recipeTitle.clear();
-                    recipe.clear();
-                    timeCook.clear();
-                    servings.clear();
-                    ingredients.clear();
-                    ingredientsList.clear();
-                    preparationSteps.clear();
-                    setState(() {
-                      xfileImage = null;
-                    });
-                  }
-                  //else: notify user that they already created that recipe (duplicate name)
-                  ,
-                ),
+                        // Clear all fields
+                        recipeTitle.clear();
+                        recipe.clear();
+                        timeCook.clear();
+                        servings.clear();
+                        ingredients.clear();
+                        ingredientsList.clear();
+                        preparationSteps.clear();
+                        setState(() {
+                          xfileImage = null;
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentMaterialBanner()
+                          ..showMaterialBanner(emptyInput);
+
+                        Timer(
+                            Duration(seconds: 3),
+                            () => ScaffoldMessenger.of(context)
+                                .hideCurrentMaterialBanner());
+                      }
+                    },
+                    child: Text(
+                      'Confirm Recipe Creation',
+                      style: TextStyle(fontSize: 20),
+                    )
+                    //else: notify user that they already created that recipe (duplicate name)
+
+                    ),
                 SizedBox(
                   height: 20,
                 )
