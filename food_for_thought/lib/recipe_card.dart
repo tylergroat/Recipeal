@@ -351,8 +351,9 @@ class RecipeCard extends StatelessWidget {
                       width: 200,
                       height: 70,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(30)),
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       child: Center(
                           child: Text(
                         'Protein: ${nutrition.protein}',

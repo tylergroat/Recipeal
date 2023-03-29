@@ -1,12 +1,10 @@
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/api_config.dart';
 import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
-import 'package:food_for_thought/similar_recipe.dart';
 
 class RecommendationPage extends StatefulWidget {
   @override
@@ -14,52 +12,86 @@ class RecommendationPage extends StatefulWidget {
 }
 
 class RecommendationPageState extends State<RecommendationPage> {
-  late List<SimilarRecipe> similarRecipes = [];
-  late List<Recipe> displayRecipes = [];
+  late List<Recipe> allRecipes = [];
   late List<Recipe> recipes = [];
-  Random random = new Random();
-  int randomNumForRecipes = 0;
-  int randomNumForRecommendations = 0;
-  int maxForRecipes = 0;
-  int maxForRecommendations = 0;
-  int min = 0;
+  late List<Recipe> combinedRecipes = [];
+  late List<Recipe> reducedRecipes = [];
+  late List<Recipe> shuffledRecipes = [];
+
   int index = 0;
   bool _isLoading = true;
   String uid = FirebaseAuth.instance.currentUser!.uid;
+  int vegetarian = 0;
+  int vegan = 0;
+  int glutenFree = 0;
+  int dairyFree = 0;
+  int popular = 0;
+  int healthy = 0;
+  int none = 0;
 
   Future<void> getRecipes() async {
-    //get recipes from users liked/saved recipes
+    vegetarian = 0;
+    vegan = 0;
+    glutenFree = 0;
+    dairyFree = 0;
+    popular = 0;
+    healthy = 0;
+    none = 0;
+
     recipes = await DatabaseService.getRecipes(uid, 'saved recipes');
 
-    //getting the length of array, for random choice selection
-    maxForRecipes = recipes.length - 1;
+    for (int i = 0; i < recipes.length - 1; i++) {
+      if (recipes[i].isDairyFree == true) {
+        dairyFree++;
+      }
+      if (recipes[i].isGlutenFree == true) {
+        glutenFree++;
+      }
+      if (recipes[i].isPopular == true) {
+        popular++;
+      }
+      if (recipes[i].isVegan == true) {
+        vegan++;
+      }
+      if (recipes[i].isVegetarian == true) {
+        vegetarian++;
+      }
+      if (recipes[i].isVeryHealthy == true) {
+        healthy++;
+      }
+      if (recipes[i].isDairyFree &&
+          recipes[i].isGlutenFree &&
+          recipes[i].isPopular &&
+          recipes[i].isVeryHealthy &&
+          recipes[i].isVegan &&
+          recipes[i].isVegetarian) {
+        none++;
+      }
+    }
 
-    //getting random number in range
-    randomNumForRecipes = min + random.nextInt(maxForRecipes - min);
-    print('Range: $min - $maxForRecipes, Random Number: $randomNumForRecipes');
+    Map<String, int> filters = {
+      'isVegan': vegan,
+      'isVegetarian': vegetarian,
+      'isPopular': popular,
+      'isGlutenFree': glutenFree,
+      'isDairyFree': dairyFree,
+      'isVeryHealthy': healthy,
+    };
 
-    //getting random recipes based on randomly chosen liked recipe
-    print('Getting similar recipes to: ${recipes[randomNumForRecipes].name}');
-    similarRecipes =
-        await RecipeApi.getSimilarRecipes(recipes[randomNumForRecipes].id);
+    var sortedByKeyMap = Map.fromEntries(filters.entries.toList()
+      ..sort((e1, e2) => e1.value.compareTo(e2.value)));
+    String filter = sortedByKeyMap.keys.toList().last;
+    //finding most common tag
+    print(filter);
 
-    maxForRecommendations = similarRecipes.length - 1;
-    randomNumForRecommendations =
-        min + random.nextInt(maxForRecommendations - min);
-    print(
-        'Range: $min - $maxForRecommendations, Random Number: $randomNumForRecommendations');
-
-    print('similar recipes: ${similarRecipes.length}');
-
-    //extracting that recipe into usable form
-    print(
-        'Extracting recipe: ${similarRecipes[randomNumForRecommendations].title} from  ${similarRecipes[randomNumForRecommendations].sourceUrl}');
-
-    displayRecipes = await RecipeApi.extractFromUrl(
-        similarRecipes[randomNumForRecommendations].sourceUrl);
-
-    print(
-        'Liked Recipe: ${recipes[randomNumForRecipes].name}  Recommendation: ${displayRecipes[0].name}');
+    allRecipes = await DatabaseService.getAllRecipes(filter);
+    // combinedRecipes = List.from(allRecipes)..addAll(recipes);
+    // print(combinedRecipes.length);
+    // reducedRecipes = combinedRecipes..toSet;
+    print(allRecipes.length);
+    // print(combinedRecipes[0].name);
+    shuffledRecipes = allRecipes..shuffle();
+    print(shuffledRecipes[0].name);
 
     setState(() {
       _isLoading = false;
@@ -75,6 +107,23 @@ class RecommendationPageState extends State<RecommendationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 244, 4, 4),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: IconButton(
+          onPressed: getRecipes,
+          icon: Icon(
+            Icons.refresh,
+            color: Colors.white,
+            weight: 70,
+            size: 35,
+          ),
+        ),
+      ),
       appBar: AppBar(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
@@ -90,36 +139,74 @@ class RecommendationPageState extends State<RecommendationPage> {
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  GestureDetector(
-                    child: RecipeCard(
-                      id: recipes[index].id,
-                      title: displayRecipes[index].name,
-                      servings: displayRecipes[index].servings,
-                      ingredients: displayRecipes[index].ingredients,
-                      preparationSteps: displayRecipes[index].preparationSteps,
-                      cookTime: displayRecipes[index].totalTime,
-                      thumbnailUrl: displayRecipes[index].images,
-                      isVegetarian: displayRecipes[index].isVegetarian,
-                      isDairyFree: displayRecipes[index].isDairyFree,
-                      isPopular: displayRecipes[index].isPopular,
-                      isGlutenFree: displayRecipes[index].isGlutenFree,
-                      isVegan: displayRecipes[index].isVegan,
-                      isVeryHealthy: displayRecipes[index].isVeryHealthy,
+          : Scrollbar(
+              interactive: true,
+              thumbVisibility: true,
+              thickness: 8,
+              radius: Radius.circular(12),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: 3,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    child: Column(
+                      children: [
+                        RecipeCard(
+                          id: allRecipes[index].id,
+                          title: allRecipes[index].name,
+                          servings: allRecipes[index].servings,
+                          ingredients: allRecipes[index].ingredients,
+                          preparationSteps: allRecipes[index].preparationSteps,
+                          cookTime: allRecipes[index].totalTime,
+                          thumbnailUrl: allRecipes[index].images,
+                          isVegetarian: allRecipes[index].isVegetarian,
+                          isDairyFree: allRecipes[index].isDairyFree,
+                          isPopular: allRecipes[index].isPopular,
+                          isGlutenFree: allRecipes[index].isGlutenFree,
+                          isVegan: allRecipes[index].isVegan,
+                          isVeryHealthy: allRecipes[index].isVeryHealthy,
+                        ),
+                        Container(
+                          width: 145,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 244, 4, 4),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.star_rate,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Text(
+                                'Recommended',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
                     ),
                     onDoubleTap: () {
+                      print(allRecipes[index].name);
+
                       showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
                             title: Text('Confirm'),
                             content: Text(
-                                'Do you want to add ${displayRecipes[index].name} to your saved recipes?'),
+                                'Do you want to add ${allRecipes[index].name} to your saved recipes?'),
                             actions: [
                               TextButton(
                                 style: ElevatedButton.styleFrom(
@@ -146,34 +233,34 @@ class RecommendationPageState extends State<RecommendationPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
+                                  print(allRecipes[index].name);
                                   Navigator.pop(context);
                                   Map<String, dynamic> savedRecipe = {
-                                    'id': displayRecipes[index].id,
-                                    'title': displayRecipes[index].name,
-                                    'servings': displayRecipes[index].servings,
+                                    'id': allRecipes[index].id,
+                                    'title': allRecipes[index].name,
+                                    'servings': allRecipes[index].servings,
                                     'ingredients':
-                                        displayRecipes[index].ingredients,
+                                        allRecipes[index].ingredients,
                                     'preparationSteps':
-                                        displayRecipes[index].preparationSteps,
-                                    'cookTime': displayRecipes[index].totalTime,
-                                    'thumbnailUrl':
-                                        displayRecipes[index].images,
+                                        allRecipes[index].preparationSteps,
+                                    'cookTime': allRecipes[index].totalTime,
+                                    'thumbnailUrl': allRecipes[index].images,
                                     'isVegetarian':
-                                        displayRecipes[index].isVegetarian,
-                                    'isVegan': displayRecipes[index].isVegan,
+                                        allRecipes[index].isVegetarian,
+                                    'isVegan': allRecipes[index].isVegan,
                                     'isGlutenFree':
-                                        displayRecipes[index].isGlutenFree,
+                                        allRecipes[index].isGlutenFree,
                                     'isDairyFree':
-                                        displayRecipes[index].isDairyFree,
+                                        allRecipes[index].isDairyFree,
                                     'isVeryHealthy':
-                                        displayRecipes[index].isVeryHealthy,
-                                    'isPopular': displayRecipes[index].isPopular
+                                        allRecipes[index].isVeryHealthy,
+                                    'isPopular': allRecipes[index].isPopular
                                   };
-                                  final docs = FirebaseFirestore.instance
+                                  FirebaseFirestore.instance
                                       .collection("users")
                                       .doc(uid)
                                       .collection('saved recipes')
-                                      .doc(recipes[index].name)
+                                      .doc(allRecipes[index].name)
                                       .set(savedRecipe);
 
                                   getRecipes();
@@ -185,38 +272,8 @@ class RecommendationPageState extends State<RecommendationPage> {
                         },
                       );
                     },
-                  ),
-                  SizedBox(
-                    height: 1,
-                  ),
-                  Container(
-                    width: 400,
-                    child: Center(
-                      child: Text(
-                        'Recomendation based on: \n${recipes[randomNumForRecipes].name}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 50,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: IconButton(
-                      onPressed: getRecipes,
-                      icon: Icon(
-                        Icons.refresh_outlined,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
     );

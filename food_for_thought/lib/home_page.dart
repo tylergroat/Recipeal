@@ -53,8 +53,9 @@ class HomePageState extends State<HomePage> {
         backgroundColor: Color.fromARGB(255, 151, 151, 151),
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
+        selectedIconTheme: IconThemeData(size: 30),
         showUnselectedLabels: false,
-        showSelectedLabels: true,
+        showSelectedLabels: false,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.create),
