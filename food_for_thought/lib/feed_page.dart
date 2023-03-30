@@ -149,99 +149,101 @@ class FeedPageState extends State<FeedPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Container(
-                      height: 65,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 244, 4, 4),
-                        // Color.fromARGB(255, 115, 138, 219),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
+                  Material(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Color.fromARGB(255, 244, 4, 4),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(30),
+                      radius: 30,
+                      onTap: () {
+                        print('Current Index: $index Last Index: $lastIndex');
+                        if (index >= lastIndex) {
+                          index = 0;
+                          getRecipes(selectedTag?.toLowerCase());
+                          print('Getting ${selectedTag} recipes');
+                          print('API Call');
+                        } else {
+                          index++;
+                          recipes.removeAt(index);
+                          setState(() {});
+                        }
+                      },
+                      splashColor: Colors.white,
+                      highlightColor: Colors.grey,
+                      child: Container(
+                        height: 65,
+                        width: 100,
+                        child: Icon(
                           Icons.thumb_down,
-                          size: 40,
                           color: Colors.white,
+                          size: 40,
                         ),
-                        onPressed: () {
-                          print('Current Index: $index Last Index: $lastIndex');
-                          if (index >= lastIndex) {
-                            index = 0;
-                            getRecipes(selectedTag?.toLowerCase());
-                            print('Getting ${selectedTag} recipes');
-                            print('API Call');
-                          } else {
-                            index++;
-                            recipes.removeAt(index);
-                            setState(() {});
-                          }
-                        },
                       ),
                     ),
                   ),
                   SizedBox(
                     width: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Container(
-                      height: 65,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 244, 4, 4),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.favorite,
+                  Material(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Color.fromARGB(255, 244, 4, 4),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(30),
+                      radius: 30,
+                      onTap: () {
+                        print(
+                            'Current Index:  + $index Last Index: $lastIndex');
+
+                        Map<String, dynamic> savedRecipe = {
+                          'id': recipes[index].id,
+                          'title': recipes[index].name,
+                          'servings': recipes[index].servings,
+                          'ingredients': recipes[index].ingredients,
+                          'preparationSteps': recipes[index].preparationSteps,
+                          'cookTime': recipes[index].totalTime,
+                          'thumbnailUrl': recipes[index].images,
+                          'isVegetarian': recipes[index].isVegetarian,
+                          'isVegan': recipes[index].isVegan,
+                          'isGlutenFree': recipes[index].isGlutenFree,
+                          'isDairyFree': recipes[index].isDairyFree,
+                          'isVeryHealthy': recipes[index].isVeryHealthy,
+                          'isPopular': recipes[index].isPopular,
+                        };
+
+                        db
+                            .collection("users")
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .collection("saved recipes")
+                            .doc(recipes[index].name)
+                            .set(savedRecipe);
+
+                        if (index >= lastIndex) {
+                          print(index);
+                          index = 0;
+                          getRecipes(selectedTag?.toLowerCase());
+                          print('Getting : ${selectedTag} recipes');
+                          print('API Call');
+                        } else {
+                          recipes.removeAt(index);
+                          index++;
+                          setState(
+                            () {
+                              index = index;
+                            },
+                          );
+                        }
+                      },
+                      onHover: Colors.grey,
+                      splashColor: Colors.white,
+                      highlightColor: Colors.grey,
+                      child: Container(
+                        height: 65,
+                        width: 100,
+                        child: Icon(
+                          Icons.thumb_up,
                           color: Colors.white,
                           size: 40,
                         ),
-                        onPressed: () {
-                          print(
-                              'Current Index:  + $index Last Index: $lastIndex');
-
-                          Map<String, dynamic> savedRecipe = {
-                            'id': recipes[index].id,
-                            'title': recipes[index].name,
-                            'servings': recipes[index].servings,
-                            'ingredients': recipes[index].ingredients,
-                            'preparationSteps': recipes[index].preparationSteps,
-                            'cookTime': recipes[index].totalTime,
-                            'thumbnailUrl': recipes[index].images,
-                            'isVegetarian': recipes[index].isVegetarian,
-                            'isVegan': recipes[index].isVegan,
-                            'isGlutenFree': recipes[index].isGlutenFree,
-                            'isDairyFree': recipes[index].isDairyFree,
-                            'isVeryHealthy': recipes[index].isVeryHealthy,
-                            'isPopular': recipes[index].isPopular,
-                          };
-
-                          db
-                              .collection("users")
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .collection("saved recipes")
-                              .doc(recipes[index].name)
-                              .set(savedRecipe);
-
-                          if (index >= lastIndex) {
-                            print(index);
-                            index = 0;
-                            getRecipes(selectedTag?.toLowerCase());
-                            print('Getting : ${selectedTag} recipes');
-                            print('API Call');
-                          } else {
-                            recipes.removeAt(index);
-                            index++;
-                            setState(
-                              () {
-                                index = index;
-                              },
-                            );
-                          }
-                        },
                       ),
                     ),
                   ),

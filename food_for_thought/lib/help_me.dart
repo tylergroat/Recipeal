@@ -46,7 +46,7 @@ class HelpPage extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 151, 151, 151),
+                        color: Color.fromARGB(255, 83, 83, 83),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: i,

@@ -225,7 +225,7 @@ class RecipeCard extends StatelessWidget {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: Color.fromARGB(255, 105, 105, 105),
                     // Color.fromARGB(255, 244, 4, 4),
                     borderRadius: BorderRadius.circular(15),
                   ),
