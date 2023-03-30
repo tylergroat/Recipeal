@@ -235,7 +235,6 @@ class FeedPageState extends State<FeedPage> {
                           );
                         }
                       },
-                      onHover: Colors.grey,
                       splashColor: Colors.white,
                       highlightColor: Colors.grey,
                       child: Container(
