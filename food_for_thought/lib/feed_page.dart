@@ -176,9 +176,9 @@ class FeedPageState extends State<FeedPage> {
                         height: 65,
                         width: 100,
                         child: Icon(
-                          Icons.thumb_down,
+                          Icons.thumb_down_alt,
                           color: Colors.white,
-                          size: 40,
+                          size: 35,
                         ),
                       ),
                     ),
@@ -241,9 +241,9 @@ class FeedPageState extends State<FeedPage> {
                         height: 65,
                         width: 100,
                         child: Icon(
-                          Icons.thumb_up,
+                          Icons.thumb_up_alt,
                           color: Colors.white,
-                          size: 40,
+                          size: 35,
                         ),
                       ),
                     ),
