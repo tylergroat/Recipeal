@@ -854,9 +854,10 @@ class _RecipeCardState extends State<RecipeCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(7),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
                     color: Colors.black.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -881,6 +882,7 @@ class _RecipeCardState extends State<RecipeCard> {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
                     color: Color.fromARGB(255, 105, 105, 105),
                     // Color.fromARGB(255, 244, 4, 4),
                     borderRadius: BorderRadius.circular(15),
@@ -910,9 +912,10 @@ class _RecipeCardState extends State<RecipeCard> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(7),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
                     color: Colors.black.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -941,25 +944,26 @@ class _RecipeCardState extends State<RecipeCard> {
 
   Future<dynamic> showNutrition(BuildContext context, int id) async {
     Nutrition nutrition = await RecipeApi.nutritionById(id);
-    String calories = nutrition.calories;
-    String carbs = nutrition.carbs;
-    String fat = nutrition.fat;
+
     // ignore: use_build_context_synchronously
     return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text('Nutrition Facts'),
-              content: Container(
-                height: 350,
-                child: Column(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(child: Text('Nutrition Facts')),
+          content: Container(
+            height: 120,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 200,
-                      height: 70,
+                      width: 130,
+                      height: 50,
                       decoration: BoxDecoration(
                           color: Colors.grey,
-                          borderRadius: BorderRadius.circular(30)),
+                          borderRadius: BorderRadius.circular(8)),
                       child: Center(
                           child: Text(
                         'Calories: ${nutrition.calories}',
@@ -968,14 +972,14 @@ class _RecipeCardState extends State<RecipeCard> {
                       )),
                     ),
                     SizedBox(
-                      height: 15,
+                      width: 5,
                     ),
                     Container(
-                      width: 200,
-                      height: 70,
+                      width: 130,
+                      height: 50,
                       decoration: BoxDecoration(
                           color: Colors.grey,
-                          borderRadius: BorderRadius.circular(30)),
+                          borderRadius: BorderRadius.circular(8)),
                       child: Center(
                           child: Text(
                         'Carbs: ${nutrition.carbs}',
@@ -983,44 +987,52 @@ class _RecipeCardState extends State<RecipeCard> {
                             color: Colors.white, fontWeight: FontWeight.bold),
                       )),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Container(
-                      width: 200,
-                      height: 70,
+                      width: 130,
+                      height: 50,
                       decoration: BoxDecoration(
                           color: Colors.grey,
-                          borderRadius: BorderRadius.circular(30)),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Center(
+                          child: Text(
+                        'Fat: ${nutrition.fat}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      width: 130,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8)),
                       child: Center(
                         child: Text(
-                          'Fat: ${nutrition.fat}',
+                          'Protein: ${nutrition.protein}',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      width: 200,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Center(
-                          child: Text(
-                        'Protein: ${nutrition.protein}',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      )),
-                    ),
                   ],
                 ),
-              ));
-        });
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget buildBack(BuildContext context) {
