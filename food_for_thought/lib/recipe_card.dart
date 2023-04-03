@@ -377,7 +377,7 @@ class _RecipeCardState extends State<RecipeCard> {
                       Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Color.fromARGB(255, 244, 4, 4),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: TextButton(
@@ -401,22 +401,26 @@ class _RecipeCardState extends State<RecipeCard> {
                       Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Color.fromARGB(255, 244, 4, 4),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: TextButton(
-                          child: Text(
-                            'Double it!',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                        child: InkWell(
+                          splashColor: Colors.white,
+                          radius: 20,
+                          child: TextButton(
+                            child: Text(
+                              'Double it!',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                recipeYieldModifier = 2;
+                              });
+                              print(recipeYieldModifier);
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              recipeYieldModifier = 2;
-                            });
-                            print(recipeYieldModifier);
-                          },
                         ),
                       ),
                       SizedBox(
@@ -425,7 +429,7 @@ class _RecipeCardState extends State<RecipeCard> {
                       Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Color.fromARGB(255, 244, 4, 4),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: TextButton(
