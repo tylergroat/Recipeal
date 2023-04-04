@@ -1,5 +1,5 @@
-# Recipe-Tinder
-Github Repository for CSC 4996 (Senior Capstone) for development of the Recipe Tinder Project
+# Recipeal
+Github Repository for CSC 4996 (Senior Capstone) for development of the Recipeal Project
 
 Recipe finding has become convoluted, and time consuming. The goal of this project, it to present recipes to users in a simple and intuitive way. 
 
