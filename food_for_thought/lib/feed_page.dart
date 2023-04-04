@@ -85,172 +85,174 @@ class FeedPageState extends State<FeedPage> {
       appBar: appBar(),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Column(children: [
-              SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment(.75, 0),
-                child: Container(
-                  height: 40,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 190, 189, 189),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.filter_list,
-                        color: Colors.white,
-                        weight: 40,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      StatefulBuilder(
-                        builder: (context, setState) {
-                          return Center(
-                            child: DropdownButton<String>(
-                              onChanged: (s) {
-                                print(s?.toLowerCase());
-                                getRecipes(s?.toLowerCase());
-                                setState(() {
-                                  selectedTag = s;
-                                });
-                              },
-                              items: dropDownMenuItems,
-                              value: selectedTag,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+          : SingleChildScrollView(
+              child: Column(children: [
+                SizedBox(
+                  height: 15,
+                ),
+                Align(
+                  alignment: Alignment(.75, 0),
+                  child: Container(
+                    height: 40,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 190, 189, 189),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.filter_list,
+                          color: Colors.white,
+                          weight: 40,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        StatefulBuilder(
+                          builder: (context, setState) {
+                            return Center(
+                              child: DropdownButton<String>(
+                                onChanged: (s) {
+                                  print(s?.toLowerCase());
+                                  getRecipes(s?.toLowerCase());
+                                  setState(() {
+                                    selectedTag = s;
+                                  });
+                                },
+                                items: dropDownMenuItems,
+                                value: selectedTag,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              RecipeCard(
-                id: recipes[index].id,
-                title: recipes[index].name,
-                servings: recipes[index].servings,
-                ingredients: recipes[index].ingredients,
-                preparationSteps: recipes[index].preparationSteps,
-                cookTime: recipes[index].totalTime,
-                thumbnailUrl: recipes[index].images,
-                isVegetarian: recipes[index].isVegetarian,
-                isDairyFree: recipes[index].isDairyFree,
-                isPopular: recipes[index].isPopular,
-                isGlutenFree: recipes[index].isGlutenFree,
-                isVegan: recipes[index].isVegan,
-                isVeryHealthy: recipes[index].isVeryHealthy,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Material(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Color.fromARGB(255, 244, 4, 4),
-                    child: InkWell(
+                RecipeCard(
+                  id: recipes[index].id,
+                  title: recipes[index].name,
+                  servings: recipes[index].servings,
+                  ingredients: recipes[index].ingredients,
+                  preparationSteps: recipes[index].preparationSteps,
+                  cookTime: recipes[index].totalTime,
+                  thumbnailUrl: recipes[index].images,
+                  isVegetarian: recipes[index].isVegetarian,
+                  isDairyFree: recipes[index].isDairyFree,
+                  isPopular: recipes[index].isPopular,
+                  isGlutenFree: recipes[index].isGlutenFree,
+                  isVegan: recipes[index].isVegan,
+                  isVeryHealthy: recipes[index].isVeryHealthy,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Material(
                       borderRadius: BorderRadius.circular(30),
-                      radius: 30,
-                      onTap: () {
-                        print('Current Index: $index Last Index: $lastIndex');
-                        if (index >= lastIndex) {
-                          index = 0;
-                          getRecipes(selectedTag?.toLowerCase());
-                          print('Getting ${selectedTag} recipes');
-                          print('API Call');
-                        } else {
-                          index++;
-                          recipes.removeAt(index);
-                          setState(() {});
-                        }
-                      },
-                      splashColor: Colors.white,
-                      highlightColor: Colors.grey,
-                      child: Container(
-                        height: 65,
-                        width: 100,
-                        child: Icon(
-                          Icons.thumb_down_alt,
-                          color: Colors.white,
-                          size: 35,
+                      color: Color.fromARGB(255, 244, 4, 4),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(30),
+                        radius: 30,
+                        onTap: () {
+                          print('Current Index: $index Last Index: $lastIndex');
+                          if (index >= lastIndex) {
+                            index = 0;
+                            getRecipes(selectedTag?.toLowerCase());
+                            print('Getting ${selectedTag} recipes');
+                            print('API Call');
+                          } else {
+                            index++;
+                            recipes.removeAt(index);
+                            setState(() {});
+                          }
+                        },
+                        splashColor: Colors.white,
+                        highlightColor: Colors.grey,
+                        child: Container(
+                          height: 65,
+                          width: 100,
+                          child: Icon(
+                            Icons.thumb_down_alt,
+                            color: Colors.white,
+                            size: 35,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Material(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Color.fromARGB(255, 244, 4, 4),
-                    child: InkWell(
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Material(
                       borderRadius: BorderRadius.circular(30),
-                      radius: 30,
-                      onTap: () {
-                        print(
-                            'Current Index:  + $index Last Index: $lastIndex');
+                      color: Color.fromARGB(255, 244, 4, 4),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(30),
+                        radius: 30,
+                        onTap: () {
+                          print(
+                              'Current Index:  + $index Last Index: $lastIndex');
 
-                        Map<String, dynamic> savedRecipe = {
-                          'id': recipes[index].id,
-                          'title': recipes[index].name,
-                          'servings': recipes[index].servings,
-                          'ingredients': recipes[index].ingredients,
-                          'preparationSteps': recipes[index].preparationSteps,
-                          'cookTime': recipes[index].totalTime,
-                          'thumbnailUrl': recipes[index].images,
-                          'isVegetarian': recipes[index].isVegetarian,
-                          'isVegan': recipes[index].isVegan,
-                          'isGlutenFree': recipes[index].isGlutenFree,
-                          'isDairyFree': recipes[index].isDairyFree,
-                          'isVeryHealthy': recipes[index].isVeryHealthy,
-                          'isPopular': recipes[index].isPopular,
-                        };
+                          Map<String, dynamic> savedRecipe = {
+                            'id': recipes[index].id,
+                            'title': recipes[index].name,
+                            'servings': recipes[index].servings,
+                            'ingredients': recipes[index].ingredients,
+                            'preparationSteps': recipes[index].preparationSteps,
+                            'cookTime': recipes[index].totalTime,
+                            'thumbnailUrl': recipes[index].images,
+                            'isVegetarian': recipes[index].isVegetarian,
+                            'isVegan': recipes[index].isVegan,
+                            'isGlutenFree': recipes[index].isGlutenFree,
+                            'isDairyFree': recipes[index].isDairyFree,
+                            'isVeryHealthy': recipes[index].isVeryHealthy,
+                            'isPopular': recipes[index].isPopular,
+                          };
 
-                        db
-                            .collection("users")
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .collection("saved recipes")
-                            .doc(recipes[index].name)
-                            .set(savedRecipe);
+                          db
+                              .collection("users")
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection("saved recipes")
+                              .doc(recipes[index].name)
+                              .set(savedRecipe);
 
-                        if (index >= lastIndex) {
-                          print(index);
-                          index = 0;
-                          getRecipes(selectedTag?.toLowerCase());
-                          print('Getting : ${selectedTag} recipes');
-                          print('API Call');
-                        } else {
-                          recipes.removeAt(index);
-                          index++;
-                          setState(
-                            () {
-                              index = index;
-                            },
-                          );
-                        }
-                      },
-                      splashColor: Colors.white,
-                      highlightColor: Colors.grey,
-                      child: Container(
-                        height: 65,
-                        width: 100,
-                        child: Icon(
-                          Icons.thumb_up_alt,
-                          color: Colors.white,
-                          size: 35,
+                          if (index >= lastIndex) {
+                            print(index);
+                            index = 0;
+                            getRecipes(selectedTag?.toLowerCase());
+                            print('Getting : ${selectedTag} recipes');
+                            print('API Call');
+                          } else {
+                            recipes.removeAt(index);
+                            index++;
+                            setState(
+                              () {
+                                index = index;
+                              },
+                            );
+                          }
+                        },
+                        splashColor: Colors.white,
+                        highlightColor: Colors.grey,
+                        child: Container(
+                          height: 65,
+                          width: 100,
+                          child: Icon(
+                            Icons.thumb_up_alt,
+                            color: Colors.white,
+                            size: 35,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ]),
+                  ],
+                ),
+              ]),
+            ),
     );
   }
 

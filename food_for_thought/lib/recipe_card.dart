@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:food_for_thought/nutrition.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -44,7 +45,8 @@ class RecipeCard extends StatefulWidget {
 }
 
 class _RecipeCardState extends State<RecipeCard> {
-  late int recipeYieldModifier;
+  late double recipeYieldModifier;
+  TextEditingController servingsController = TextEditingController();
 
   @override
   void initState() {
@@ -365,8 +367,62 @@ class _RecipeCardState extends State<RecipeCard> {
                     '\nIngredients',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 22,
                         decoration: TextDecoration.underline),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 140,
+                        child: TextField(
+                          // maxLength: 3,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          ],
+                          keyboardType: TextInputType.number,
+                          controller: servingsController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.people),
+                            labelText: 'Servings',
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(12)),
+                        height: 40,
+                        width: 40,
+                        child: TextButton(
+                          child: Icon(
+                            Icons.check_sharp,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            int desiredServings =
+                                int.parse(servingsController.text);
+                            servingsController.text;
+                            int servings = widget.servings;
+
+                            setState(() {
+                              recipeYieldModifier =
+                                  (desiredServings / servings);
+                            });
+                            print(recipeYieldModifier);
+                          },
+                        ),
+                      )
+                    ],
                   ),
                   SizedBox(
                     height: 10,
