@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class RecommendationPage extends StatefulWidget {
   @override
@@ -83,13 +85,8 @@ class RecommendationPageState extends State<RecommendationPage> {
     String filter = sortedByKeyMap.keys.toList().last;
     //finding most common tag
     print(filter);
-
     allRecipes = await DatabaseService.getAllRecipes(filter);
-    // combinedRecipes = List.from(allRecipes)..addAll(recipes);
-    // print(combinedRecipes.length);
-    // reducedRecipes = combinedRecipes..toSet;
     print(allRecipes.length);
-    // print(combinedRecipes[0].name);
     shuffledRecipes = allRecipes..shuffle();
     print(shuffledRecipes[0].name);
 
@@ -101,7 +98,7 @@ class RecommendationPageState extends State<RecommendationPage> {
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    Timer(Duration(seconds: 2), () => getRecipes());
   }
 
   @override
@@ -138,7 +135,17 @@ class RecommendationPageState extends State<RecommendationPage> {
         automaticallyImplyLeading: false,
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: SizedBox(
+                height: 70,
+                width: 70,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballRotateChase,
+                  strokeWidth: 2,
+                  colors: [Color.fromARGB(255, 244, 4, 4)],
+                ),
+              ),
+            )
           : Scrollbar(
               interactive: true,
               thumbVisibility: true,

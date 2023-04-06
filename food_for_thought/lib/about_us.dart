@@ -33,7 +33,7 @@ class AboutUsState extends State<AboutUs> {
           child: Card(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            color: Color.fromARGB(255, 151, 151, 151),
+            color: Color.fromARGB(255, 83, 83, 83),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(

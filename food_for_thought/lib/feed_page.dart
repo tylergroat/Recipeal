@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_launcher_icons/android.dart';
 import 'package:food_for_thought/recipe.dart';
 import 'package:food_for_thought/recipe_card.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'api_config.dart';
 
 //class to define how the recipe feed is presented to the user -- Implemented by : Gavin Fromm
@@ -38,7 +41,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    getRecipes(selectedTag);
+    Timer(Duration(seconds: 2), () => getRecipes(selectedTag));
   }
 
   Future<void> getRecipes(String? tag) async {
@@ -84,7 +87,17 @@ class FeedPageState extends State<FeedPage> {
     return Scaffold(
       appBar: appBar(),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: SizedBox(
+                height: 70,
+                width: 70,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballRotateChase,
+                  strokeWidth: 2,
+                  colors: [Color.fromARGB(255, 244, 4, 4)],
+                ),
+              ),
+            )
           : SingleChildScrollView(
               child: Column(children: [
                 SizedBox(

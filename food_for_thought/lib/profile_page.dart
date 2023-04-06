@@ -6,6 +6,7 @@ import 'package:food_for_thought/change_email.dart';
 import 'package:food_for_thought/database.dart';
 import 'package:food_for_thought/user.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'dart:io';
 
 import 'change_name.dart';
@@ -82,7 +83,17 @@ class ProfilePageState extends State<ProfilePage> {
       ),
 /////////  APP BAR  //////////////
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: SizedBox(
+                height: 70,
+                width: 70,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballRotateChase,
+                  strokeWidth: 2,
+                  colors: [Color.fromARGB(255, 244, 4, 4)],
+                ),
+              ),
+            )
           : SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
               child: Center(
