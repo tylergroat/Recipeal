@@ -3,7 +3,6 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:food_for_thought/nutrition.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:fraction/fraction.dart';
 import 'api_config.dart';
 
