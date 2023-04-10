@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/created_recipe.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:path/path.dart' as Path;
 import 'package:food_for_thought/recipecreation_page.dart';
 
@@ -28,11 +31,12 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String searchValue = '';
   String createdRecipes = 'created recipes';
+  bool loaded = true;
 
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    Timer(Duration(seconds: 2), () => getRecipes());
   }
 
   //Load the created recipes from firebase
@@ -40,6 +44,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
     recipes = await DatabaseService.getCreatedRecipes(uid);
     setState(() {
       recipes;
+      loaded = false;
     });
   }
 
@@ -118,6 +123,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
           // searchByTitle(value);
         },
       ),
+
       body: RefreshIndicator(
         onRefresh: () => getRecipes(),
         child: recipes.isEmpty
@@ -240,14 +246,13 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                 },
                               )
                             ],
+
                           );
                         },
                       );
                     },
-                  );
-                },
-              ),
-      ),
+                  ),
+                ),
     );
   }
 }
