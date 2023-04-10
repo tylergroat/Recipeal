@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/forgot_password.dart';
-import 'package:food_for_thought/help_me.dart';
-import 'home_page.dart';
-import 'login_page.dart';
-import 'registration_page.dart';
+import 'package:food_for_thought/user-interface/user-functions/forgot_password_page.dart';
+import 'package:food_for_thought/user-interface/side-menu/help_page.dart';
+import 'user-interface/home_page.dart';
+import 'user-interface/user-functions/login_page.dart';
+import 'user-interface/user-functions/registration_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'back-end/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         'login_page': (context) => LoginPage(),
         'home_page': (context) => HomePage(),
         'forgot_pasword_page': (context) => ForgotPasswordPage(),
-        'help_page':(context) => HelpPage(),
+        'help_page': (context) => HelpPage(),
       },
     );
   }

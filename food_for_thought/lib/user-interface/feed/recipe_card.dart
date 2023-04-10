@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:food_for_thought/nutrition.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:food_for_thought/classes/nutrition_class.dart';
 import 'package:fraction/fraction.dart';
-import 'api_config.dart';
+import '../../back-end/api_config.dart';
 
 //class to define how the recipes are presented to the user -- Implemented by : Gavin Fromm
 

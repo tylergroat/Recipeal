@@ -1,21 +1,12 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:food_for_thought/created_recipe_card.dart';
-import 'package:food_for_thought/database.dart';
-import 'package:food_for_thought/recipe.dart';
-import 'package:food_for_thought/recipe_card.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:food_for_thought/created_recipe.dart';
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:food_for_thought/back-end/database.dart';
+import 'package:food_for_thought/classes/created_recipe_class.dart';
+import 'package:food_for_thought/user-interface/create-recipes/created_recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:path/path.dart' as Path;
-import 'package:food_for_thought/recipecreation_page.dart';
 
 //Page for viewing your created recipes
 
@@ -123,7 +114,6 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
           // searchByTitle(value);
         },
       ),
-
       body: RefreshIndicator(
         onRefresh: () => getRecipes(),
         child: recipes.isEmpty
@@ -246,13 +236,14 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                 },
                               )
                             ],
-
                           );
                         },
                       );
                     },
-                  ),
-                ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'package:food_for_thought/nutrition.dart';
-import 'package:food_for_thought/recipe.dart';
-import 'package:food_for_thought/similar_recipe.dart';
+import 'package:food_for_thought/classes/nutrition_class.dart';
+import 'package:food_for_thought/classes/recipe_class.dart';
 import 'package:http/http.dart' as http;
 
 class RecipeApi {
@@ -26,23 +25,6 @@ class RecipeApi {
     }
 
     return Recipe.recipesFromSnapshot(_temp);
-  }
-
-  static Future<List<SimilarRecipe>> getSimilarRecipes(int id) async {
-    var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-        '/recipes/$id/similar', {
-      "number": "7",
-      "limitLicense": "false",
-    });
-
-    final response = await http.get(uri, headers: {
-      "x-rapidapi-key": "326cf22eb1mshac86455f9f02e49p136e08jsnb6a08eb83b01",
-      "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-      "useQueryString": "true"
-    });
-
-    final dataList = jsonDecode(response.body);
-    return SimilarRecipe.similarRecipesFromSnapshot(dataList);
   }
 
   static Future<List<Recipe>> extractFromUrl(String url) async {

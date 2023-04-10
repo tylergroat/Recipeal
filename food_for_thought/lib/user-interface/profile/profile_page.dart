@@ -2,16 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/change_email.dart';
-import 'package:food_for_thought/database.dart';
-import 'package:food_for_thought/user.dart';
+import 'package:food_for_thought/user-interface/profile/change_email_page.dart';
+import 'package:food_for_thought/back-end/database.dart';
+import 'package:food_for_thought/classes/user_class.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'dart:io';
-
-import 'change_name.dart';
-import 'change_password.dart';
-import 'change_username.dart';
+import 'change_name_page.dart';
+import 'change_password_page.dart';
+import 'change_username_page.dart';
 
 //class to define how the profile information is presented to the user -- Implemented by : Gavin Fromm
 

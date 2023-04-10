@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/authentification.dart';
-import 'package:food_for_thought/forgot_password.dart';
-import 'package:food_for_thought/registration_page.dart';
-import 'home_page.dart';
+import 'package:food_for_thought/user-interface/admin/admin_page.dart';
+import 'package:food_for_thought/back-end/authentification.dart';
+import 'package:food_for_thought/user-interface/user-functions/forgot_password_page.dart';
+import 'package:food_for_thought/user-interface/user-functions/registration_page.dart';
+import '../home_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
@@ -201,6 +202,20 @@ class LoginPageState extends State<LoginPage> {
                         passwordController.text.toString());
 
                     if (user != null) {
+                      if (user.email == 'admin@admin.com') {
+                        loginButton.success();
+                        Timer(
+                          Duration(seconds: 1),
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => AdminPage(),
+                            ),
+                          ),
+                        );
+                        return;
+                      }
+
                       loginButton.success();
                       print(user);
                       // ignore: use_build_context_synchronously

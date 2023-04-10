@@ -1,14 +1,12 @@
 import 'dart:async';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/android.dart';
-import 'package:food_for_thought/recipe.dart';
-import 'package:food_for_thought/recipe_card.dart';
+import 'package:food_for_thought/classes/recipe_class.dart';
+import 'package:food_for_thought/user-interface/feed/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'api_config.dart';
+import '../../back-end/api_config.dart';
 
 //class to define how the recipe feed is presented to the user -- Implemented by : Gavin Fromm
 
@@ -41,11 +39,14 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), () => getRecipes(selectedTag));
+    Timer(Duration(seconds: 1), () => getRecipes(selectedTag));
   }
 
   Future<void> getRecipes(String? tag) async {
     if (selectedTag == "Random") {
+      print('getting random recipes');
+      recipes = await RecipeApi.getRecipes();
+    } else if (selectedTag == "random") {
       print('getting random recipes');
       recipes = await RecipeApi.getRecipes();
     } else {
@@ -129,10 +130,10 @@ class FeedPageState extends State<FeedPage> {
                               child: DropdownButton<String>(
                                 onChanged: (s) {
                                   print(s?.toLowerCase());
-                                  getRecipes(s?.toLowerCase());
                                   setState(() {
                                     selectedTag = s;
                                   });
+                                  getRecipes(selectedTag?.toLowerCase());
                                 },
                                 items: dropDownMenuItems,
                                 value: selectedTag,

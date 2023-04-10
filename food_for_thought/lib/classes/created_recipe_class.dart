@@ -1,10 +1,10 @@
 ///Mixin for Created Recipe functionalities
-import 'dart:io';
+import 'dart:html';
+
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreatedRecipe {
   final String name;
@@ -100,8 +100,8 @@ mixin CreatedRecipeMixin {
 
       // Uploading with the following line
       if (image != null) {
-        final File file = File(image.path);
-        await firebaseStorageRef.putFile(file);
+        // final File file = File(image.path);
+        // await firebaseStorageRef.putFile(file);
         final String downloadUrl = await firebaseStorageRef.getDownloadURL();
         return downloadUrl;
       } else {
