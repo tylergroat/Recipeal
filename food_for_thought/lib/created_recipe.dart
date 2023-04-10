@@ -10,16 +10,16 @@ class CreatedRecipe {
   final String name;
   final String servings;
   final List<dynamic> ingredients;
-  final String preparationSteps;
-  // final String images;
+  final String cookInstructions;
+  final String image;
   final String totalTime;
 
   CreatedRecipe(
       {required this.name,
       required this.servings,
       required this.ingredients,
-      required this.preparationSteps,
-      // required this.images,
+      required this.cookInstructions,
+      required this.image,
       required this.totalTime});
 
   factory CreatedRecipe.fromFirestore(
@@ -29,21 +29,22 @@ class CreatedRecipe {
         name: data?['title'],
         servings: data?['servings'],
         ingredients: data?['ingredients'],
-        preparationSteps: data?['preparationSteps'],
-        // images: data?['thumbnailUrl'],
+        cookInstructions: data?['cookInstructions'],
+        image: data?['thumbnailUrl'],
         totalTime: data?['cookTime']);
   }
 }
 
 mixin CreatedRecipeMixin {
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  final User? user = FirebaseAuth.instance.currentUser;
+
   //Gets entire doc of a created recipe
   Future<Map<String, dynamic>> getCreatedRecipeData(
       {required String recipeName}) async {
     try {
-      final User? user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception("User not logged in");
 
-      final String userId = user.uid;
       final DocumentSnapshot recipeDoc = await FirebaseFirestore.instance
           .collection('created recipes')
           .doc(recipeName)
@@ -68,10 +69,9 @@ mixin CreatedRecipeMixin {
 //Gets url of image in cloud storage
   Future<String> getImageUrl(String recipeName) async {
     try {
-      final User? user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception("User not logged in");
 
-      final String userId = user.uid;
+      final String userId = user!.uid;
       final DocumentSnapshot recipeDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -88,33 +88,37 @@ mixin CreatedRecipeMixin {
     }
   }
 
-// //Uploads image in cloud storage
-//   Future<void> uploadImageToFirebase(
-//       {required File image, required String recipeName}) async {
-//     try {
-//       final User? user = FirebaseAuth.instance.currentUser;
-//       if (user == null) throw Exception("User not logged in");
+  Future<String> uploadImageToFirebase({
+    required XFile? image,
+    required String recipeName,
+  }) async {
+    try {
+      if (user == null) throw Exception("User not logged in");
 
-//       final Reference firebaseStorageRef = FirebaseStorage.instance
-//           .ref()
-//           .child('created recipes')
-//           .child(recipeName);
+      final Reference firebaseStorageRef =
+          storage.ref().child('created recipes').child(recipeName);
 
-//       //Uploading with the following line
-//       firebaseStorageRef.putFile(image);
-//     } catch (e) {
-//       throw Exception("Error uploading image to Firebase: $e");
-//     }
-//   }
+      // Uploading with the following line
+      if (image != null) {
+        final File file = File(image.path);
+        await firebaseStorageRef.putFile(file);
+        final String downloadUrl = await firebaseStorageRef.getDownloadURL();
+        return downloadUrl;
+      } else {
+        throw Exception("Image file is null");
+      }
+    } catch (e) {
+      throw Exception("Error uploading image to Firebase: $e");
+    }
+  }
 
 //Uploads recipe data in firestore
   Future<void> uploadRecipeToFirebase(
       {required Map<String, dynamic> recipeData, required String name}) async {
     try {
-      final User? user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception("User not logged in");
 
-      final String userId = user.uid;
+      final String userId = user!.uid;
       final CollectionReference createdRecipesCollection = FirebaseFirestore
           .instance
           .collection('users')
@@ -124,7 +128,24 @@ mixin CreatedRecipeMixin {
           createdRecipesCollection.doc(name);
       await documentReference.set({...recipeData});
     } catch (e) {
-      throw Exception('Failed to upload recipe to Firebase: $e');
+      throw Exception(
+          'Failed to upload the recipe to user: "$user"\'s created recipes collection: $e');
+    }
+  }
+
+  Future<void> uploadPublicRecipeToFirebase(
+      {required Map<String, dynamic> recipeData, required String name}) async {
+    try {
+      if (user == null) throw Exception("User not logged in");
+
+      final CollectionReference publicCreatedRecipesCollection =
+          FirebaseFirestore.instance.collection('created recipes');
+      final DocumentReference documentReference =
+          publicCreatedRecipesCollection.doc(name);
+      await documentReference.set({...recipeData});
+    } catch (e) {
+      throw Exception(
+          'Failed to upload the recipe to the public created recipes collection: $e');
     }
   }
 
@@ -132,7 +153,6 @@ mixin CreatedRecipeMixin {
 //Not needed when deleting a recipe because the image gets deleted by the deleteRecipeFromFirebase function already
   Future<void> deleteImageFromFirebase({required String recipeName}) async {
     try {
-      final User? user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception("User not logged in");
 
       final Reference firebaseStorageRef = FirebaseStorage.instance
@@ -148,7 +168,6 @@ mixin CreatedRecipeMixin {
 
   //Deletes both the recipe and recipe image (in firestore and cloud storage)
   Future<void> deleteRecipeFromFirebase({required String recipeName}) async {
-    final User? user = FirebaseAuth.instance.currentUser;
     final String? userId = user?.uid;
 
     //Check if the recipe exists
