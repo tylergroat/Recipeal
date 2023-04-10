@@ -128,11 +128,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                   strokeWidth: 2,
                   colors: [Color.fromARGB(255, 244, 4, 4)],
                 ),
-              )
-                // CircularProgressIndicator(
-                //   color: Colors.grey,
-                // ),
-                )
+              ))
             : recipes.isEmpty
                 ? Center(child: Text('No Liked Recipes'))
                 : Scrollbar(

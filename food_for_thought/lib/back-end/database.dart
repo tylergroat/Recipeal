@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_for_thought/classes/recipe_class.dart';
 import 'package:food_for_thought/classes/user_class.dart';
 
@@ -15,6 +16,23 @@ class DatabaseService {
         .doc(uid)
         .collection(path)
         .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(Recipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
+  static Future<List<Recipe>> getStoredRecipes() async {
+    late List<Recipe> recipes = [];
+    final docs = FirebaseFirestore.instance.collection("recipes").get();
 
     await docs.then(
       (querySnapshot) {
@@ -57,6 +75,23 @@ class DatabaseService {
         .doc(uid)
         .collection('created recipes')
         .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
+  static Future<List<CreatedRecipe>> getCreatedRecipesForVerification() async {
+    late List<CreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance.collection("created recipes").get();
 
     await docs.then(
       (querySnapshot) {
@@ -238,5 +273,47 @@ class DatabaseService {
       user = UserInformation.fromFirestore(querySnapshot);
     });
     return user;
+  }
+
+  static Future<List<UserInformation>> getAllUsers() async {
+    late List<UserInformation> users = [];
+    final doc = FirebaseFirestore.instance.collection("users").get();
+
+    await doc.then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        users.add(UserInformation.fromFirestore(docSnapshot));
+      }
+    });
+    return users;
+  }
+
+  static Future<int> countUsers() async {
+    late int count = 0;
+    late List<UserInformation> users = [];
+
+    final doc = FirebaseFirestore.instance.collection("users").get();
+
+    await doc.then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        users.add(UserInformation.fromFirestore(docSnapshot));
+      }
+      count = users.length;
+    });
+    return count;
+  }
+
+  static Future<int> countRecipes() async {
+    late int count = 0;
+    late List<Recipe> recipes = [];
+
+    final doc = FirebaseFirestore.instance.collection("recipes").get();
+
+    await doc.then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        recipes.add(Recipe.fromFirestore(docSnapshot));
+      }
+      count = recipes.length;
+    });
+    return count;
   }
 }
