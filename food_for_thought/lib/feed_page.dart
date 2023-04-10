@@ -41,11 +41,14 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), () => getRecipes(selectedTag));
+    Timer(Duration(seconds: 1), () => getRecipes(selectedTag));
   }
 
   Future<void> getRecipes(String? tag) async {
     if (selectedTag == "Random") {
+      print('getting random recipes');
+      recipes = await RecipeApi.getRecipes();
+    } else if (selectedTag == "random") {
       print('getting random recipes');
       recipes = await RecipeApi.getRecipes();
     } else {
@@ -129,10 +132,10 @@ class FeedPageState extends State<FeedPage> {
                               child: DropdownButton<String>(
                                 onChanged: (s) {
                                   print(s?.toLowerCase());
-                                  getRecipes(s?.toLowerCase());
                                   setState(() {
                                     selectedTag = s;
                                   });
+                                  getRecipes(selectedTag?.toLowerCase());
                                 },
                                 items: dropDownMenuItems,
                                 value: selectedTag,
