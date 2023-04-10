@@ -8,14 +8,14 @@ class CreatedRecipeCard extends StatelessWidget {
   final String title;
   final String servings;
   final List<dynamic> ingredients;
-  final String preparationSteps;
+  final String cookInstructions;
   final String cookTime;
   // final String thumbnailUrl;
   CreatedRecipeCard({
     required this.title,
     required this.servings,
     required this.ingredients,
-    required this.preparationSteps,
+    required this.cookInstructions,
     required this.cookTime,
     // required this.thumbnailUrl,
   });
@@ -193,7 +193,7 @@ class CreatedRecipeCard extends StatelessWidget {
                 Container(
                   width: 350,
                   child: Html(
-                    data: preparationSteps,
+                    data: cookInstructions,
                   ),
                 ),
                 SizedBox(

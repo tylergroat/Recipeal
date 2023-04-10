@@ -259,20 +259,20 @@ class RecipeCreationState extends State<RecipeCreation>
           }
 
           //these last 2 are inactive
-          if (servings.text.length < (servingsMaxLength * .5)) {
-            servingsCharCountColor = Colors.grey;
-          } else if (servings.text.length < (servingsMaxLength * .8)) {
-            servingsCharCountColor = Colors.orange;
-          } else {
-            servingsCharCountColor = Colors.red;
-          }
-          if (cookTime.text.length < (cookTimeMaxLength * .5)) {
-            cookTimeCharCountColor = Colors.grey;
-          } else if (cookTime.text.length < (cookTimeMaxLength * .8)) {
-            cookTimeCharCountColor = Colors.orange;
-          } else {
-            cookTimeCharCountColor = Colors.red;
-          }
+////          if (servings.text.length < (servingsMaxLength * .5)) {
+////            servingsCharCountColor = Colors.grey;
+////          } else if (servings.text.length < (servingsMaxLength * .8)) {
+////            servingsCharCountColor = Colors.orange;
+////          } else {
+////            servingsCharCountColor = Colors.red;
+////          }
+////          if (cookTime.text.length < (cookTimeMaxLength * .5)) {
+////            cookTimeCharCountColor = Colors.grey;
+////          } else if (cookTime.text.length < (cookTimeMaxLength * .8)) {
+////            cookTimeCharCountColor = Colors.orange;
+////          } else {
+////            cookTimeCharCountColor = Colors.red;
+////          }
 
           return Center(
             child: SingleChildScrollView(
@@ -282,7 +282,6 @@ class RecipeCreationState extends State<RecipeCreation>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 10),
-
                     Container(
                       width: widthOfWidgets,
                       child: TextField(
@@ -542,38 +541,38 @@ class RecipeCreationState extends State<RecipeCreation>
                         onEditingComplete: areAllFieldsFilled,
                       ),
                     ),
-                    // SizedBox(
-                    //   height: 20,
-                    // ),
-                    // ElevatedButton(
-                    //     style: ElevatedButton.styleFrom(
-                    //         backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                    //     child: Text(
-                    //       'Choose a Photo!',
-                    //       style: TextStyle(fontSize: 20),
-                    //     ),
-                    //     onPressed: () {
-                    //       displayImageChoice();
-                    //     }),
-                    // //if image not null show the image
-                    // //if image null show text
-                    // Padding(
-                    //     padding: const EdgeInsets.all(4.0),
-                    //     child: xfileImage != null
-                    //         ? Padding(
-                    //             padding: const EdgeInsets.symmetric(horizontal: 20),
-                    //             child: ClipRRect(
-                    //               borderRadius: BorderRadius.circular(2),
-                    //               child: Image.file(
-                    //                 //to show image, you type like this.
-                    //                 File(xfileImage!.path),
-                    //                 fit: BoxFit.cover,
-                    //                 width: MediaQuery.of(context).size.width,
-                    //                 height: 300,
-                    //               ),
-                    //             ),
-                    //           )
-                    //         : Text(' ')),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          'Choose a Photo!',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          displayImageChoice();
+                        }),
+                    //if image not null show the image
+                    //if image null show text
+                    Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: xfileImage != null
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(2),
+                                  child: Image.file(
+                                    //to show image, you type like this.
+                                    File(xfileImage!.path),
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 300,
+                                  ),
+                                ),
+                              )
+                            : Text(' ')),
                     Container(
                       width: widthOfWidgets,
                       child: ElevatedButton(

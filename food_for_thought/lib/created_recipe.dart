@@ -10,7 +10,7 @@ class CreatedRecipe {
   final String name;
   final String servings;
   final List<dynamic> ingredients;
-  final String preparationSteps;
+  final String cookInstructions;
   // final String images;
   final String totalTime;
 
@@ -18,7 +18,7 @@ class CreatedRecipe {
       {required this.name,
       required this.servings,
       required this.ingredients,
-      required this.preparationSteps,
+      required this.cookInstructions,
       // required this.images,
       required this.totalTime});
 
@@ -29,7 +29,7 @@ class CreatedRecipe {
         name: data?['title'],
         servings: data?['servings'],
         ingredients: data?['ingredients'],
-        preparationSteps: data?['preparationSteps'],
+        cookInstructions: data?['cookInstructions'],
         // images: data?['thumbnailUrl'],
         totalTime: data?['cookTime']);
   }

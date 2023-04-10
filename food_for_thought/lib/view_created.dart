@@ -131,7 +131,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                       title: recipes[index].name,
                       servings: recipes[index].servings,
                       ingredients: recipes[index].ingredients,
-                      preparationSteps: recipes[index].preparationSteps,
+                      cookInstructions: recipes[index].cookInstructions,
                       cookTime: recipes[index].totalTime,
                       // thumbnailUrl: recipes[index].images,
                     ),
@@ -223,8 +223,8 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                     'title': recipes[index].name,
                                     'servings': recipes[index].servings,
                                     'ingredients': recipes[index].ingredients,
-                                    'preparationSteps':
-                                        recipes[index].preparationSteps,
+                                    'cookInstructions':
+                                        recipes[index].cookInstructions,
                                     'cookTime': recipes[index].totalTime,
                                     // 'thumbnailUrl': recipes[index].images,
                                   };
