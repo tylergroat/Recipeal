@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/authentification.dart';
-import 'package:food_for_thought/login_page.dart';
+import 'package:food_for_thought/back-end/authentification.dart';
+import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 
 //class to allow admin to apprive user created recipes -- Implemented by : Gavin Fromm
 

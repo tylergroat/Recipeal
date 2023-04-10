@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/database.dart';
-import 'package:food_for_thought/recipe.dart';
-import 'package:food_for_thought/recipe_card.dart';
+import 'package:food_for_thought/back-end/database.dart';
+import 'package:food_for_thought/classes/recipe_class.dart';
+import 'package:food_for_thought/user-interface/feed/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class RecommendationPage extends StatefulWidget {
@@ -98,7 +98,7 @@ class RecommendationPageState extends State<RecommendationPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), () => getRecipes());
+    Timer(Duration(seconds: 1), () => getRecipes());
   }
 
   @override

@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/change_email.dart';
-import 'package:food_for_thought/help_me.dart';
-import 'package:food_for_thought/pinned_recipes.dart';
-import 'package:food_for_thought/profile_page.dart';
+import 'package:food_for_thought/user-interface/profile/change_email_page.dart';
+import 'package:food_for_thought/user-interface/side-menu/help_page.dart';
+import 'package:food_for_thought/user-interface/side-menu/pinned_recipes_page.dart';
+import 'package:food_for_thought/user-interface/profile/profile_page.dart';
 import 'package:food_for_thought/read_data/get_user_name.dart';
-import 'package:food_for_thought/view_created.dart';
-import 'package:food_for_thought/view_saved.dart';
-import 'about_us.dart';
-import 'authentification.dart';
-import 'login_page.dart';
+import 'package:food_for_thought/user-interface/side-menu/created_recipes_page.dart';
+import 'package:food_for_thought/user-interface/side-menu/saved_recipes_page.dart';
+import 'about_us_page.dart';
+import '../../back-end/authentification.dart';
+import '../user-functions/login_page.dart';
 
 //class that defines the side bar menu of the applicaton -- Implemeted by : Gavin Fromm
 

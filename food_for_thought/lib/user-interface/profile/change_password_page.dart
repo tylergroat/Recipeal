@@ -2,20 +2,20 @@ import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/login_page.dart';
+import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'authentification.dart';
+import '../../back-end/authentification.dart';
 
 //UI screen for updating user emails
 
-class ChangeNamePage extends StatefulWidget {
+class ChangePasswordPage extends StatefulWidget {
   @override
-  ChangeNamePageState createState() => ChangeNamePageState();
+  ChangePasswordPageState createState() => ChangePasswordPageState();
 }
 
-class ChangeNamePageState extends State<ChangeNamePage> {
+class ChangePasswordPageState extends State<ChangePasswordPage> {
   static const creationSuccessful = SnackBar(
-    content: Text('Name Updated! Redirecting.....'),
+    content: Text('Password Updated! Redirecting.....'),
   );
 
   showAlertDialog(BuildContext context) {
@@ -39,8 +39,7 @@ class ChangeNamePageState extends State<ChangeNamePage> {
       ),
       onPressed: () async {
         updateInfoButton.success();
-        updateName(firstNameController.text.trim(),
-            lastNameController.text.trim(), user.uid);
+        await user.updatePassword(newPasswordController.text.trim());
         // ignore: use_build_context_synchronously
         Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
         signOut();
@@ -60,9 +59,9 @@ class ChangeNamePageState extends State<ChangeNamePage> {
     );
   }
 
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmNewPasswordController = TextEditingController();
   final RoundedLoadingButtonController updateInfoButton =
       RoundedLoadingButtonController();
   final user = FirebaseAuth.instance.currentUser!;
@@ -75,7 +74,22 @@ class ChangeNamePageState extends State<ChangeNamePage> {
     content: AwesomeSnackbarContent(
       color: Colors.red,
       title: 'Incorrect Password',
-      message: 'password entered does not match current user',
+      message: 'Password entered does not match current user',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+
+  final matchingPasswordMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Passwords do not match',
+      message: 'Please confirm your new password',
 
       contentType: ContentType.failure,
       // to configure for material banner
@@ -108,7 +122,7 @@ class ChangeNamePageState extends State<ChangeNamePage> {
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
-          'Update Name',
+          'Update Password',
           style: TextStyle(
               color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
@@ -124,31 +138,31 @@ class ChangeNamePageState extends State<ChangeNamePage> {
                 width: 200,
                 height: 90,
                 child: Icon(
-                  Icons.person,
+                  Icons.lock_clock,
                   size: 70,
                 ) //to display the image
                 ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: firstNameController,
+                controller: oldPasswordController,
                 //Text Field for username/email
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  icon: Icon(Icons.mail),
-                  labelText: 'First Name',
+                  icon: Icon(Icons.lock),
+                  labelText: 'Current Password',
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: lastNameController,
+                controller: newPasswordController,
                 //Text Field for username/email
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  icon: Icon(Icons.mail),
-                  labelText: 'Last Name',
+                  icon: Icon(Icons.password_sharp),
+                  labelText: 'New Password',
                 ),
               ),
             ),
@@ -156,11 +170,11 @@ class ChangeNamePageState extends State<ChangeNamePage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 obscureText: true,
-                controller: confirmPasswordController,
+                controller: confirmNewPasswordController,
                 //Text Field for username/email
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    icon: Icon(Icons.lock),
+                    icon: Icon(Icons.password_sharp),
                     labelText: 'Confirm Password',
                     hintText: ''),
               ),
@@ -176,9 +190,9 @@ class ChangeNamePageState extends State<ChangeNamePage> {
                 color: Color.fromARGB(255, 244, 4, 4),
                 controller: updateInfoButton,
                 onPressed: () async {
-                  if (firstNameController.text.isEmpty ||
-                      lastNameController.text.isEmpty ||
-                      confirmPasswordController.text.isEmpty) {
+                  if (oldPasswordController.text.isEmpty ||
+                      newPasswordController.text.isEmpty ||
+                      confirmNewPasswordController.text.isEmpty) {
                     updateInfoButton.error();
                     Timer(Duration(seconds: 1), () => updateInfoButton.reset());
                     // ignore: use_build_context_synchronously
@@ -189,10 +203,22 @@ class ChangeNamePageState extends State<ChangeNamePage> {
                         Duration(seconds: 2),
                         () => ScaffoldMessenger.of(context)
                             .hideCurrentMaterialBanner());
+                  } else if (newPasswordController.text !=
+                      confirmNewPasswordController.text) {
+                    updateInfoButton.error();
+                    Timer(Duration(seconds: 2), () => updateInfoButton.reset());
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentMaterialBanner()
+                      ..showMaterialBanner(matchingPasswordMessage);
+                    Timer(
+                        Duration(seconds: 2),
+                        () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner());
                   } else {
                     User? user = await signInWithEmailPassword(
                         userEmail.toString(),
-                        confirmPasswordController.text.toString());
+                        oldPasswordController.text.toString());
                     if (user != null) {
                       showAlertDialog(context);
                     } else {

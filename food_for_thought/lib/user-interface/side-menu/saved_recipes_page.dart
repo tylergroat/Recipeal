@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/recipe.dart';
-import 'package:food_for_thought/recipe_card.dart';
-import 'database.dart';
+import 'package:food_for_thought/classes/recipe_class.dart';
+import 'package:food_for_thought/user-interface/feed/recipe_card.dart';
+import '../../back-end/database.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 //Page for viewing your liked recipes -- Implemeted by : Gavin Fromm

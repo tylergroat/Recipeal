@@ -2,20 +2,20 @@ import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/login_page.dart';
+import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'authentification.dart';
+import '../../back-end/authentification.dart';
 
 //UI screen for updating user emails
 
-class ChangeUsernamePage extends StatefulWidget {
+class ChangeNamePage extends StatefulWidget {
   @override
-  ChangeUsernamePageState createState() => ChangeUsernamePageState();
+  ChangeNamePageState createState() => ChangeNamePageState();
 }
 
-class ChangeUsernamePageState extends State<ChangeUsernamePage> {
+class ChangeNamePageState extends State<ChangeNamePage> {
   static const creationSuccessful = SnackBar(
-    content: Text('Username Updated! Redirecting.....'),
+    content: Text('Name Updated! Redirecting.....'),
   );
 
   showAlertDialog(BuildContext context) {
@@ -39,7 +39,8 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
       ),
       onPressed: () async {
         updateInfoButton.success();
-        updateUsername(newUsernameController.text.trim(), user.uid);
+        updateName(firstNameController.text.trim(),
+            lastNameController.text.trim(), user.uid);
         // ignore: use_build_context_synchronously
         Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
         signOut();
@@ -59,7 +60,8 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
     );
   }
 
-  TextEditingController newUsernameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   final RoundedLoadingButtonController updateInfoButton =
       RoundedLoadingButtonController();
@@ -106,7 +108,7 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
-          'Update Username',
+          'Update Name',
           style: TextStyle(
               color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
@@ -116,7 +118,7 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
         child: Center(
           child: Column(children: [
             SizedBox(
-              height: 150,
+              height: 100,
             ),
             SizedBox(
                 width: 200,
@@ -129,12 +131,24 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: newUsernameController,
+                controller: firstNameController,
                 //Text Field for username/email
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  icon: Icon(Icons.verified_user),
-                  labelText: 'New Username',
+                  icon: Icon(Icons.mail),
+                  labelText: 'First Name',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: lastNameController,
+                //Text Field for username/email
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.mail),
+                  labelText: 'Last Name',
                 ),
               ),
             ),
@@ -162,7 +176,8 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
                 color: Color.fromARGB(255, 244, 4, 4),
                 controller: updateInfoButton,
                 onPressed: () async {
-                  if (newUsernameController.text.isEmpty ||
+                  if (firstNameController.text.isEmpty ||
+                      lastNameController.text.isEmpty ||
                       confirmPasswordController.text.isEmpty) {
                     updateInfoButton.error();
                     Timer(Duration(seconds: 1), () => updateInfoButton.reset());
@@ -179,7 +194,6 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
                         userEmail.toString(),
                         confirmPasswordController.text.toString());
                     if (user != null) {
-                      // ignore: use_build_context_synchronously
                       showAlertDialog(context);
                     } else {
                       updateInfoButton.error();

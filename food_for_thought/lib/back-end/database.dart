@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:food_for_thought/recipe.dart';
-import 'package:food_for_thought/user.dart';
+import 'package:food_for_thought/classes/recipe_class.dart';
+import 'package:food_for_thought/classes/user_class.dart';
 
-import 'created_recipe.dart';
+import '../classes/created_recipe_class.dart';
 
 //class to define database operations involivng recipes -- Implemented by : Gavin Fromm
 
