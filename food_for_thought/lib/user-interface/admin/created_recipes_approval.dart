@@ -68,9 +68,10 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
                         title: createdRecipes[index].name,
                         servings: createdRecipes[index].servings,
                         ingredients: createdRecipes[index].ingredients,
-                        preparationSteps:
-                            createdRecipes[index].preparationSteps,
+                        cookInstructions:
+                            createdRecipes[index].cookInstructions,
                         cookTime: createdRecipes[index].totalTime,
+                        thumbnailUrl: '',
                       ),
                     );
                   },

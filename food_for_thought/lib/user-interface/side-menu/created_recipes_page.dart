@@ -114,7 +114,6 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
           // searchByTitle(value);
         },
       ),
-
       body: RefreshIndicator(
         onRefresh: () => getRecipes(),
         child: recipes.isEmpty
@@ -237,13 +236,14 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                 },
                               )
                             ],
-
                           );
                         },
                       );
                     },
-                  ),
-                ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }
