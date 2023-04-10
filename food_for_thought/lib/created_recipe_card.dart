@@ -10,29 +10,30 @@ class CreatedRecipeCard extends StatelessWidget {
   final List<dynamic> ingredients;
   final String cookInstructions;
   final String cookTime;
-  // final String thumbnailUrl;
+  final String thumbnailUrl;
   CreatedRecipeCard({
     required this.title,
     required this.servings,
     required this.ingredients,
     required this.cookInstructions,
     required this.cookTime,
-    // required this.thumbnailUrl,
+    required this.thumbnailUrl,
   });
   @override
   Widget build(BuildContext context) {
     return FlipCard(
-      front: buildFront(context),
+      front: buildFront(context, thumbnailUrl),
       back: buildBack(context),
     );
   }
 
-  Widget buildFront(BuildContext context) {
+  Widget buildFront(BuildContext context, String thumbnailUrl) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       width: MediaQuery.of(context).size.width,
       height: 250,
       decoration: BoxDecoration(
+        border: Border.all(color: Color.fromARGB(255, 190, 189, 189)),
         color: Colors.grey,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
@@ -46,6 +47,14 @@ class CreatedRecipeCard extends StatelessWidget {
             spreadRadius: -6.0,
           ),
         ],
+        image: DecorationImage(
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.35),
+            BlendMode.multiply,
+          ),
+          image: NetworkImage(thumbnailUrl),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Stack(
         children: [
@@ -126,6 +135,7 @@ class CreatedRecipeCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 250,
       decoration: BoxDecoration(
+        border: Border.all(color: Color.fromARGB(255, 190, 189, 189)),
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [

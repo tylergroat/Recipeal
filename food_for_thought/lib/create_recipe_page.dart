@@ -46,13 +46,8 @@ class RecipeCreationState extends State<RecipeCreation>
     });
   }
 
-  final FirebaseStorage storage = FirebaseStorage.instance;
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-  final User? user = FirebaseAuth.instance.currentUser;
-
   //For user to input an image
   final picker = ImagePicker();
-  // final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
   XFile? xfileImage;
   //we can upload image from camera or from gallery based on parameter
@@ -63,30 +58,6 @@ class RecipeCreationState extends State<RecipeCreation>
     });
   }
 
-  Future<String> uploadImageToFirebase({
-    required XFile? image,
-    required String recipeName,
-  }) async {
-    try {
-      if (user == null) throw Exception("User not logged in");
-
-      final Reference firebaseStorageRef =
-          storage.ref().child('created recipes').child(recipeName);
-
-      // Uploading with the following line
-      if (image != null) {
-        final File file = File(image.path);
-        await firebaseStorageRef.putFile(file);
-        final String downloadUrl = await firebaseStorageRef.getDownloadURL();
-        return downloadUrl;
-      } else {
-        throw Exception("Image file is null");
-      }
-    } catch (e) {
-      throw Exception("Error uploading image to Firebase: $e");
-    }
-  }
-
   final emptyIngredientList = MaterialBanner(
     backgroundColor: Colors.transparent,
     elevation: 0,
@@ -95,9 +66,7 @@ class RecipeCreationState extends State<RecipeCreation>
       color: Colors.red,
       title: 'Empty Input',
       message: 'Please enter an ingredient first!',
-
       contentType: ContentType.failure,
-      // to configure for material banner
     ),
     actions: const [SizedBox.shrink()],
   );
@@ -109,9 +78,7 @@ class RecipeCreationState extends State<RecipeCreation>
       color: Colors.red,
       title: 'Empty Field',
       message: 'Please input all fields first!',
-
       contentType: ContentType.failure,
-      // to configure for material banner
     ),
     actions: const [SizedBox.shrink()],
   );
@@ -187,6 +154,8 @@ class RecipeCreationState extends State<RecipeCreation>
   MaterialColor? ingredientsCharCountColor;
   MaterialColor? cookTimeCharCountColor; //inactive
   MaterialColor? servingsCharCountColor; //inactive
+  // for CheckBox asking if the user wants to make the post public
+  bool isPublicRecipe = false;
 
   @override
   void initState() {
@@ -276,13 +245,13 @@ class RecipeCreationState extends State<RecipeCreation>
 
           return Center(
             child: SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: constraints.maxWidth,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 10),
-                    Container(
+                    SizedBox(
                       width: widthOfWidgets,
                       child: TextField(
                         focusNode: recipeTitleFocusNode,
@@ -316,7 +285,7 @@ class RecipeCreationState extends State<RecipeCreation>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
+                        SizedBox(
                           width: (widthOfWidgets - 10) / 2,
                           child: TextField(
                             focusNode: servingsFocusNode,
@@ -342,7 +311,7 @@ class RecipeCreationState extends State<RecipeCreation>
                         SizedBox(
                           width: 10,
                         ),
-                        Container(
+                        SizedBox(
                           width: (widthOfWidgets - 10) / 2,
                           child: TextField(
                             focusNode: cookTimeFocusNode,
@@ -380,7 +349,7 @@ class RecipeCreationState extends State<RecipeCreation>
                       // ignore: sized_box_for_whitespace
                       child: Column(
                         children: [
-                          Container(
+                          SizedBox(
                             width: widthOfWidgets,
                             height: 190,
                             child: Column(
@@ -394,7 +363,7 @@ class RecipeCreationState extends State<RecipeCreation>
                                 SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: widthOfWidgets,
                                         height: 160,
                                         child: ListView.builder(
@@ -429,19 +398,19 @@ class RecipeCreationState extends State<RecipeCreation>
                           ),
                           SizedBox(
                             height: 10,
-                          )
+                          ),
                         ],
                       ),
                     ),
 
-                    Container(
+                    SizedBox(
                       width: widthOfWidgets,
                       child: Row(
                         //row containing the input field and the button to add ingredient
                         children: [
                           Expanded(
                             child: TextField(
-                              // ingredient input field
+                              //ingredient input field
                               controller: ingredients,
                               focusNode: ingredientsFocusNode,
                               maxLength:
@@ -474,7 +443,7 @@ class RecipeCreationState extends State<RecipeCreation>
                             width: 10,
                           ),
                           SizedBox(
-                            height: 60,
+                            height: 40,
                             child: ElevatedButton(
                               //add ingredient button
                               onPressed: () {
@@ -509,7 +478,7 @@ class RecipeCreationState extends State<RecipeCreation>
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
+                    SizedBox(
                       width: widthOfWidgets,
                       child: TextField(
                         focusNode: cookInstructionsFocusNode,
@@ -544,23 +513,27 @@ class RecipeCreationState extends State<RecipeCreation>
                     SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          'Choose a Photo!',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () {
-                          displayImageChoice();
-                        }),
+                    SizedBox(
+                      height: 40,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                          child: Text(
+                            'Choose a Photo!',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onPressed: () {
+                            displayImageChoice();
+                          }),
+                    ),
                     //if image not null show the image
                     //if image null show text
                     Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: xfileImage != null
                             ? Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(2),
                                   child: Image.file(
@@ -572,9 +545,27 @@ class RecipeCreationState extends State<RecipeCreation>
                                   ),
                                 ),
                               )
-                            : Text(' ')),
-                    Container(
+                            : null),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Make this recipe public?',
+                            style: TextStyle(fontSize: 16)),
+                        Checkbox(
+                            value: isPublicRecipe,
+                            tristate: false,
+                            checkColor: Color.fromARGB(255, 247, 247, 247),
+                            activeColor: Color.fromARGB(255, 244, 4, 4),
+                            onChanged: (value) {
+                              setState(() {
+                                isPublicRecipe = value!;
+                              });
+                            }),
+                      ],
+                    ),
+                    SizedBox(
                       width: widthOfWidgets,
+                      height: 60,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(255, 244, 4, 4)),
@@ -582,33 +573,30 @@ class RecipeCreationState extends State<RecipeCreation>
                             if (recipeTitle.text.toString().isNotEmpty &&
                                 servings.text.toString().isNotEmpty &&
                                 cookTime.text.toString().isNotEmpty &&
-                                // ingredientsList.toString().isNotEmpty &&
+                                ingredientsList.isNotEmpty &&
                                 cookInstructions.text.toString().isNotEmpty) {
-                              //checking if there is another recipe with the same name
-                              final DocumentSnapshot recipeDoc =
-                                  await FirebaseFirestore.instance
-                                      .collection('created recipes')
-                                      .doc(recipeTitle.text)
-                                      .get();
-                              //if recipe does not already exist
-
-                              // //send the image to cloud storage
-                              // String downloadUrl = await uploadImageToFirebase(
-                              //     image: xfileImage, recipeName: recipeTitle.text);
-
+                              //send the image to cloud storage
+                              String downloadUrl = await uploadImageToFirebase(
+                                  image: xfileImage,
+                                  recipeName: recipeTitle.text);
                               //temporary variables hold recipe data
                               Map<String, dynamic> data = {
                                 'title': recipeTitle.text,
                                 'servings': servings.text,
                                 'ingredients': ingredientsList,
                                 'cookInstructions': cookInstructions.text,
-                                // 'thumbnailUrl': downloadUrl,
+                                'thumbnailUrl': downloadUrl,
                                 'cookTime': cookTime.text
                               };
-                              //send the recipe to firestore
+                              //add to user's personal created recipes collection
                               await uploadRecipeToFirebase(
                                   recipeData: data, name: recipeTitle.text);
-                              // ignore: use_build_context_synchronously
+                              if (isPublicRecipe) {
+                                //if public, add to public created recipes collection
+                                await uploadPublicRecipeToFirebase(
+                                    recipeData: data, name: recipeTitle.text);
+                              }
+                              //ignore: use_build_context_synchronously
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -627,7 +615,7 @@ class RecipeCreationState extends State<RecipeCreation>
                                   );
                                 },
                               );
-                              // Clear all fields
+                              //clear all input fields
                               recipeTitle.clear();
                               recipe.clear();
                               cookTime.clear();
@@ -655,9 +643,7 @@ class RecipeCreationState extends State<RecipeCreation>
                           //else: notify user that they already created that recipe (duplicate name)
                           ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    )
+                    SizedBox(height: 10)
                   ],
                 ),
               ),

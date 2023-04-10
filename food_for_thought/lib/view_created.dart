@@ -133,7 +133,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                       ingredients: recipes[index].ingredients,
                       cookInstructions: recipes[index].cookInstructions,
                       cookTime: recipes[index].totalTime,
-                      // thumbnailUrl: recipes[index].images,
+                      thumbnailUrl: recipes[index].image,
                     ),
                     onLongPress: () {
                       print(recipes[index].name);
@@ -226,7 +226,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                     'cookInstructions':
                                         recipes[index].cookInstructions,
                                     'cookTime': recipes[index].totalTime,
-                                    // 'thumbnailUrl': recipes[index].images,
+                                    'thumbnailUrl': recipes[index].image,
                                   };
                                   //Add this created recipe to the pinned recipes doc in firebase
                                   FirebaseFirestore.instance
