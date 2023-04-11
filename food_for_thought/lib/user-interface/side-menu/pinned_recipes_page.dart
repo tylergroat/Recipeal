@@ -1,13 +1,12 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/recipe.dart';
-import 'package:food_for_thought/recipe_card.dart';
+import 'package:food_for_thought/classes/recipe_class.dart';
+import 'package:food_for_thought/user-interface/feed/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'database.dart';
+import '../../back-end/database.dart';
 
 //class to define how pinned recipes are presented to the user -- Implemented by : Gavin Fromm
 

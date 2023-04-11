@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/login_page.dart';
+import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'authentification.dart';
+import '../../back-end/authentification.dart';
 
 //UI screen for updating user emails
 

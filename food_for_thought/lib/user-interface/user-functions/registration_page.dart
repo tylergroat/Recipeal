@@ -3,7 +3,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'authentification.dart';
+import '../../back-end/authentification.dart';
 import 'login_page.dart';
 
 class RegistrationPage extends StatefulWidget {

@@ -2,20 +2,20 @@ import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/login_page.dart';
+import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'authentification.dart';
+import '../../back-end/authentification.dart';
 
 //UI screen for updating user emails
 
-class ChangePasswordPage extends StatefulWidget {
+class ChangeUsernamePage extends StatefulWidget {
   @override
-  ChangePasswordPageState createState() => ChangePasswordPageState();
+  ChangeUsernamePageState createState() => ChangeUsernamePageState();
 }
 
-class ChangePasswordPageState extends State<ChangePasswordPage> {
+class ChangeUsernamePageState extends State<ChangeUsernamePage> {
   static const creationSuccessful = SnackBar(
-    content: Text('Password Updated! Redirecting.....'),
+    content: Text('Username Updated! Redirecting.....'),
   );
 
   showAlertDialog(BuildContext context) {
@@ -39,7 +39,7 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
       ),
       onPressed: () async {
         updateInfoButton.success();
-        await user.updatePassword(newPasswordController.text.trim());
+        updateUsername(newUsernameController.text.trim(), user.uid);
         // ignore: use_build_context_synchronously
         Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
         signOut();
@@ -59,9 +59,8 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 
-  TextEditingController oldPasswordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-  TextEditingController confirmNewPasswordController = TextEditingController();
+  TextEditingController newUsernameController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   final RoundedLoadingButtonController updateInfoButton =
       RoundedLoadingButtonController();
   final user = FirebaseAuth.instance.currentUser!;
@@ -74,22 +73,7 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
     content: AwesomeSnackbarContent(
       color: Colors.red,
       title: 'Incorrect Password',
-      message: 'Password entered does not match current user',
-
-      contentType: ContentType.failure,
-      // to configure for material banner
-    ),
-    actions: const [SizedBox.shrink()],
-  );
-
-  final matchingPasswordMessage = MaterialBanner(
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    forceActionsBelow: true,
-    content: AwesomeSnackbarContent(
-      color: Colors.red,
-      title: 'Passwords do not match',
-      message: 'Please confirm your new password',
+      message: 'password entered does not match current user',
 
       contentType: ContentType.failure,
       // to configure for material banner
@@ -122,7 +106,7 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
         toolbarHeight: 40,
         centerTitle: true,
         title: Text(
-          'Update Password',
+          'Update Username',
           style: TextStyle(
               color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
         ),
@@ -132,37 +116,25 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
         child: Center(
           child: Column(children: [
             SizedBox(
-              height: 100,
+              height: 150,
             ),
             SizedBox(
                 width: 200,
                 height: 90,
                 child: Icon(
-                  Icons.lock_clock,
+                  Icons.person,
                   size: 70,
                 ) //to display the image
                 ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: oldPasswordController,
+                controller: newUsernameController,
                 //Text Field for username/email
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  icon: Icon(Icons.lock),
-                  labelText: 'Current Password',
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: newPasswordController,
-                //Text Field for username/email
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  icon: Icon(Icons.password_sharp),
-                  labelText: 'New Password',
+                  icon: Icon(Icons.verified_user),
+                  labelText: 'New Username',
                 ),
               ),
             ),
@@ -170,11 +142,11 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 obscureText: true,
-                controller: confirmNewPasswordController,
+                controller: confirmPasswordController,
                 //Text Field for username/email
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    icon: Icon(Icons.password_sharp),
+                    icon: Icon(Icons.lock),
                     labelText: 'Confirm Password',
                     hintText: ''),
               ),
@@ -190,9 +162,8 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
                 color: Color.fromARGB(255, 244, 4, 4),
                 controller: updateInfoButton,
                 onPressed: () async {
-                  if (oldPasswordController.text.isEmpty ||
-                      newPasswordController.text.isEmpty ||
-                      confirmNewPasswordController.text.isEmpty) {
+                  if (newUsernameController.text.isEmpty ||
+                      confirmPasswordController.text.isEmpty) {
                     updateInfoButton.error();
                     Timer(Duration(seconds: 1), () => updateInfoButton.reset());
                     // ignore: use_build_context_synchronously
@@ -203,23 +174,12 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
                         Duration(seconds: 2),
                         () => ScaffoldMessenger.of(context)
                             .hideCurrentMaterialBanner());
-                  } else if (newPasswordController.text !=
-                      confirmNewPasswordController.text) {
-                    updateInfoButton.error();
-                    Timer(Duration(seconds: 2), () => updateInfoButton.reset());
-                    // ignore: use_build_context_synchronously
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentMaterialBanner()
-                      ..showMaterialBanner(matchingPasswordMessage);
-                    Timer(
-                        Duration(seconds: 2),
-                        () => ScaffoldMessenger.of(context)
-                            .hideCurrentMaterialBanner());
                   } else {
                     User? user = await signInWithEmailPassword(
                         userEmail.toString(),
-                        oldPasswordController.text.toString());
+                        confirmPasswordController.text.toString());
                     if (user != null) {
+                      // ignore: use_build_context_synchronously
                       showAlertDialog(context);
                     } else {
                       updateInfoButton.error();
