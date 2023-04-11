@@ -42,7 +42,7 @@ class AllRecipesPageState extends State<AllRecipesPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
-        title: Text('All Recipes'),
+        title: Text('All Users'),
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),

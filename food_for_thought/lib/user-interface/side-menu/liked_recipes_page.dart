@@ -120,14 +120,35 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         onRefresh: () => getRecipes(),
         child: loaded
             ? Center(
-                child: SizedBox(
-                height: 70,
-                width: 70,
-                child: LoadingIndicator(
-                  indicatorType: Indicator.ballRotateChase,
-                  strokeWidth: 2,
-                  colors: [Color.fromARGB(255, 244, 4, 4)],
-                ),
+                child: Column(
+                children: [
+                  SizedBox(
+                    height: 220,
+                  ),
+                  SizedBox(
+                    height: 70,
+                    width: 70,
+                    child: LoadingIndicator(
+                      indicatorType: Indicator.ballRotateChase,
+                      strokeWidth: 2,
+                      colors: [Color.fromARGB(255, 244, 4, 4)],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Loading Liked Recipes...',
+                    style: TextStyle(
+                        color: Color.fromARGB(
+                          255,
+                          244,
+                          4,
+                          4,
+                        ),
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               ))
             : recipes.isEmpty
                 ? Center(child: Text('No Liked Recipes'))
