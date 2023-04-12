@@ -6,7 +6,6 @@ import 'package:food_for_thought/back-end/authentification.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/user-interface/admin/all_recipes_page.dart';
 import 'package:food_for_thought/user-interface/admin/created_recipes_approval.dart';
-import 'package:food_for_thought/user-interface/admin/statistics_page.dart';
 import 'package:food_for_thought/user-interface/home_page.dart';
 import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -136,29 +135,6 @@ class AdminPageState extends State<AdminPage> {
                   ),
                   SizedBox(
                     height: 50,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Color.fromARGB(255, 244, 4, 4),
-                    ),
-                    height: 70,
-                    width: 150,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ViewStatisticsPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'View Statistics',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
                   ),
                   SizedBox(
                     height: 30,
