@@ -43,6 +43,10 @@ flutter run
 ## Apple Emulator
 (Note: You must be using a device with Mac OS to use the Apple Emulator)
 
+Open the Simulator App (Use spotlight search by pressing CMD + Space)
+
+![image](https://user-images.githubusercontent.com/109327531/231543617-d1378f32-f43b-48bd-a889-1a18078858b0.png)
+
 ### Run the app
 ```bash
 flutter run
