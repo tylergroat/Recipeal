@@ -171,6 +171,33 @@ class CreatedRecipeCard extends StatelessWidget {
                 ),
               ),
             ),
+            Container(
+              height: 200,
+              width: 325,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.6),
+                    offset: Offset(
+                      0.0,
+                      10.0,
+                    ),
+                    blurRadius: 10.0,
+                    spreadRadius: -6.0,
+                  ),
+                ],
+                image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.35),
+                    BlendMode.multiply,
+                  ),
+                  image: NetworkImage(thumbnailUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             Column(
               children: [
                 Text(

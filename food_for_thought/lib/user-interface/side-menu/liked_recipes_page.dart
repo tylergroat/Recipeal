@@ -121,35 +121,36 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         child: loaded
             ? Center(
                 child: Column(
-                children: [
-                  SizedBox(
-                    height: 220,
-                  ),
-                  SizedBox(
-                    height: 70,
-                    width: 70,
-                    child: LoadingIndicator(
-                      indicatorType: Indicator.ballRotateChase,
-                      strokeWidth: 2,
-                      colors: [Color.fromARGB(255, 244, 4, 4)],
+                  children: [
+                    SizedBox(
+                      height: 220,
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Loading Liked Recipes...',
-                    style: TextStyle(
-                        color: Color.fromARGB(
-                          255,
-                          244,
-                          4,
-                          4,
-                        ),
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ))
+                    SizedBox(
+                      height: 70,
+                      width: 70,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.ballRotateChase,
+                        strokeWidth: 2,
+                        colors: [Color.fromARGB(255, 244, 4, 4)],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Loading Liked Recipes...',
+                      style: TextStyle(
+                          color: Color.fromARGB(
+                            255,
+                            244,
+                            4,
+                            4,
+                          ),
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              )
             : recipes.isEmpty
                 ? Center(child: Text('No Liked Recipes'))
                 : Scrollbar(
