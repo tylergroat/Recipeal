@@ -150,68 +150,74 @@ class CreatedRecipeCard extends StatelessWidget {
           ),
         ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
-                child: Container(
-                  width: 300,
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+                  child: Container(
+                    width: 300,
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Column(
-              children: [
-                Text(
-                  '\nIngredients',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      decoration: TextDecoration.underline),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                for (int i = 0; i <= ingredients.length - 1; i++) ...[
-                  Container(
-                    width: 200,
-                    child: Text(("${i + 1}. ${ingredients[i]}\n"),
-                        style: TextStyle()),
-                  )
-                ],
-                Text(
-                  '\nPreparation Steps',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      decoration: TextDecoration.underline),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  width: 350,
-                  child: Html(
-                    data: cookInstructions,
+              Column(
+                children: [
+                  Text(
+                    '\nIngredients',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        decoration: TextDecoration.underline),
                   ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-              ],
-            ),
-          ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  for (int i = 0; i <= ingredients.length - 1; i++) ...[
+                    Container(
+                      width: 200,
+                      child: Text(("${i + 1}. ${ingredients[i]}\n"),
+                          style: TextStyle()),
+                    )
+                  ],
+                  Text(
+                    '\nPreparation Steps',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        decoration: TextDecoration.underline),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    width: 350,
+                    child: Html(
+                      data: cookInstructions,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

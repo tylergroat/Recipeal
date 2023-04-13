@@ -342,64 +342,6 @@ class RecipeCreationState extends State<RecipeCreation>
                       height: 10,
                     ),
                     // only show ingredients list if it has at least one item in it
-                    Visibility(
-                      visible: ingredientsList.isNotEmpty,
-                      // ignore: sized_box_for_whitespace
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: widthOfWidgets,
-                            height: 190,
-                            child: Column(
-                              children: [
-                                Text("Your Ingredients:",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 16)),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        width: widthOfWidgets,
-                                        height: 160,
-                                        child: ListView.builder(
-                                          itemCount: ingredientsList.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              dense: true,
-                                              title:
-                                                  Text(ingredientsList[index]),
-                                              trailing: IconButton(
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    ingredientsList[index] =
-                                                        null;
-                                                    ingredientsList.removeWhere(
-                                                        (element) =>
-                                                            element ==
-                                                            null); //this preserves the list
-                                                  });
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    ),
 
                     SizedBox(
                       width: widthOfWidgets,
@@ -475,6 +417,87 @@ class RecipeCreationState extends State<RecipeCreation>
                     ),
                     SizedBox(
                       height: 10,
+                    ),
+                    Visibility(
+                      visible: ingredientsList.isNotEmpty,
+                      // ignore: sized_box_for_whitespace
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: widthOfWidgets,
+                            height: 190,
+                            child: Column(
+                              children: [
+                                Text("Your Ingredients:",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 16)),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: SizedBox(
+                                          width: widthOfWidgets,
+                                          height: 160,
+                                          child: ListView.separated(
+                                            itemCount: ingredientsList.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Material(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                color: Color.fromARGB(
+                                                    255, 232, 230, 230),
+                                                child: ListTile(
+                                                  dense: true,
+                                                  title: Text(
+                                                      ingredientsList[index]),
+                                                  trailing: IconButton(
+                                                    icon: Icon(Icons.delete),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        ingredientsList[index] =
+                                                            null;
+                                                        ingredientsList
+                                                            .removeWhere(
+                                                                (element) =>
+                                                                    element ==
+                                                                    null);
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            separatorBuilder: (context, index) {
+                                              return SizedBox(
+                                                height: 5,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       width: widthOfWidgets,
