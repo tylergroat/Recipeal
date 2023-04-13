@@ -150,95 +150,74 @@ class CreatedRecipeCard extends StatelessWidget {
           ),
         ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
-                child: Container(
-                  width: 300,
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              height: 200,
-              width: 325,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.6),
-                    offset: Offset(
-                      0.0,
-                      10.0,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+                  child: Container(
+                    width: 300,
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
                     ),
-                    blurRadius: 10.0,
-                    spreadRadius: -6.0,
                   ),
-                ],
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.35),
-                    BlendMode.multiply,
-                  ),
-                  image: NetworkImage(thumbnailUrl),
-                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-            Column(
-              children: [
-                Text(
-                  '\nIngredients',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      decoration: TextDecoration.underline),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                for (int i = 0; i <= ingredients.length - 1; i++) ...[
-                  Container(
-                    width: 200,
-                    child: Text(("${i + 1}. ${ingredients[i]}\n"),
-                        style: TextStyle()),
-                  )
-                ],
-                Text(
-                  '\nPreparation Steps',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      decoration: TextDecoration.underline),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  width: 350,
-                  child: Html(
-                    data: cookInstructions,
+              Column(
+                children: [
+                  Text(
+                    '\nIngredients',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        decoration: TextDecoration.underline),
                   ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-              ],
-            ),
-          ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  for (int i = 0; i <= ingredients.length - 1; i++) ...[
+                    Container(
+                      width: 200,
+                      child: Text(("${i + 1}. ${ingredients[i]}\n"),
+                          style: TextStyle()),
+                    )
+                  ],
+                  Text(
+                    '\nPreparation Steps',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        decoration: TextDecoration.underline),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    width: 350,
+                    child: Html(
+                      data: cookInstructions,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
