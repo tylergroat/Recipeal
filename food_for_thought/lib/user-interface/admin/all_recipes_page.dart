@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/authentification.dart';
 import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-
 import '../../back-end/database.dart';
 import '../../classes/recipe_class.dart';
 import '../feed/recipe_card.dart';
@@ -42,7 +41,7 @@ class AllRecipesPageState extends State<AllRecipesPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
-        title: Text('All Users'),
+        title: Text('All Recipes'),
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),

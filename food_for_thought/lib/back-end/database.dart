@@ -106,6 +106,24 @@ class DatabaseService {
     return recipes;
   }
 
+  static Future<List<CreatedRecipe>> getVerifiedCreatedRecipes() async {
+    late List<CreatedRecipe> recipes = [];
+    final docs =
+        FirebaseFirestore.instance.collection("verified-created-recipes").get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
   static Future<List<Recipe>> sortByAlpha(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
