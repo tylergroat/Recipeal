@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart'; //mixin with functions for firebase
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class RecipeCreation extends StatefulWidget {
   @override
@@ -24,6 +25,8 @@ class RecipeCreationState extends State<RecipeCreation>
   TextEditingController cookInstructions = TextEditingController();
   TextEditingController ingredients = TextEditingController();
   List<dynamic> ingredientsList = [];
+  final RoundedLoadingButtonController createRecipeButton =
+      RoundedLoadingButtonController();
 
   //variable to hold value after calling areAllFieldsFilled()
   bool allFieldsAreFilled = false;
@@ -225,22 +228,6 @@ class RecipeCreationState extends State<RecipeCreation>
             cookInstructionsCharCountColor = Colors.red;
           }
 
-          //these last 2 are inactive
-////          if (servings.text.length < (servingsMaxLength * .5)) {
-////            servingsCharCountColor = Colors.grey;
-////          } else if (servings.text.length < (servingsMaxLength * .8)) {
-////            servingsCharCountColor = Colors.orange;
-////          } else {
-////            servingsCharCountColor = Colors.red;
-////          }
-////          if (cookTime.text.length < (cookTimeMaxLength * .5)) {
-////            cookTimeCharCountColor = Colors.grey;
-////          } else if (cookTime.text.length < (cookTimeMaxLength * .8)) {
-////            cookTimeCharCountColor = Colors.orange;
-////          } else {
-////            cookTimeCharCountColor = Colors.red;
-////          }
-
           return Center(
             child: SingleChildScrollView(
               child: SizedBox(
@@ -342,64 +329,6 @@ class RecipeCreationState extends State<RecipeCreation>
                       height: 10,
                     ),
                     // only show ingredients list if it has at least one item in it
-                    Visibility(
-                      visible: ingredientsList.isNotEmpty,
-                      // ignore: sized_box_for_whitespace
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: widthOfWidgets,
-                            height: 190,
-                            child: Column(
-                              children: [
-                                Text("Your Ingredients:",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 16)),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        width: widthOfWidgets,
-                                        height: 160,
-                                        child: ListView.builder(
-                                          itemCount: ingredientsList.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              dense: true,
-                                              title:
-                                                  Text(ingredientsList[index]),
-                                              trailing: IconButton(
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    ingredientsList[index] =
-                                                        null;
-                                                    ingredientsList.removeWhere(
-                                                        (element) =>
-                                                            element ==
-                                                            null); //this preserves the list
-                                                  });
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    ),
 
                     SizedBox(
                       width: widthOfWidgets,
@@ -475,6 +404,87 @@ class RecipeCreationState extends State<RecipeCreation>
                     ),
                     SizedBox(
                       height: 10,
+                    ),
+                    Visibility(
+                      visible: ingredientsList.isNotEmpty,
+                      // ignore: sized_box_for_whitespace
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: widthOfWidgets,
+                            height: 190,
+                            child: Column(
+                              children: [
+                                Text("Your Ingredients:",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 16)),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: SizedBox(
+                                          width: widthOfWidgets,
+                                          height: 160,
+                                          child: ListView.separated(
+                                            itemCount: ingredientsList.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Material(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                color: Color.fromARGB(
+                                                    255, 232, 230, 230),
+                                                child: ListTile(
+                                                  dense: true,
+                                                  title: Text(
+                                                      ingredientsList[index]),
+                                                  trailing: IconButton(
+                                                    icon: Icon(Icons.delete),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        ingredientsList[index] =
+                                                            null;
+                                                        ingredientsList
+                                                            .removeWhere(
+                                                                (element) =>
+                                                                    element ==
+                                                                    null);
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            separatorBuilder: (context, index) {
+                                              return SizedBox(
+                                                height: 5,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       width: widthOfWidgets,
@@ -564,15 +574,23 @@ class RecipeCreationState extends State<RecipeCreation>
                     SizedBox(
                       width: widthOfWidgets,
                       height: 60,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                      child: RoundedLoadingButton(
+                          resetDuration: Duration(seconds: 2),
+                          animateOnTap: true,
+                          borderRadius: 8,
+                          errorColor: Colors.red,
+                          successColor: Colors.green,
+                          color: Color.fromARGB(255, 244, 4, 4),
                           onPressed: () async {
                             if (recipeTitle.text.toString().isNotEmpty &&
                                 servings.text.toString().isNotEmpty &&
                                 cookTime.text.toString().isNotEmpty &&
                                 ingredientsList.isNotEmpty &&
                                 cookInstructions.text.toString().isNotEmpty) {
+                              createRecipeButton.success();
+                              Timer(Duration(seconds: 2),
+                                  () => createRecipeButton.reset());
+
                               //send the image to cloud storage
                               String downloadUrl = await uploadImageToFirebase(
                                   image: xfileImage,
@@ -603,11 +621,25 @@ class RecipeCreationState extends State<RecipeCreation>
                                     content: Text(
                                         "Your recipe has been created successfully!"),
                                     actions: [
-                                      TextButton(
-                                        child: Text("OK"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
+                                      Container(
+                                        width: 70,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Color.fromARGB(255, 244, 4, 4),
+                                        ),
+                                        child: TextButton(
+                                          child: Text(
+                                            "Ok",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
                                       )
                                     ],
                                   );
@@ -628,12 +660,17 @@ class RecipeCreationState extends State<RecipeCreation>
                               ScaffoldMessenger.of(context)
                                 ..hideCurrentMaterialBanner()
                                 ..showMaterialBanner(emptyInput);
+                              createRecipeButton.error();
+                              Timer(Duration(seconds: 2),
+                                  () => createRecipeButton.reset());
+
                               Timer(
-                                  Duration(seconds: 3),
+                                  Duration(seconds: 2),
                                   () => ScaffoldMessenger.of(context)
                                       .hideCurrentMaterialBanner());
                             }
                           },
+                          controller: createRecipeButton,
                           child: Text(
                             'Confirm Recipe Creation',
                             style: TextStyle(fontSize: 20),

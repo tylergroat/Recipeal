@@ -1,31 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/classes/created_recipe_class.dart';
+import 'package:food_for_thought/classes/user_class.dart';
+import 'package:food_for_thought/user-interface/user-functions/user_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-
 import '../../back-end/database.dart';
-import '../create-recipes/created_recipe_card.dart';
 
 //class to allow admin to apprive user created recipes -- Implemented by : Gavin Fromm
 
-class ApproveCreatedRecipesPage extends StatefulWidget {
+class AllUsersPage extends StatefulWidget {
   @override
-  ApproveCreatedRecipesPageState createState() =>
-      ApproveCreatedRecipesPageState();
+  AllUsersPageState createState() => AllUsersPageState();
 }
 
-class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
-  FirebaseFirestore db = FirebaseFirestore.instance;
-  final user = FirebaseAuth.instance.currentUser!;
-  String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-  List<CreatedRecipe> createdRecipes = [];
+class AllUsersPageState extends State<AllUsersPage> {
+  late List<UserInformation> users = [];
   bool loaded = true;
 
-  Future<void> getRecipes() async {
-    createdRecipes = await DatabaseService.getCreatedRecipesForVerification();
+  Future<void> getUsers() async {
+    users = await DatabaseService.getAllUsers();
     setState(() {
-      createdRecipes;
+      users;
       loaded = false;
     });
   }
@@ -33,7 +27,7 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    getUsers();
   }
 
   @override
@@ -41,12 +35,12 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
-        title: Text('Approve Recipes'),
+        title: Text('All Users'),
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),
       body: RefreshIndicator(
-        onRefresh: () => getRecipes(),
+        onRefresh: () => getUsers(),
         child: loaded
             ? Center(
                 child: SizedBox(
@@ -61,17 +55,16 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
             : Scrollbar(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: createdRecipes.length,
+                  shrinkWrap: true,
+                  itemCount: users.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      child: CreatedRecipeCard(
-                        title: createdRecipes[index].name,
-                        servings: createdRecipes[index].servings,
-                        ingredients: createdRecipes[index].ingredients,
-                        cookInstructions:
-                            createdRecipes[index].cookInstructions,
-                        cookTime: createdRecipes[index].totalTime,
-                        thumbnailUrl: '',
+                      child: UserCard(
+                        email: users[index].email,
+                        firstName: users[index].firstName,
+                        lastName: users[index].lastName,
+                        username: users[index].userName,
+                        uid: users[index].uid,
                       ),
                     );
                   },
