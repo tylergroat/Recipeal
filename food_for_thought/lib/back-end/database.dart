@@ -89,6 +89,7 @@ class DatabaseService {
     return recipes;
   }
 
+//returns all created recipes that have not yet been verified
   static Future<List<CreatedRecipe>> getCreatedRecipesForVerification() async {
     late List<CreatedRecipe> recipes = [];
     final docs = FirebaseFirestore.instance.collection("created recipes").get();
@@ -106,6 +107,28 @@ class DatabaseService {
     return recipes;
   }
 
+  //returns a specific user's public created recipes that have not yet been verified
+  static Future<List<CreatedRecipe>> getMyCreatedRecipesForVerification(String userId) async {
+  late List<CreatedRecipe> recipes = [];
+  final docs = FirebaseFirestore.instance
+      .collection("created recipes")
+      .where("userId", isEqualTo: userId)
+      .get();
+
+  await docs.then(
+    (querySnapshot) {
+      print("Successfully completed");
+      for (var docSnapshot in querySnapshot.docs) {
+        recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+      }
+    },
+    onError: (e) => print("Error completing: $e"),
+  );
+
+  return recipes;
+}
+
+//returns all verified created recipes
   static Future<List<CreatedRecipe>> getVerifiedCreatedRecipes() async {
     late List<CreatedRecipe> recipes = [];
     final docs =
@@ -123,6 +146,28 @@ class DatabaseService {
 
     return recipes;
   }
+
+  //returns a specific user's verified created recipes
+  static Future<List<CreatedRecipe>> getMyVerifiedCreatedRecipes(String userId) async {
+  late List<CreatedRecipe> recipes = [];
+  final docs = FirebaseFirestore.instance
+      .collection("verified-created-recipes")
+      .where("userId", isEqualTo: userId)
+      .get();
+
+  await docs.then(
+    (querySnapshot) {
+      print("Successfully completed");
+      for (var docSnapshot in querySnapshot.docs) {
+        recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+      }
+    },
+    onError: (e) => print("Error completing: $e"),
+  );
+
+  return recipes;
+}
+
 
   static Future<List<Recipe>> sortByAlpha(String uid, String path) async {
     late List<Recipe> recipes = [];

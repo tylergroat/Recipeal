@@ -125,6 +125,17 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
+              Icons.create,
+              color: Colors.green,
+            ),
+            title: Text('My Public Recipes'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => CreatedRecipesPage()))
+            },
+          ),
+          ListTile(
+            leading: Icon(
               Icons.help,
               color: Colors.blueGrey,
             ),
