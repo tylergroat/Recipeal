@@ -39,31 +39,26 @@ mixin CreatedRecipeMixin {
   final FirebaseStorage storage = FirebaseStorage.instance;
   final User? user = FirebaseAuth.instance.currentUser;
 
-  //Gets entire doc of a created recipe
-  Future<Map<String, dynamic>> getCreatedRecipeData(
-      {required String recipeName}) async {
-    try {
-      if (user == null) throw Exception("User not logged in");
+//check if a recipe exists in the public collection
+  Future<bool> publicVerifiedRecipeExists(
+      String recipeName, String userId) async {
+    bool exists = false;
+    final CollectionReference publicCreatedRecipesCollection =
+        FirebaseFirestore.instance.collection('verified-created-recipes');
 
-      final DocumentSnapshot recipeDoc = await FirebaseFirestore.instance
-          .collection('created recipes')
-          .doc(recipeName)
-          .get();
+    // Query for the recipe with the given name and userId
+    final QuerySnapshot<Object?> snapshot = await publicCreatedRecipesCollection
+        .where('title', isEqualTo: recipeName)
+        .where('userId', isEqualTo: userId)
+        .get();
 
-      //if recipe exists, get data
-      if (recipeDoc.exists) {
-        final Map<String, dynamic> recipeData =
-            recipeDoc.data() as Map<String, dynamic>;
-        final String imageUrl = recipeData['imageUrl'];
-        return {...recipeData, imageUrl: imageUrl};
-      }
-      //else recipe does not exist throw exception
-      else {
-        throw Exception("Recipe not found with id: $recipeName");
-      }
-    } catch (e) {
-      throw Exception("Error getting created recipe data: $e");
+    // returns true if it exists, false if it doesn't
+    if (snapshot.docs.isNotEmpty) {
+      exists = true;
+    } else {
+      exists = false;
     }
+    return exists;
   }
 
 //Gets url of image in cloud storage
@@ -142,6 +137,9 @@ mixin CreatedRecipeMixin {
           FirebaseFirestore.instance.collection('created recipes');
       final DocumentReference documentReference =
           publicCreatedRecipesCollection.doc(name);
+      // Add the userId field to the recipeData Map
+      recipeData['userId'] = user!.uid;
+
       await documentReference.set({...recipeData});
     } catch (e) {
       throw Exception(
@@ -149,59 +147,80 @@ mixin CreatedRecipeMixin {
     }
   }
 
-//Only needed for cases when a recipe needs to have its image updated
-//Not needed when deleting a recipe because the image gets deleted by the deleteRecipeFromFirebase function already
-  Future<void> deleteImageFromFirebase({required String recipeName}) async {
+//deletes the image by its downloadUrl
+  Future<void> deleteImageFromFirebaseByUrl(String downloadUrl) async {
     try {
-      if (user == null) throw Exception("User not logged in");
-
-      final Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('created recipes')
-          .child(recipeName);
-
-      await firebaseStorageRef.delete();
+      // Get the reference to the storage object using the download URL
+      final storageReference = FirebaseStorage.instance.refFromURL(downloadUrl);
+      // Deletes the storage object (the image)
+      await storageReference.delete();
     } catch (e) {
-      throw Exception("Error deleting image from Firebase: $e");
+      throw Exception('Failed to delete image from Firebase Cloud Storage: $e');
     }
   }
 
-  //Deletes both the recipe and recipe image (in firestore and cloud storage)
-  Future<void> deleteRecipeFromFirebase({required String recipeName}) async {
+//Use this only for deleting recipes that are inside the user's personal collection
+//deletes only the given recipe from the user's private collection in firestore, does not delete the image or delete the recipe in any other location
+  Future<void> deletePrivateRecipeFromFirebase(
+      {required String recipeName}) async {
     final String? userId = user?.uid;
-
-    //Check if the recipe exists
+    //Check if the recipe exists and delete the recipe
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
         .collection('created recipes')
         .doc(recipeName)
         .delete();
-
-    //Delete the recipe
   }
 
-  //TODO: NEEDS TO BE UPDATED
-  //updates the image for the recipe and deletes the old image
-  // Future<void> updateImageInFirebase(String recipeName, XFile newImage) async {
-  //   try {
-  //     final User? user = FirebaseAuth.instance.currentUser;
-  //     if (user == null) throw Exception("User not logged in");
-  //     final String userId = user.uid;
+//use this for recipes that are in the public collection that are not yet verified
+  Future<void> deletePublicUnverifiedRecipeFromFirebase(
+      String recipeName, String userId) async {
+    try {
+      final CollectionReference publicCreatedRecipesCollection =
+          FirebaseFirestore.instance.collection('created recipes');
 
-  //     //Overwrite the image
-  //     await uploadImageToFirebase(image: newImage, recipeName: recipeName);
+      // Query for the recipe with the given name and userId
+      final QuerySnapshot<Object?> snapshot =
+          await publicCreatedRecipesCollection
+              .where('title', isEqualTo: recipeName)
+              .where('userId', isEqualTo: userId)
+              .get();
 
-  //     String newImageUrl = await getImageUrl(recipeName);
-  //     //update the imageUrl field in the recipes collection in Firebase Firestore
-  //     final DocumentReference recipeDocRef = FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(userId)
-  //         .collection('created recipes')
-  //         .doc(recipeName);
-  //     await recipeDocRef.update({'imageUrl': newImageUrl});
-  //   } catch (e) {
-  //     throw Exception('Failed to update image in Firebase: $e');
-  //   }
-  // }
+      // Delete the recipe if it exists
+      if (snapshot.docs.isNotEmpty) {
+        final DocumentReference documentReference =
+            snapshot.docs.first.reference;
+        await documentReference.delete();
+      }
+    } catch (e) {
+      throw Exception('Failed to delete the recipe: $e');
+    }
+  }
+
+  //todo
+//use this for recipes that are in the public collection that have been verified
+  Future<void> deletePublicVerifiedRecipeFromFirebase(
+      String recipeName, String userId) async {
+    try {
+      final CollectionReference publicCreatedRecipesCollection =
+          FirebaseFirestore.instance.collection('verified-created-recipes');
+
+      // Query for the recipe with the given name and userId
+      final QuerySnapshot<Object?> snapshot =
+          await publicCreatedRecipesCollection
+              .where('title', isEqualTo: recipeName)
+              .where('userId', isEqualTo: userId)
+              .get();
+
+      // Delete the recipe if it exists
+      if (snapshot.docs.isNotEmpty) {
+        final DocumentReference documentReference =
+            snapshot.docs.first.reference;
+        await documentReference.delete();
+      }
+    } catch (e) {
+      throw Exception('Failed to delete the recipe: $e');
+    }
+  }
 }

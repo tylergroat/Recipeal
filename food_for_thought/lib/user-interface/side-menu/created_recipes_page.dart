@@ -236,47 +236,29 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                       Navigator.pop(context);
                                     },
                                   ),
-                                  TextButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 244, 4, 4)),
-                                    child: Text(
-                                      "Confirm",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      Map<String, dynamic> createdRecipe = {
-                                        'title': recipes[index].name,
-                                        'servings': recipes[index].servings,
-                                        'ingredients':
-                                            recipes[index].ingredients,
-                                        'cookInstructions':
-                                            recipes[index].cookInstructions,
-                                        'cookTime': recipes[index].totalTime,
-                                        'thumbnailUrl': recipes[index].image,
-                                      };
-                                      //Add this created recipe to the pinned recipes doc in firebase
-                                      FirebaseFirestore.instance
-                                          .collection("users")
-                                          .doc(uid)
-                                          .collection('pinned recipes')
-                                          .doc(recipes[index].name)
-                                          .set(createdRecipe);
-                                      getRecipes();
-                                      setState(() {});
-                                    },
-                                  )
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      );
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                    //if the recipe is private only, delete the image from storage
+                                    //else (the recipe is public and verified), keep the image in storage because it is still being used by the public verified recipe
+                                    if(!(await publicVerifiedRecipeExists(recipes[index].name, user!.uid))){
+                                      //if public recipe does not exist, this deletes the image from storage
+                                    deleteImageFromFirebaseByUrl(
+                                        recipes[index].image);
+                                    }
+                                    //delete the recipe from private collection
+                                    deletePrivateRecipeFromFirebase(
+                                        recipeName: recipes[index].name);
+                                    //refresh the array after deleting the recipe
+                                    getRecipes();
+                                    setState(() {});
+                                  },
+                                )
+                              ],
+                            );
+                          });
                     },
-                  ),
+                  );
+                }),
       ),
     );
   }
