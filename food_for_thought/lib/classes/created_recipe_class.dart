@@ -198,7 +198,7 @@ mixin CreatedRecipeMixin {
     }
   }
 
-  //todo
+
 //use this for recipes that are in the public collection that have been verified
   Future<void> deletePublicVerifiedRecipeFromFirebase(
       String recipeName, String userId) async {
