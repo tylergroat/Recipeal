@@ -4,6 +4,7 @@ import 'package:food_for_thought/user-interface/feed/feed_page.dart';
 import 'package:food_for_thought/user-interface/side-menu/side_menu.dart';
 import 'package:food_for_thought/user-interface/recommendations_page.dart';
 import 'package:food_for_thought/user-interface/create-recipes/create_recipe_page.dart';
+import 'package:food_for_thought/user-interface/side-menu/verified_created_recipes_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class HomePageState extends State<HomePage> {
     RecipeCreation(),
     FeedPage(),
     RecommendationPage(),
+    CommunityFeedPage(),
   ];
 
   static const logOutMessage = SnackBar(
@@ -68,6 +70,10 @@ class HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.recommend),
             label: 'Recommendations',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.verified_rounded),
+            label: 'Community Recipes ',
           ),
         ],
         currentIndex: selectedIndex,
