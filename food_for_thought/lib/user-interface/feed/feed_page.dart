@@ -9,6 +9,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/api_config.dart';
 
 //class to define how the recipe feed is presented to the user -- Implemented by : Gavin Fromm
+//Tags for Filtering system Implemented by : Jaideep Chunduri
 
 class FeedPage extends StatefulWidget {
   @override

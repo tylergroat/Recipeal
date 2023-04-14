@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+
+// Help page implemented by : Jaideep Chunduri
 class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
