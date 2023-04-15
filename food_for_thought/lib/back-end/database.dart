@@ -108,28 +108,6 @@ class DatabaseService {
     return recipes;
   }
 
-  //returns a specific user's public created recipes that have not yet been verified
-static Future<List<PublicCreatedRecipe>> getMyCreatedRecipesForVerification(
-      String userId) async {
-    late List<PublicCreatedRecipe> recipes = [];
-    final docs = await FirebaseFirestore.instance
-        .collection("created recipes")
-        .where("userId", isEqualTo: userId)
-        .get();
-
-    print('Number of docs returned: ${docs.docs.length}');
-
-    for (var docSnapshot in docs.docs) {
-      print('Adding recipe: ${docSnapshot.data()}');
-      recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
-    }
-
-    print('Number of recipes added: ${recipes.length}');
-
-    return recipes;
-  }
-
-
 //returns all verified created recipes
   static Future<List<CreatedRecipe>> getVerifiedCreatedRecipes() async {
     late List<CreatedRecipe> recipes = [];
@@ -149,7 +127,7 @@ static Future<List<PublicCreatedRecipe>> getMyCreatedRecipesForVerification(
     return recipes;
   }
 
-  //returns a specific user's verified created recipes
+  // //returns a specific user's verified created recipes
   static Future<List<PublicCreatedRecipe>> getMyVerifiedCreatedRecipes(
       String userId) async {
     late List<PublicCreatedRecipe> recipes = [];
@@ -167,6 +145,27 @@ static Future<List<PublicCreatedRecipe>> getMyCreatedRecipesForVerification(
       },
       onError: (e) => print("Error completing: $e"),
     );
+
+    return recipes;
+  }
+
+  //returns a specific user's public created recipes that have not yet been verified
+  static Future<List<PublicCreatedRecipe>> getMyCreatedRecipesForVerification(
+      String userId) async {
+    late List<PublicCreatedRecipe> recipes = [];
+    final docs = await FirebaseFirestore.instance
+        .collection("created recipes")
+        .where("userId", isEqualTo: userId)
+        .get();
+
+    print('Number of docs returned: ${docs.docs.length}');
+
+    for (var docSnapshot in docs.docs) {
+      print('Adding recipe: ${docSnapshot.data()}');
+      recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
+    }
+
+    print('Number of recipes added: ${recipes.length}');
 
     return recipes;
   }
