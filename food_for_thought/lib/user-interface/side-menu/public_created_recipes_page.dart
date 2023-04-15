@@ -8,28 +8,40 @@ import 'package:food_for_thought/classes/created_recipe_class.dart';
 import 'package:food_for_thought/user-interface/create-recipes/created_recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
+import '../../classes/public_created_recipe_class.dart';
+import '../create-recipes/public_created_recipe_card.dart';
+
 //Page for viewing your created recipes
 
-class CreatedRecipesPage extends StatefulWidget {
+class PublicCreatedRecipesPage extends StatefulWidget {
   @override
-  CreatedRecipesPageState createState() => CreatedRecipesPageState();
+  PublicCreatedRecipesPageState createState() =>
+      PublicCreatedRecipesPageState();
 }
 
 //Class with mixin CreatedRecipe because it can edit and delete created recipes
-class CreatedRecipesPageState extends State<CreatedRecipesPage>
+class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
     with CreatedRecipeMixin {
-  late List<CreatedRecipe> verifiedRecipes = [];
-  late List<CreatedRecipe> pendingRecipes = [];
+  List<PublicCreatedRecipe> verifiedRecipes = [];
+  List<PublicCreatedRecipe> pendingRecipes = [];
   String uid = FirebaseAuth.instance.currentUser!.uid;
-  String searchValue = '';
-  String createdRecipes = 'created recipes';
   bool loaded = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(Duration(seconds: 5),
+        () async => {await getVerifiedRecipes(), await getPendingRecipes()});
+    for (int i = 0; i < pendingRecipes.length; i++) {
+      print(pendingRecipes[i]);
+    }
+  }
 
   //Load the created recipes from firebase
   Future<void> getVerifiedRecipes() async {
     verifiedRecipes = await DatabaseService.getMyVerifiedCreatedRecipes(uid);
     setState(() {
-      verifiedRecipes;
+      verifiedRecipes = verifiedRecipes;
       loaded = false;
     });
   }
@@ -39,16 +51,9 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
     pendingRecipes =
         await DatabaseService.getMyCreatedRecipesForVerification(uid);
     setState(() {
-      pendingRecipes;
+      pendingRecipes = pendingRecipes;
       loaded = false;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Timer(Duration(seconds: 2),
-        () => {getVerifiedRecipes(), getPendingRecipes()});
   }
 
   @override
@@ -120,12 +125,12 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
           backgroundColor: Color.fromARGB(255, 244, 4, 4),
           foregroundColor: Colors.white,
           title: Center(
-            child: Text('Created Recipes',
+            child: Text('My Public Recipes',
                 style: TextStyle(
                     color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
           ),
           onSearch: (value) {
-            setState(() => searchValue = value);
+            // setState(() => searchValue = value);
             // searchByTitle(value);
           },
         ),
@@ -145,7 +150,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                           itemCount: verifiedRecipes.length,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
-                              child: CreatedRecipeCard(
+                              child: PublicCreatedRecipeCard(
                                 title: verifiedRecipes[index].name,
                                 servings: verifiedRecipes[index].servings,
                                 ingredients: verifiedRecipes[index].ingredients,
@@ -153,6 +158,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                     verifiedRecipes[index].cookInstructions,
                                 cookTime: verifiedRecipes[index].totalTime,
                                 thumbnailUrl: verifiedRecipes[index].image,
+                                userId: verifiedRecipes[index].userId,
                               ),
                               onLongPress: () {
                                 print(verifiedRecipes[index].name);
@@ -213,7 +219,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                           itemCount: pendingRecipes.length,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
-                              child: CreatedRecipeCard(
+                              child: PublicCreatedRecipeCard(
                                 title: verifiedRecipes[index].name,
                                 servings: verifiedRecipes[index].servings,
                                 ingredients: verifiedRecipes[index].ingredients,
@@ -221,6 +227,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                     verifiedRecipes[index].cookInstructions,
                                 cookTime: verifiedRecipes[index].totalTime,
                                 thumbnailUrl: verifiedRecipes[index].image,
+                                userId: verifiedRecipes[index].userId,
                               ),
                               onLongPress: () {
                                 print(verifiedRecipes[index].name);

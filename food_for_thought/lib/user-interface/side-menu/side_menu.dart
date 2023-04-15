@@ -9,6 +9,7 @@ import 'package:food_for_thought/user-interface/side-menu/liked_recipes_page.dar
 import 'about_us_page.dart';
 import '../../back-end/authentification.dart';
 import '../user-functions/login_page.dart';
+import 'public_created_recipes_page.dart';
 
 //class that defines the side bar menu of the applicaton -- Implemeted by : Gavin Fromm
 
@@ -125,13 +126,13 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              Icons.create,
-              color: Colors.green,
+              Icons.verified,
+              color: Colors.blue,
             ),
             title: Text('My Public Recipes'),
             onTap: () => {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => CreatedRecipesPage()))
+                  MaterialPageRoute(builder: (_) => PublicCreatedRecipesPage()))
             },
           ),
           ListTile(

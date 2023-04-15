@@ -33,6 +33,7 @@ class CreatedRecipe {
         image: data?['thumbnailUrl'],
         totalTime: data?['cookTime']);
   }
+  
 }
 
 mixin CreatedRecipeMixin {
