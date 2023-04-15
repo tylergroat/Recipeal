@@ -430,7 +430,7 @@ class ViewPinnedRecipesPageState extends State<ViewPinnedRecipesPage> {
               ),
             )
           : recipes.isEmpty
-              ? Center(child: Text('No Liked Recipes'))
+              ? Center(child: Text('No Pinned Recipes'))
               : Scrollbar(
                   interactive: true,
                   thumbVisibility: true,
