@@ -195,12 +195,10 @@ class FeedPageState extends State<FeedPage> {
                         borderRadius: BorderRadius.circular(30),
                         radius: 30,
                         onTap: () {
-                          print('Current Index: $index Last Index: $lastIndex');
                           if (index >= lastIndex) {
                             index = 0;
                             getRecipes(selectedTag?.toLowerCase());
                             print('Getting ${selectedTag} recipes');
-                            print('API Call');
                           } else {
                             index++;
                             recipes.removeAt(index);
@@ -230,9 +228,6 @@ class FeedPageState extends State<FeedPage> {
                         borderRadius: BorderRadius.circular(30),
                         radius: 30,
                         onTap: () {
-                          print(
-                              'Current Index:  + $index Last Index: $lastIndex');
-
                           Map<String, dynamic> savedRecipe = {
                             'id': recipes[index].id,
                             'title': recipes[index].name,
@@ -257,11 +252,10 @@ class FeedPageState extends State<FeedPage> {
                               .set(savedRecipe);
 
                           if (index >= lastIndex) {
-                            print(index);
                             index = 0;
                             getRecipes(selectedTag?.toLowerCase());
                             print('Getting : ${selectedTag} recipes');
-                            print('API Call');
+                            ;
                           } else {
                             recipes.removeAt(index);
                             index++;

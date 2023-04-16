@@ -131,7 +131,7 @@ class _RecipeCardState extends State<RecipeCard> {
                     ),
                     child: Row(
                       children: [
-                        widget.isDairyFree
+                        widget.isVeryHealthy
                             ? Icon(
                                 Icons.check_circle,
                                 color: Colors.green,
@@ -144,7 +144,7 @@ class _RecipeCardState extends State<RecipeCard> {
                           width: 5,
                         ),
                         Text(
-                          'Dairy Free',
+                          'Healthy',
                           style: TextStyle(color: Colors.white),
                         ),
                         SizedBox(
@@ -734,7 +734,7 @@ class _RecipeCardState extends State<RecipeCard> {
                               width: 5,
                             ),
                             Text(
-                              'Very Healthy',
+                              'Healthy',
                               style: TextStyle(color: Colors.white),
                             ),
                             SizedBox(
@@ -754,8 +754,6 @@ class _RecipeCardState extends State<RecipeCard> {
           ),
         ),
       ),
-      // front: buildFront(context),
-      // back: buildBack(context),
     );
   }
 
