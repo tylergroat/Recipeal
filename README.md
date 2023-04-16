@@ -7,7 +7,11 @@ Recipe finding has become convoluted, and time consuming. The goal of this proje
 
 ## Technologies
 
-This app was developed using **Dart** and **Flutter**. One of the main reasons is because Flutter allows for seamless cross-platform development. Having the flexibility to choose your deployment platform proved very useful over the course of our project. Another reason for using this technology, was for the simple fact that it was new technology to each developer working on this project. We wanted to not only build a cool and orignal piece of software, but also the challenge and excitement of learning something new.
+This app was developed using **Dart** and **Flutter**. One of the main reasons is because Flutter allows for seamless cross-platform development. Having the flexibility to choose your deployment platform    proved very useful over the course of our project. Another reason for using this technology, was for the simple fact that it was new technology to each developer working on this project. We wanted to not only build a cool and orignal piece of software, but also the challenge and excitement of learning something new.
+
+We make use of the **Spoonacular API** to supply our application with recipe data.
+
+We use **Firebase** for our backend. We use the built in authentification features that firebase provides, as well as the NO-SQL Firestore database for data retention.
 
 ## Installation
 
