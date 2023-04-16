@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-
 import '../../back-end/database.dart';
 import '../create-recipes/created_recipe_card.dart';
 

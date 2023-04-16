@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/back-end/authentification.dart';
-import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/database.dart';
 import '../../classes/recipe_class.dart';

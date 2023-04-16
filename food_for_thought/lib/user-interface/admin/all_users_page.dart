@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/classes/user_class.dart';
 import 'package:food_for_thought/user-interface/user-functions/user_card.dart';

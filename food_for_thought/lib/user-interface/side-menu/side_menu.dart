@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_for_thought/user-interface/side-menu/help_page.dart';
 import 'package:food_for_thought/user-interface/side-menu/pinned_recipes_page.dart';
 import 'package:food_for_thought/user-interface/profile/profile_page.dart';
-import 'package:food_for_thought/read_data/get_user_name.dart';
+import 'package:food_for_thought/back-end/get_user_name.dart';
 import 'package:food_for_thought/user-interface/side-menu/created_recipes_page.dart';
 import 'package:food_for_thought/user-interface/side-menu/liked_recipes_page.dart';
 import 'about_us_page.dart';

@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
 import 'package:food_for_thought/user-interface/create-recipes/created_recipe_card.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 //Page for viewing your created recipes
 
@@ -169,10 +167,11 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                                     Navigator.pop(context);
                                     //if the recipe is private only, delete the image from storage
                                     //else (the recipe is public and verified), keep the image in storage because it is still being used by the public verified recipe
-                                    if(!(await publicVerifiedRecipeExists(recipes[index].name, user!.uid))){
+                                    if (!(await publicVerifiedRecipeExists(
+                                        recipes[index].name, user!.uid))) {
                                       //if public recipe does not exist, this deletes the image from storage
-                                    deleteImageFromFirebaseByUrl(
-                                        recipes[index].image);
+                                      deleteImageFromFirebaseByUrl(
+                                          recipes[index].image);
                                     }
                                     //delete the recipe from private collection
                                     deletePrivateRecipeFromFirebase(

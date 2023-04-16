@@ -1,3 +1,5 @@
+//class to facilitate operations involving recipes -- Implemeted by : Gavin Fromm
+
 class Nutrition {
   final String calories;
   final String carbs;
