@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import '../../classes/created_recipe_class.dart';
-import '../create-recipes/created_recipe_card.dart';
+import '../classes/created_recipe_class.dart';
+import 'create-recipes/created_recipe_card.dart';
 
 class CommunityFeedPage extends StatefulWidget {
   @override
