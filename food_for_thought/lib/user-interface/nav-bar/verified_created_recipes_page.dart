@@ -138,7 +138,10 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
               ],
             )
           : recipes.isEmpty
-              ? Center(child: Text('No Community Recipes Available'))
+              ? Center(child: Text('No Community Recipes Available',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
               : Scrollbar(
                   interactive: true,
                   thumbVisibility: true,

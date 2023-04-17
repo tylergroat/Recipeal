@@ -26,6 +26,7 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
   List<PublicCreatedRecipe> pendingRecipes = [];
   String uid = FirebaseAuth.instance.currentUser!.uid;
   bool loaded = true;
+  bool _showingMyVerifiedRecipes = true;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
     }
     setState(() {
       verifiedRecipes;
+      _showingMyVerifiedRecipes = false;
       loaded = false;
     });
   }
@@ -55,6 +57,7 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
     }
     setState(() {
       pendingRecipes;
+      _showingMyVerifiedRecipes = true;
       loaded = false;
     });
   }
@@ -137,14 +140,194 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
             // searchByTitle(value);
           },
         ),
-        body: body());
+        body: scaffoldBody());
   }
 
-  RefreshIndicator body() {
+  Widget scaffoldBody() {
+    return Scaffold(
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(80),
+            ),
+          ),
+          backgroundColor: Colors.grey,
+          toolbarHeight: 30,
+          centerTitle: true,
+          title: _showingMyVerifiedRecipes
+              ? Text(
+                  'Verified Recipes',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+                )
+              : Text(
+                  'Recipes Pending Verification',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+                ),
+          automaticallyImplyLeading: false,
+        ),
+        body: _showingMyVerifiedRecipes
+            ? verifiedRecipesBody()
+            : pendingRecipesBody(),
+        floatingActionButton: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 244, 4, 4),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: IconButton(
+            onPressed: _showingMyVerifiedRecipes
+                ? getVerifiedRecipes
+                : getPendingRecipes,
+            icon: _showingMyVerifiedRecipes
+                ? Icon(
+                    Icons.pending_actions,
+                    color: Colors.white,
+                    weight: 70,
+                    size: 35,
+                  )
+                : Icon(
+                    Icons.verified,
+                    color: Colors.white,
+                    weight: 70,
+                    size: 35,
+                  ),
+          ),
+        ));
+  }
+
+  RefreshIndicator verifiedRecipesBody() {
+    return RefreshIndicator(
+        onRefresh: () async {
+          await getPendingRecipes();
+          await getVerifiedRecipes();
+        },
+        child: loaded
+            ? Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 220,
+                    ),
+                    SizedBox(
+                      height: 70,
+                      width: 70,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.ballRotateChase,
+                        strokeWidth: 2,
+                        colors: [Color.fromARGB(255, 244, 4, 4)],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Loading Your Public Recipes...',
+                      style: TextStyle(
+                          color: Color.fromARGB(
+                            255,
+                            244,
+                            4,
+                            4,
+                          ),
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              )
+            : Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    // First child widget - Verified recipes ListView
+                    verifiedRecipes.isEmpty
+                        ? Center(child: Text('You Have No Verified Recipes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
+                        : Expanded(
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: verifiedRecipes.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  child: PublicCreatedRecipeCard(
+                                    title: verifiedRecipes[index].name,
+                                    servings: verifiedRecipes[index].servings,
+                                    ingredients:
+                                        verifiedRecipes[index].ingredients,
+                                    cookInstructions:
+                                        verifiedRecipes[index].cookInstructions,
+                                    cookTime: verifiedRecipes[index].totalTime,
+                                    thumbnailUrl: verifiedRecipes[index].image,
+                                    userId: verifiedRecipes[index].userId,
+                                  ),
+                                  onLongPress: () {
+                                    print(verifiedRecipes[index].name);
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text("Confirm"),
+                                            content: Text(
+                                                "Do you want to delete your ${verifiedRecipes[index].name} recipe from the public verified feed? This will not delete the recipe in your personal created recipes collection."),
+                                            actions: [
+                                              TextButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 244, 4, 4)),
+                                                child: Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              TextButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 244, 4, 4)),
+                                                child: Text(
+                                                  "Yes",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                onPressed: () async {
+                                                  Navigator.pop(context);
+                                                  //todo: delete the recipe from verified collection
+                                                  //todo: if the recipe does not exist in the personal collection, delete the image
+                                                  //refresh the array after deleting the recipe
+                                                  getPendingRecipes();
+                                                  getVerifiedRecipes();
+                                                  setState(() {});
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        });
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                  ])));
+  }
+
+  RefreshIndicator pendingRecipesBody() {
     return RefreshIndicator(
       onRefresh: () async {
-        getPendingRecipes();
-        getVerifiedRecipes();
+        await getPendingRecipes();
+        await getVerifiedRecipes();
       },
       child: loaded
           ? Center(
@@ -183,85 +366,13 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // First child widget - Verified recipes ListView
-                  verifiedRecipes.isEmpty
-                      ? Center(child: Text('You Have No Verified Recipes'))
-                      : Expanded(
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: verifiedRecipes.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                child: PublicCreatedRecipeCard(
-                                  title: verifiedRecipes[index].name,
-                                  servings: verifiedRecipes[index].servings,
-                                  ingredients:
-                                      verifiedRecipes[index].ingredients,
-                                  cookInstructions:
-                                      verifiedRecipes[index].cookInstructions,
-                                  cookTime: verifiedRecipes[index].totalTime,
-                                  thumbnailUrl: verifiedRecipes[index].image,
-                                  userId: verifiedRecipes[index].userId,
-                                ),
-                                onLongPress: () {
-                                  print(verifiedRecipes[index].name);
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text("Confirm"),
-                                          content: Text(
-                                              "Do you want to delete your ${verifiedRecipes[index].name} recipe from the public verified feed? This will not delete the recipe in your personal created recipes collection."),
-                                          actions: [
-                                            TextButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 244, 4, 4)),
-                                              child: Text(
-                                                "Cancel",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                            TextButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 244, 4, 4)),
-                                              child: Text(
-                                                "Yes",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              onPressed: () async {
-                                                Navigator.pop(context);
-                                                //todo: delete the recipe from verified collection
-                                                //todo: if the recipe does not exist in the personal collection, delete the image
-                                                //refresh the array after deleting the recipe
-                                                getPendingRecipes();
-                                                getVerifiedRecipes();
-                                                setState(() {});
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      });
-                                },
-                              );
-                            },
-                          ),
-                        ),
                   // Second child widget - Pending recipes ListView
                   pendingRecipes.isEmpty
-                      ? Center(child: Text('You Have No Pending Recipes'))
+                      ? Center(
+                          child: Text('You Have No Pending Recipes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
                       : Expanded(
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,

@@ -195,7 +195,10 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
               )
             : _showingFeedLikes
                 ? (recipes.isEmpty
-                    ? Center(child: Text('No Liked Recipes'))
+                    ? Center(child: Text('No Liked Recipes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
                     : Scrollbar(
                         interactive: true,
                         thumbVisibility: true,
@@ -356,7 +359,10 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                         ),
                       ))
                 : (publicRecipes.isEmpty
-                    ? Center(child: Text('No Liked Community Verified Recipes'))
+                    ? Center(child: Text('No Liked Community Recipes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
                     : Scrollbar(
                         interactive: true,
                         thumbVisibility: true,
@@ -385,7 +391,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                                       return AlertDialog(
                                         title: Text("Confirm"),
                                         content: Text(
-                                            "Are you sure you want to remove ${publicRecipes[index].name} from your liked community verified recipes?"),
+                                            "Are you sure you want to remove ${publicRecipes[index].name} from your liked community recipes?"),
                                         actions: [
                                           TextButton(
                                             style: ElevatedButton.styleFrom(
