@@ -5,8 +5,8 @@ import 'package:food_for_thought/classes/created_recipe_class.dart';
 import 'package:food_for_thought/classes/public_created_recipe_class.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/database.dart';
-import '../create-recipes/created_recipe_card.dart';
-import '../create-recipes/public_created_recipe_card.dart';
+import '../cards/created_recipe_card.dart';
+import '../cards/public_created_recipe_card.dart';
 
 //class to allow admin to apprive user created recipes -- Implemented by : Gavin Fromm
 

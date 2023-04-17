@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/back-end/database.dart';
+import 'package:food_for_thought/classes/user_class.dart';
 import 'package:food_for_thought/user-interface/side-menu/help_page.dart';
 import 'package:food_for_thought/user-interface/side-menu/pinned_recipes_page.dart';
 import 'package:food_for_thought/user-interface/profile/profile_page.dart';
@@ -73,9 +75,10 @@ class NavDrawer extends StatelessWidget {
               child: FutureBuilder(
                 builder: (context, snapshot) {
                   return SizedBox(
-                      width: 500,
-                      height: 100,
-                      child: GetUserName(documentID: user.uid));
+                    width: 500,
+                    height: 100,
+                    child: GetUserName(documentID: user.uid),
+                  );
                 },
               ),
             ),
@@ -157,16 +160,8 @@ class NavDrawer extends StatelessWidget {
                   context, MaterialPageRoute(builder: (_) => AboutUs()))
             },
           ),
-          // ListTile(
-          //   leading: Icon(Icons.settings),
-          //   title: Text('Settings'),
-          //   onTap: () => {
-          //     // Navigator.push(
-          //     //     context, MaterialPageRoute(builder: (_) => ChangeInfoPage()))
-          //   },
-          //),
           SizedBox(
-            height: 180,
+            height: 120,
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

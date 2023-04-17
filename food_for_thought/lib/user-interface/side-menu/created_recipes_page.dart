@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
-import 'package:food_for_thought/user-interface/create-recipes/created_recipe_card.dart';
+import 'package:food_for_thought/user-interface/cards/created_recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 //Page for viewing your created recipes

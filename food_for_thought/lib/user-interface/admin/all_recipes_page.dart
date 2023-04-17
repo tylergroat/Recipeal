@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/database.dart';
 import '../../classes/recipe_class.dart';
-import '../feed/recipe_card.dart';
+import '../cards/recipe_card.dart';
 
 //class to allow admin to apprive user created recipes -- Implemented by : Gavin Fromm
 

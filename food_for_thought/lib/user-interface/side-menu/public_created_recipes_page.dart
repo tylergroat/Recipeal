@@ -5,11 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
-import 'package:food_for_thought/user-interface/create-recipes/created_recipe_card.dart';
+import 'package:food_for_thought/user-interface/cards/created_recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 import '../../classes/public_created_recipe_class.dart';
-import '../create-recipes/public_created_recipe_card.dart';
+import '../cards/public_created_recipe_card.dart';
 
 //Page for viewing your created recipes
 
@@ -197,12 +197,10 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                                   servings: verifiedRecipes[index].servings,
                                   ingredients:
                                       verifiedRecipes[index].ingredients,
-                                  cookInstructions: verifiedRecipes[index]
-                                      .cookInstructions,
-                                  cookTime:
-                                      verifiedRecipes[index].totalTime,
-                                  thumbnailUrl:
-                                      verifiedRecipes[index].image,
+                                  cookInstructions:
+                                      verifiedRecipes[index].cookInstructions,
+                                  cookTime: verifiedRecipes[index].totalTime,
+                                  thumbnailUrl: verifiedRecipes[index].image,
                                   userId: verifiedRecipes[index].userId,
                                 ),
                                 onLongPress: () {
@@ -216,14 +214,10 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                                               "Do you want to delete your ${verifiedRecipes[index].name} recipe from the public verified feed? This will not delete the recipe in your personal created recipes collection."),
                                           actions: [
                                             TextButton(
-                                              style:
-                                                  ElevatedButton.styleFrom(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              255,
-                                                              244,
-                                                              4,
-                                                              4)),
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 244, 4, 4)),
                                               child: Text(
                                                 "Cancel",
                                                 style: TextStyle(
@@ -236,14 +230,10 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                                               },
                                             ),
                                             TextButton(
-                                              style:
-                                                  ElevatedButton.styleFrom(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              255,
-                                                              244,
-                                                              4,
-                                                              4)),
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 244, 4, 4)),
                                               child: Text(
                                                 "Yes",
                                                 style: TextStyle(
@@ -276,21 +266,17 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               itemCount: pendingRecipes.length,
-                              itemBuilder:
-                                  (BuildContext context, int index) {
+                              itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
                                   child: PublicCreatedRecipeCard(
                                     title: pendingRecipes[index].name,
-                                    servings:
-                                        pendingRecipes[index].servings,
+                                    servings: pendingRecipes[index].servings,
                                     ingredients:
                                         pendingRecipes[index].ingredients,
-                                    cookInstructions: pendingRecipes[index]
-                                        .cookInstructions,
-                                    cookTime:
-                                        pendingRecipes[index].totalTime,
-                                    thumbnailUrl:
-                                        pendingRecipes[index].image,
+                                    cookInstructions:
+                                        pendingRecipes[index].cookInstructions,
+                                    cookTime: pendingRecipes[index].totalTime,
+                                    thumbnailUrl: pendingRecipes[index].image,
                                     userId: pendingRecipes[index].userId,
                                   ),
                                   onLongPress: () {
@@ -304,14 +290,10 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                                                 "Do you want to remove your ${pendingRecipes[index].name} recipe from the verification process? You will still have this recipe in your personal created recipes collection."),
                                             actions: [
                                               TextButton(
-                                                style: ElevatedButton
-                                                    .styleFrom(
-                                                        backgroundColor:
-                                                            Color.fromARGB(
-                                                                255,
-                                                                244,
-                                                                4,
-                                                                4)),
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 244, 4, 4)),
                                                 child: Text(
                                                   "Cancel",
                                                   style: TextStyle(
@@ -324,14 +306,10 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                                                 },
                                               ),
                                               TextButton(
-                                                style: ElevatedButton
-                                                    .styleFrom(
-                                                        backgroundColor:
-                                                            Color.fromARGB(
-                                                                255,
-                                                                244,
-                                                                4,
-                                                                4)),
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 244, 4, 4)),
                                                 child: Text(
                                                   "Yes",
                                                   style: TextStyle(

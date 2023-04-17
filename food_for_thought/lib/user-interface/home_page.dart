@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_for_thought/user-interface/feed/feed_page.dart';
+import 'package:food_for_thought/user-interface/nav-bar/create_recipe_from_url_page.dart';
+import 'package:food_for_thought/user-interface/nav-bar/feed_page.dart';
 import 'package:food_for_thought/user-interface/side-menu/side_menu.dart';
-import 'package:food_for_thought/user-interface/recommendations_page.dart';
-import 'package:food_for_thought/user-interface/create-recipes/create_recipe_page.dart';
-import 'package:food_for_thought/user-interface/verified_created_recipes_page.dart';
+import 'package:food_for_thought/user-interface/nav-bar/recommendations_page.dart';
+import 'package:food_for_thought/user-interface/nav-bar/create_recipe_page.dart';
+import 'package:food_for_thought/user-interface/nav-bar/verified_created_recipes_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,11 +14,12 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser;
-  int selectedIndex = 1;
+  int selectedIndex = 2;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   final screens = [
+    CreateRecipeFromURLPage(),
     RecipeCreation(),
     FeedPage(),
     RecommendationPage(),
@@ -59,6 +61,10 @@ class HomePageState extends State<HomePage> {
         showUnselectedLabels: false,
         showSelectedLabels: false,
         items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.link),
+            label: 'NA',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.create),
             label: 'Create',

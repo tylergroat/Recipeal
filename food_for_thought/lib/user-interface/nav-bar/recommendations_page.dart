@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/recipe_class.dart';
-import 'package:food_for_thought/user-interface/feed/recipe_card.dart';
+import 'package:food_for_thought/user-interface/cards/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class RecommendationPage extends StatefulWidget {
@@ -222,6 +222,12 @@ class RecommendationPageState extends State<RecommendationPage> {
                         SizedBox(
                           height: 10,
                         ),
+                        SizedBox(
+                          width: 375,
+                          child: Divider(
+                            thickness: 2,
+                          ),
+                        )
                       ],
                     ),
                     onDoubleTap: () {
@@ -233,7 +239,7 @@ class RecommendationPageState extends State<RecommendationPage> {
                           return AlertDialog(
                             title: Text('Confirm'),
                             content: Text(
-                                'Do you want to add ${allRecipes[index].name} to your saved recipes?'),
+                                'Do you want to add ${allRecipes[index].name} to your liked recipes?'),
                             actions: [
                               TextButton(
                                 style: ElevatedButton.styleFrom(
