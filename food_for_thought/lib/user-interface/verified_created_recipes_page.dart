@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import '../../classes/created_recipe_class.dart';
-import '../create-recipes/created_recipe_card.dart';
+import '../classes/created_recipe_class.dart';
+import 'create-recipes/created_recipe_card.dart';
 
 class CommunityFeedPage extends StatefulWidget {
   @override
@@ -82,13 +80,13 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
         automaticallyImplyLeading: false,
       ),
       body: _isLoading
-          ? Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 220,
-                  ),
-                  SizedBox(
+          ? Column(
+              children: [
+                SizedBox(
+                  height: 220,
+                ),
+                Center(
+                  child: SizedBox(
                     height: 70,
                     width: 70,
                     child: LoadingIndicator(
@@ -97,52 +95,54 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
                       colors: [Color.fromARGB(255, 244, 4, 4)],
                     ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Loading Community Recipes...',
-                    style: TextStyle(
-                        color: Color.fromARGB(
-                          255,
-                          244,
-                          4,
-                          4,
-                        ),
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'Loading Community Recipes...',
+                  style: TextStyle(
+                      color: Color.fromARGB(
+                        255,
+                        244,
+                        4,
+                        4,
+                      ),
+                      fontWeight: FontWeight.bold),
+                )
+              ],
             )
-          : Scrollbar(
-              interactive: true,
-              thumbVisibility: true,
-              thickness: 8,
-              radius: Radius.circular(12),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: recipes.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    child: Column(
-                      children: [
-                        CreatedRecipeCard(
-                          title: recipes[index].name,
-                          servings: recipes[index].servings,
-                          ingredients: recipes[index].ingredients,
-                          cookInstructions: recipes[index].cookInstructions,
-                          cookTime: recipes[index].totalTime,
-                          thumbnailUrl: recipes[index].image,
+          : recipes.isEmpty
+              ? Center(child: Text('No Community Recipes Available'))
+              : Scrollbar(
+                  interactive: true,
+                  thumbVisibility: true,
+                  thickness: 8,
+                  radius: Radius.circular(12),
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: recipes.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        child: Column(
+                          children: [
+                            CreatedRecipeCard(
+                              title: recipes[index].name,
+                              servings: recipes[index].servings,
+                              ingredients: recipes[index].ingredients,
+                              cookInstructions: recipes[index].cookInstructions,
+                              cookTime: recipes[index].totalTime,
+                              thumbnailUrl: recipes[index].image,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                      );
+                    },
+                  ),
+                ),
     );
   }
 }

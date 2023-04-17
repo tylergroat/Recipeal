@@ -1,4 +1,4 @@
-# food_for_thought
+# Recipeal
 
 A new Flutter project.
 

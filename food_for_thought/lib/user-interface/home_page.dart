@@ -4,7 +4,7 @@ import 'package:food_for_thought/user-interface/feed/feed_page.dart';
 import 'package:food_for_thought/user-interface/side-menu/side_menu.dart';
 import 'package:food_for_thought/user-interface/recommendations_page.dart';
 import 'package:food_for_thought/user-interface/create-recipes/create_recipe_page.dart';
-import 'package:food_for_thought/user-interface/side-menu/verified_created_recipes_page.dart';
+import 'package:food_for_thought/user-interface/verified_created_recipes_page.dart';
 
 class HomePage extends StatefulWidget {
   @override

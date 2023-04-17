@@ -2,7 +2,6 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -197,7 +196,6 @@ mixin CreatedRecipeMixin {
       throw Exception('Failed to delete the recipe: $e');
     }
   }
-
 
 //use this for recipes that are in the public collection that have been verified
   Future<void> deletePublicVerifiedRecipeFromFirebase(
