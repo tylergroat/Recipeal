@@ -83,14 +83,35 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
       ),
       body: _isLoading
           ? Center(
-              child: SizedBox(
-                height: 70,
-                width: 70,
-                child: LoadingIndicator(
-                  indicatorType: Indicator.ballRotateChase,
-                  strokeWidth: 2,
-                  colors: [Color.fromARGB(255, 244, 4, 4)],
-                ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 220,
+                  ),
+                  SizedBox(
+                    height: 70,
+                    width: 70,
+                    child: LoadingIndicator(
+                      indicatorType: Indicator.ballRotateChase,
+                      strokeWidth: 2,
+                      colors: [Color.fromARGB(255, 244, 4, 4)],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Loading Community Recipes...',
+                    style: TextStyle(
+                        color: Color.fromARGB(
+                          255,
+                          244,
+                          4,
+                          4,
+                        ),
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               ),
             )
           : Scrollbar(
