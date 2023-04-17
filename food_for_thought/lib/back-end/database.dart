@@ -28,7 +28,9 @@ class DatabaseService {
 
     return recipes;
   }
-  static Future<List<PublicCreatedRecipe>> getPublicCreatedRecipes(String uid, String path) async {
+
+  static Future<List<PublicCreatedRecipe>> getPublicCreatedRecipes(
+      String uid, String path) async {
     late List<PublicCreatedRecipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
@@ -109,7 +111,8 @@ class DatabaseService {
   }
 
 //returns all created recipes that have not yet been verified
-  static Future<List<PublicCreatedRecipe>> getCreatedRecipesForVerification() async {
+  static Future<List<PublicCreatedRecipe>>
+      getCreatedRecipesForVerification() async {
     late List<PublicCreatedRecipe> recipes = [];
     final docs = FirebaseFirestore.instance.collection("created recipes").get();
 
@@ -355,6 +358,19 @@ class DatabaseService {
       user = UserInformation.fromFirestore(querySnapshot);
     });
     return user;
+  }
+
+  static Future<String> getUsersName(String uid) async {
+    late UserInformation user;
+    String name = '';
+    final doc = FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+    await doc.then((querySnapshot) {
+      user = UserInformation.fromFirestore(querySnapshot);
+      name = user.firstName;
+    });
+    print(name);
+    return name;
   }
 
   static Future<List<UserInformation>> getAllUsers() async {

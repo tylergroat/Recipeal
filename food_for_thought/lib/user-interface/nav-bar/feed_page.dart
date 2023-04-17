@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/classes/recipe_class.dart';
-import 'package:food_for_thought/user-interface/feed/recipe_card.dart';
+import 'package:food_for_thought/user-interface/cards/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/api_config.dart';
 
@@ -289,7 +289,10 @@ class FeedPageState extends State<FeedPage> {
   AppBar appBar() {
     return AppBar(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(80),
+        ),
+      ),
       backgroundColor: Colors.grey,
       toolbarHeight: 30,
       centerTitle: true,

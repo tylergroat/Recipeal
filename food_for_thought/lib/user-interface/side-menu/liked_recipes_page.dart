@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/classes/public_created_recipe_class.dart';
 import 'package:food_for_thought/classes/recipe_class.dart';
-import 'package:food_for_thought/user-interface/create-recipes/public_created_recipe_card.dart';
-import 'package:food_for_thought/user-interface/feed/recipe_card.dart';
+import 'package:food_for_thought/user-interface/cards/public_created_recipe_card.dart';
+import 'package:food_for_thought/user-interface/cards/recipe_card.dart';
 import '../../back-end/database.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 

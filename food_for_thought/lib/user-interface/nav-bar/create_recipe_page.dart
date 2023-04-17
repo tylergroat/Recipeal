@@ -185,7 +185,7 @@ class RecipeCreationState extends State<RecipeCreation>
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(80))),
           backgroundColor: Colors.grey,
-          toolbarHeight: 35,
+          toolbarHeight: 30,
           centerTitle: true,
           title: Text(
             'Create a Recipe',
