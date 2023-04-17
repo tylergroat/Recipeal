@@ -1,13 +1,11 @@
 import 'dart:async';
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/api_config.dart';
 import 'package:food_for_thought/user-interface/cards/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-
-import '../../back-end/authentification.dart';
 import '../../classes/recipe_class.dart';
 
 class CreateRecipeFromURLPage extends StatefulWidget {
@@ -17,6 +15,7 @@ class CreateRecipeFromURLPage extends StatefulWidget {
 
 class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
   TextEditingController urlController = TextEditingController();
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   final emptyInput = MaterialBanner(
     backgroundColor: Colors.transparent,
@@ -82,6 +81,27 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                      width: 100,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Color.fromARGB(255, 244, 4, 4)),
+                      child: TextButton(
+                        onPressed: () {
+                          urlController.clear();
+                        },
+                        child: Text(
+                          'Clear',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
                       width: 150,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -121,46 +141,41 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      width: 100,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color.fromARGB(255, 244, 4, 4)),
-                      child: TextButton(
-                        onPressed: () {
-                          urlController.clear();
-                        },
-                        child: Text(
-                          'Clear',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 loaded
                     ? Text('')
                     : loading
-                        ? Column(children: [
-                            SizedBox(
-                              height: 150,
-                            ),
-                            SizedBox(
-                              height: 70,
-                              width: 70,
-                              child: LoadingIndicator(
-                                indicatorType: Indicator.ballRotateChase,
-                                strokeWidth: 2,
-                                colors: [Color.fromARGB(255, 244, 4, 4)],
+                        ? Column(
+                            children: [
+                              SizedBox(
+                                height: 150,
                               ),
-                            ),
-                          ])
+                              SizedBox(
+                                height: 70,
+                                width: 70,
+                                child: LoadingIndicator(
+                                  indicatorType: Indicator.ballRotateChase,
+                                  strokeWidth: 2,
+                                  colors: [Color.fromARGB(255, 244, 4, 4)],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'Extracting...',
+                                style: TextStyle(
+                                    color: Color.fromARGB(
+                                      255,
+                                      244,
+                                      4,
+                                      4,
+                                    ),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )
                         : Column(
                             children: [
                               RecipeCard(
@@ -183,11 +198,17 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
+                                    width: 100,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         color: Color.fromARGB(255, 244, 4, 4)),
                                     child: TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        urlController.clear();
+                                        setState(() {
+                                          loaded = true;
+                                        });
+                                      },
                                       child: Text(
                                         'Delete',
                                         style: TextStyle(
@@ -201,11 +222,87 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                                     width: 10,
                                   ),
                                   Container(
+                                    width: 200,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         color: Color.fromARGB(255, 244, 4, 4)),
                                     child: TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Map<String, dynamic> savedRecipe = {
+                                          'id': extractedRecipe[0].id,
+                                          'title': extractedRecipe[0].name,
+                                          'servings':
+                                              extractedRecipe[0].servings,
+                                          'ingredients':
+                                              extractedRecipe[0].ingredients,
+                                          'preparationSteps': extractedRecipe[0]
+                                              .preparationSteps,
+                                          'cookTime':
+                                              extractedRecipe[0].totalTime,
+                                          'thumbnailUrl':
+                                              extractedRecipe[0].images,
+                                          'isVegetarian':
+                                              extractedRecipe[0].isVegetarian,
+                                          'isVegan': extractedRecipe[0].isVegan,
+                                          'isGlutenFree':
+                                              extractedRecipe[0].isGlutenFree,
+                                          'isDairyFree':
+                                              extractedRecipe[0].isDairyFree,
+                                          'isVeryHealthy':
+                                              extractedRecipe[0].isVeryHealthy,
+                                          'isPopular':
+                                              extractedRecipe[0].isPopular,
+                                        };
+
+                                        db
+                                            .collection("users")
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .collection("saved recipes")
+                                            .doc(extractedRecipe[0].name)
+                                            .set(savedRecipe);
+
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Recipe Added"),
+                                              content: Text(
+                                                  "Your recipe has been added successfully!"),
+                                              actions: [
+                                                Container(
+                                                  width: 70,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: Color.fromARGB(
+                                                        255, 244, 4, 4),
+                                                  ),
+                                                  child: TextButton(
+                                                    child: Text(
+                                                      "Ok",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+
+                                        setState(() {
+                                          loaded = true;
+                                        });
+                                      },
                                       child: Text(
                                         'Add to Liked Recipes',
                                         style: TextStyle(
