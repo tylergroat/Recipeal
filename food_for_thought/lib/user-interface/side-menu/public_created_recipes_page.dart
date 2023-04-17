@@ -257,7 +257,7 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                                                 //todo: if the recipe does not exist in the personal collection, delete the image
                                                 //refresh the array after deleting the recipe
                                                 getPendingRecipes();
-                                                // getVerifiedRecipes();
+                                                getVerifiedRecipes();
                                                 setState(() {});
                                               },
                                             )
