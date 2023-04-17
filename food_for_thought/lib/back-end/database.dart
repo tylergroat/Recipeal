@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_for_thought/classes/recipe_class.dart';
 import 'package:food_for_thought/classes/user_class.dart';
-
 import '../classes/created_recipe_class.dart';
 import '../classes/public_created_recipe_class.dart';
 

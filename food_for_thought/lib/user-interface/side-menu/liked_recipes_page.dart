@@ -20,7 +20,9 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String searchValue = '';
   String savedRecipes = 'saved recipes';
+  String likedRecipes = 'liked recipe (user created)';
   bool loaded = true;
+  bool userCreated = false;
 
   @override
   void initState() {
@@ -34,6 +36,14 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
     setState(() {
       recipes;
       loaded = false;
+    });
+  }
+
+  Future<void> getUserCreatedRecipes() async {
+    recipes = await DatabaseService.getRecipes(uid, likedRecipes);
+    setState(() {
+      recipes;
+      userCreated = true;
     });
   }
 

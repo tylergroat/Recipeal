@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:food_for_thought/back-end/authentification.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
 import 'package:food_for_thought/user-interface/admin/all_recipes_page.dart';
 import 'package:food_for_thought/user-interface/admin/created_recipes_approval_page.dart';
-import 'package:food_for_thought/user-interface/home_page.dart';
 import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
