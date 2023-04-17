@@ -38,10 +38,9 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
         );
         recipes.add(recipe);
       }
-      setState(() {});
-    });
-    setState(() {
-      _isLoading = false;
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 
@@ -63,10 +62,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
         ),
         child: IconButton(
           onPressed: () {
-            setState(() {
-              _isLoading = true;
-              recipes.clear();
-            });
+            recipes.clear();
             getRecipes();
           },
           icon: Icon(
