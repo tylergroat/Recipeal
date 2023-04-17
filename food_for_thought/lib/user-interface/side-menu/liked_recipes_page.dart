@@ -228,53 +228,54 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                               onLongPress: () {
                                 print(recipes[index].name);
                                 showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text("Confirm"),
-                                        content: Text(
-                                            "Are you sure you want to remove ${recipes[index].name} from your liked recipes?"),
-                                        actions: [
-                                          TextButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 244, 4, 4)),
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Confirm"),
+                                      content: Text(
+                                          "Are you sure you want to remove ${recipes[index].name} from your liked recipes?"),
+                                      actions: [
+                                        TextButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 244, 4, 4)),
+                                          child: Text(
+                                            "Cancel",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          TextButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 244, 4, 4)),
-                                            child: Text(
-                                              "Delete",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              final docs = FirebaseFirestore
-                                                  .instance
-                                                  .collection("users")
-                                                  .doc(uid)
-                                                  .collection('saved recipes')
-                                                  .doc(recipes[index].name)
-                                                  .delete();
-                                              getRecipes();
-                                              setState(() {});
-                                            },
-                                          )
-                                        ],
-                                      );
-                                    }); // show the dialog
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        TextButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 244, 4, 4)),
+                                          child: Text(
+                                            "Delete",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            final docs = FirebaseFirestore
+                                                .instance
+                                                .collection("users")
+                                                .doc(uid)
+                                                .collection('saved recipes')
+                                                .doc(recipes[index].name)
+                                                .delete();
+                                            getRecipes();
+                                            setState(() {});
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  },
+                                ); // show the dialog
                                 // print(recipes[index].name);
                               },
                               onDoubleTap: () {
