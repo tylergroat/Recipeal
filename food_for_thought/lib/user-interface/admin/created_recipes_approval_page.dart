@@ -124,7 +124,9 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
                                               createdRecipes[index].ingredients,
                                           'title': createdRecipes[index].name,
                                           'thumbnailUrl':
-                                              createdRecipes[index].image
+                                              createdRecipes[index].image,
+                                          'userId':
+                                              createdRecipes[index].userId,
                                         };
                                         FirebaseFirestore.instance
                                             .collection(
