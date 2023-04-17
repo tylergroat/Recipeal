@@ -28,6 +28,26 @@ class DatabaseService {
 
     return recipes;
   }
+  static Future<List<PublicCreatedRecipe>> getPublicCreatedRecipes(String uid, String path) async {
+    late List<PublicCreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection(path)
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
 
   static Future<List<Recipe>> getStoredRecipes() async {
     late List<Recipe> recipes = [];
