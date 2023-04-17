@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
+import 'package:food_for_thought/classes/public_created_recipe_class.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/database.dart';
 import '../create-recipes/created_recipe_card.dart';
@@ -18,7 +19,7 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final user = FirebaseAuth.instance.currentUser!;
   String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-  List<CreatedRecipe> createdRecipes = [];
+  List<PublicCreatedRecipe> createdRecipes = [];
   bool loaded = true;
 
   Future<void> getRecipes() async {
