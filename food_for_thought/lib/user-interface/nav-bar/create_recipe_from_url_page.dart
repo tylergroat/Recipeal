@@ -34,11 +34,13 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
 
   List<Recipe> extractedRecipe = [];
   bool loaded = true;
-  bool loading = false;
+  bool loading = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton: floatingIcon(context),
         appBar: AppBar(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -61,7 +63,7 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 SizedBox(
                   width: 350,
@@ -108,17 +110,22 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                           color: Color.fromARGB(255, 244, 4, 4)),
                       child: TextButton(
                         onPressed: () async {
-                          setState(() {
-                            loading = true;
-                          });
                           if (urlController.value.text.isNotEmpty) {
+                            setState(() {
+                              loaded = false;
+                              loading = true;
+                            });
                             extractedRecipe = await RecipeApi.extractFromUrl(
                                 urlController.value.text);
                             if (extractedRecipe.isNotEmpty) {
-                              setState(() {
-                                loading = false;
-                                loaded = false;
-                              });
+                              Timer(
+                                Duration(seconds: 2),
+                                () => setState(
+                                  () {
+                                    loading = false;
+                                  },
+                                ),
+                              );
                             } else {
                               print('error creating recipe');
                             }
@@ -204,6 +211,7 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                                         color: Color.fromARGB(255, 244, 4, 4)),
                                     child: TextButton(
                                       onPressed: () {
+                                        extractedRecipe.clear();
                                         urlController.clear();
                                         setState(() {
                                           loaded = true;
@@ -323,5 +331,56 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
             ),
           ),
         ));
+  }
+
+  Container floatingIcon(BuildContext context) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 244, 4, 4),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Information"),
+                content: Text(
+                    "Find any recipe, from any website URL, and we will try our best to extract, and create a recipe in our beloved format!"),
+                actions: [
+                  Container(
+                    width: 70,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Color.fromARGB(255, 244, 4, 4),
+                    ),
+                    child: TextButton(
+                      child: Text(
+                        "Ok",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  )
+                ],
+              );
+            },
+          );
+        },
+        icon: Icon(
+          Icons.info_sharp,
+          color: Colors.white,
+          weight: 70,
+          size: 35,
+        ),
+      ),
+    );
   }
 }
