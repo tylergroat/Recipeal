@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
+import 'package:food_for_thought/classes/public_created_recipe_class.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/database.dart';
 import '../create-recipes/created_recipe_card.dart';
+import '../create-recipes/public_created_recipe_card.dart';
 
 //class to allow admin to apprive user created recipes -- Implemented by : Gavin Fromm
 
@@ -18,7 +20,7 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final user = FirebaseAuth.instance.currentUser!;
   String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-  List<CreatedRecipe> createdRecipes = [];
+  List<PublicCreatedRecipe> createdRecipes = [];
   bool loaded = true;
 
   Future<void> getRecipes() async {
@@ -66,7 +68,7 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
                       itemCount: createdRecipes.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                          child: CreatedRecipeCard(
+                          child: PublicCreatedRecipeCard(
                             title: createdRecipes[index].name,
                             servings: createdRecipes[index].servings,
                             ingredients: createdRecipes[index].ingredients,
@@ -74,6 +76,7 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
                                 createdRecipes[index].cookInstructions,
                             cookTime: createdRecipes[index].totalTime,
                             thumbnailUrl: createdRecipes[index].image,
+                            userId: createdRecipes[index].userId,
                           ),
                           onDoubleTap: () {
                             showDialog(
@@ -123,7 +126,9 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
                                               createdRecipes[index].ingredients,
                                           'title': createdRecipes[index].name,
                                           'thumbnailUrl':
-                                              createdRecipes[index].image
+                                              createdRecipes[index].image,
+                                          'userId':
+                                              createdRecipes[index].userId,
                                         };
                                         FirebaseFirestore.instance
                                             .collection(

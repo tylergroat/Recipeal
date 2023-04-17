@@ -28,6 +28,26 @@ class DatabaseService {
 
     return recipes;
   }
+  static Future<List<PublicCreatedRecipe>> getPublicCreatedRecipes(String uid, String path) async {
+    late List<PublicCreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection(path)
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
 
   static Future<List<Recipe>> getStoredRecipes() async {
     late List<Recipe> recipes = [];
@@ -89,15 +109,15 @@ class DatabaseService {
   }
 
 //returns all created recipes that have not yet been verified
-  static Future<List<CreatedRecipe>> getCreatedRecipesForVerification() async {
-    late List<CreatedRecipe> recipes = [];
+  static Future<List<PublicCreatedRecipe>> getCreatedRecipesForVerification() async {
+    late List<PublicCreatedRecipe> recipes = [];
     final docs = FirebaseFirestore.instance.collection("created recipes").get();
 
     await docs.then(
       (querySnapshot) {
         print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
-          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+          recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
         }
       },
       onError: (e) => print("Error completing: $e"),
@@ -107,8 +127,8 @@ class DatabaseService {
   }
 
 //returns all verified created recipes
-  static Future<List<CreatedRecipe>> getVerifiedCreatedRecipes() async {
-    late List<CreatedRecipe> recipes = [];
+  static Future<List<PublicCreatedRecipe>> getVerifiedCreatedRecipes() async {
+    late List<PublicCreatedRecipe> recipes = [];
     final docs =
         FirebaseFirestore.instance.collection("verified-created-recipes").get();
 
@@ -116,7 +136,7 @@ class DatabaseService {
       (querySnapshot) {
         print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
-          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+          recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
         }
       },
       onError: (e) => print("Error completing: $e"),

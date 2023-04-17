@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/authentification.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/created_recipe_class.dart';
+import 'package:food_for_thought/classes/public_created_recipe_class.dart';
 import 'package:food_for_thought/user-interface/admin/all_recipes_page.dart';
 import 'package:food_for_thought/user-interface/admin/created_recipes_approval_page.dart';
 import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
@@ -22,8 +23,8 @@ class AdminPageState extends State<AdminPage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final user = FirebaseAuth.instance.currentUser!;
   String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-  List<CreatedRecipe> createdRecipesVerification = [];
-  List<CreatedRecipe> verifiedRecipes = [];
+  List<PublicCreatedRecipe> createdRecipesVerification = [];
+  List<PublicCreatedRecipe> verifiedRecipes = [];
   int recipeCount = 0;
   int userCount = 0;
   int recipesWaiting = 0;
