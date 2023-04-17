@@ -61,7 +61,10 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
                 ),
               )
             : createdRecipes.isEmpty
-                ? Center(child: Text('No Recipes Waiting For Approval'))
+                ? Center(child: Text('No Recipes Waiting For Approval',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
                 : Scrollbar(
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,

@@ -156,7 +156,10 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
               ),
             )
           : recipes.isEmpty
-              ? Center(child: Text('No Created Recipes'))
+              ? Center(child: Text('No Created Recipes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
               : ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: recipes.length,
