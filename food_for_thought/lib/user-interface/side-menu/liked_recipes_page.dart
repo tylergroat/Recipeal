@@ -125,6 +125,9 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
     );
   }
 
+//make tabs / badge shaped buttons at the top to switch between feed recipes and verified created recipes
+  //make another body
+
   RefreshIndicator body() {
     return RefreshIndicator(
         onRefresh: () => getRecipes(),

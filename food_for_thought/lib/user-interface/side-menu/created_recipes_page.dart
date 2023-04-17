@@ -41,95 +41,101 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EasySearchBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Sort Options'),
-                      content: Text('Sort data:'),
-                      actions: [
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                          child: Text(
-                            "Alphabetically",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+        appBar: EasySearchBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Sort Options'),
+                        content: Text('Sort data:'),
+                        actions: [
+                          TextButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 244, 4, 4)),
+                            child: Text(
+                              "Alphabetically",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // sortByAlpha();
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            // sortByAlpha();
-                          },
-                        ),
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                          child: Text(
-                            "Cook Time",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                          TextButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 244, 4, 4)),
+                            child: Text(
+                              "Cook Time",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // sortByTime();
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            // sortByTime();
-                          },
-                        ),
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                          child: Text(
-                            "Servings",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                          TextButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 244, 4, 4)),
+                            child: Text(
+                              "Servings",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // sortByServings();
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            // sortByServings();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              icon: Icon(Icons.sort))
-        ],
-        backgroundColor: Color.fromARGB(255, 244, 4, 4),
-        foregroundColor: Colors.white,
-        title: Center(
-          child: Text('Created Recipes',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: Icon(Icons.sort))
+          ],
+          backgroundColor: Color.fromARGB(255, 244, 4, 4),
+          foregroundColor: Colors.white,
+          title: Center(
+            child: Text('Created Recipes',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+          ),
+          onSearch: (value) {
+            setState(() => searchValue = value);
+            // searchByTitle(value);
+          },
         ),
-        onSearch: (value) {
-          setState(() => searchValue = value);
-          // searchByTitle(value);
-        },
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => getRecipes(),
-        child: loaded
-            ? Column(
+        body: body());
+  }
+
+  RefreshIndicator body() {
+    return RefreshIndicator(
+      onRefresh: () => getRecipes(),
+      child: loaded
+          ? Center(
+              child: Column(
                 children: [
                   SizedBox(
                     height: 220,
                   ),
-                  Center(
-                    child: SizedBox(
-                      height: 70,
-                      width: 70,
-                      child: LoadingIndicator(
-                        indicatorType: Indicator.ballRotateChase,
-                        strokeWidth: 2,
-                        colors: [Color.fromARGB(255, 244, 4, 4)],
-                      ),
+                  SizedBox(
+                    height: 70,
+                    width: 70,
+                    child: LoadingIndicator(
+                      indicatorType: Indicator.ballRotateChase,
+                      strokeWidth: 2,
+                      colors: [Color.fromARGB(255, 244, 4, 4)],
                     ),
                   ),
                   SizedBox(
@@ -147,81 +153,81 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                         fontWeight: FontWeight.bold),
                   )
                 ],
-              )
-            : recipes.isEmpty
-                ? Center(child: Text('No Created Recipes'))
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: recipes.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        child: CreatedRecipeCard(
-                          title: recipes[index].name,
-                          servings: recipes[index].servings,
-                          ingredients: recipes[index].ingredients,
-                          cookInstructions: recipes[index].cookInstructions,
-                          cookTime: recipes[index].totalTime,
-                          thumbnailUrl: recipes[index].image,
-                        ),
-                        onLongPress: () {
-                          print(recipes[index].name);
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text("Confirm"),
-                                  content: Text(
-                                      "Are you sure you want to delete your ${recipes[index].name} recipe?"),
-                                  actions: [
-                                    TextButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromARGB(255, 244, 4, 4)),
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
+              ),
+            )
+          : recipes.isEmpty
+              ? Center(child: Text('No Created Recipes'))
+              : ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: recipes.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      child: CreatedRecipeCard(
+                        title: recipes[index].name,
+                        servings: recipes[index].servings,
+                        ingredients: recipes[index].ingredients,
+                        cookInstructions: recipes[index].cookInstructions,
+                        cookTime: recipes[index].totalTime,
+                        thumbnailUrl: recipes[index].image,
+                      ),
+                      onLongPress: () {
+                        print(recipes[index].name);
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Confirm"),
+                                content: Text(
+                                    "Are you sure you want to delete your ${recipes[index].name} recipe?"),
+                                actions: [
+                                  TextButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 244, 4, 4)),
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    TextButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromARGB(255, 244, 4, 4)),
-                                      child: Text(
-                                        "Delete",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onPressed: () async {
-                                        Navigator.pop(context);
-                                        //if the recipe is private only, delete the image from storage
-                                        //else (the recipe is public and verified), keep the image in storage because it is still being used by the public verified recipe
-                                        if (!(await publicVerifiedRecipeExists(
-                                            recipes[index].name, user!.uid))) {
-                                          //if public recipe does not exist, this deletes the image from storage
-                                          deleteImageFromFirebaseByUrl(
-                                              recipes[index].image);
-                                        }
-                                        //delete the recipe from private collection
-                                        deletePrivateRecipeFromFirebase(
-                                            recipeName: recipes[index].name);
-                                        //refresh the array after deleting the recipe
-                                        getRecipes();
-                                        setState(() {});
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-                        },
-                      );
-                    }),
-      ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  TextButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 244, 4, 4)),
+                                    child: Text(
+                                      "Delete",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      //if the recipe is private only, delete the image from storage
+                                      //else (the recipe is public and verified), keep the image in storage because it is still being used by the public verified recipe
+                                      if (!(await publicVerifiedRecipeExists(
+                                          recipes[index].name, user!.uid))) {
+                                        //if public recipe does not exist, this deletes the image from storage
+                                        deleteImageFromFirebaseByUrl(
+                                            recipes[index].image);
+                                      }
+                                      //delete the recipe from private collection
+                                      deletePrivateRecipeFromFirebase(
+                                          recipeName: recipes[index].name);
+                                      //refresh the array after deleting the recipe
+                                      getRecipes();
+                                      setState(() {});
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                    );
+                  }),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_for_thought/classes/recipe_class.dart';
 import 'package:food_for_thought/classes/user_class.dart';
 import '../classes/created_recipe_class.dart';
+import '../classes/public_created_recipe_class.dart';
 
 //class to define database operations involivng recipes -- Implemented by : Gavin Fromm
 
@@ -87,6 +88,7 @@ class DatabaseService {
     return recipes;
   }
 
+//returns all created recipes that have not yet been verified
   static Future<List<CreatedRecipe>> getCreatedRecipesForVerification() async {
     late List<CreatedRecipe> recipes = [];
     final docs = FirebaseFirestore.instance.collection("created recipes").get();
@@ -104,6 +106,7 @@ class DatabaseService {
     return recipes;
   }
 
+//returns all verified created recipes
   static Future<List<CreatedRecipe>> getVerifiedCreatedRecipes() async {
     late List<CreatedRecipe> recipes = [];
     final docs =
@@ -118,6 +121,49 @@ class DatabaseService {
       },
       onError: (e) => print("Error completing: $e"),
     );
+
+    return recipes;
+  }
+
+  // //returns a specific user's verified created recipes
+  static Future<List<PublicCreatedRecipe>> getMyVerifiedCreatedRecipes(
+      String userId) async {
+    late List<PublicCreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("verified-created-recipes")
+        .where("userId", isEqualTo: userId)
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
+  //returns a specific user's public created recipes that have not yet been verified
+  static Future<List<PublicCreatedRecipe>> getMyCreatedRecipesForVerification(
+      String userId) async {
+    late List<PublicCreatedRecipe> recipes = [];
+    final docs = await FirebaseFirestore.instance
+        .collection("created recipes")
+        .where("userId", isEqualTo: userId)
+        .get();
+
+    print('Number of docs returned: ${docs.docs.length}');
+
+    for (var docSnapshot in docs.docs) {
+      print('Adding recipe: ${docSnapshot.data()}');
+      recipes.add(PublicCreatedRecipe.fromFirestore(docSnapshot));
+    }
+
+    print('Number of recipes added: ${recipes.length}');
 
     return recipes;
   }
