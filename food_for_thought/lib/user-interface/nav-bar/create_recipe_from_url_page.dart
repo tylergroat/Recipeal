@@ -35,6 +35,7 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
   List<Recipe> extractedRecipe = [];
   bool loaded = true;
   bool loading = true;
+  bool error = true;
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +116,25 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                               loaded = false;
                               loading = true;
                             });
-                            extractedRecipe = await RecipeApi.extractFromUrl(
-                                urlController.value.text);
+                            try {
+                              extractedRecipe = await RecipeApi.extractFromUrl(
+                                  urlController.value.text);
+                            } on Exception {
+                              setState(() {
+                                loading = false;
+                                urlController.clear();
+                              });
+                            }
                             if (extractedRecipe.isNotEmpty) {
                               Timer(
                                 Duration(seconds: 2),
                                 () => setState(
                                   () {
                                     loading = false;
+                                    error = false;
                                   },
                                 ),
                               );
-                            } else {
-                              print('error creating recipe');
                             }
                           } else {
                             ScaffoldMessenger.of(context)
@@ -183,150 +190,188 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
                               ),
                             ],
                           )
-                        : Column(
-                            children: [
-                              RecipeCard(
-                                id: extractedRecipe[0].id,
-                                title: extractedRecipe[0].name,
-                                servings: extractedRecipe[0].servings,
-                                ingredients: extractedRecipe[0].ingredients,
-                                preparationSteps:
-                                    extractedRecipe[0].preparationSteps,
-                                cookTime: extractedRecipe[0].totalTime,
-                                thumbnailUrl: extractedRecipe[0].images,
-                                isVegetarian: extractedRecipe[0].isVegetarian,
-                                isDairyFree: extractedRecipe[0].isDairyFree,
-                                isPopular: extractedRecipe[0].isPopular,
-                                isGlutenFree: extractedRecipe[0].isGlutenFree,
-                                isVegan: extractedRecipe[0].isVegan,
-                                isVeryHealthy: extractedRecipe[0].isVeryHealthy,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                        : error
+                            ? Column(
                                 children: [
-                                  Container(
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Color.fromARGB(255, 244, 4, 4)),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        extractedRecipe.clear();
-                                        urlController.clear();
-                                        setState(() {
-                                          loaded = true;
-                                        });
-                                      },
-                                      child: Text(
-                                        'Delete',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
+                                  SizedBox(
+                                    height: 150,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      width: 250,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          color: Colors.grey),
+                                      child: Center(
+                                        child: Text(
+                                          'Error extracting, try a differnt URL.',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  RecipeCard(
+                                    id: extractedRecipe[0].id,
+                                    title: extractedRecipe[0].name,
+                                    servings: extractedRecipe[0].servings,
+                                    ingredients: extractedRecipe[0].ingredients,
+                                    preparationSteps:
+                                        extractedRecipe[0].preparationSteps,
+                                    cookTime: extractedRecipe[0].totalTime,
+                                    thumbnailUrl: extractedRecipe[0].images,
+                                    isVegetarian:
+                                        extractedRecipe[0].isVegetarian,
+                                    isDairyFree: extractedRecipe[0].isDairyFree,
+                                    isPopular: extractedRecipe[0].isPopular,
+                                    isGlutenFree:
+                                        extractedRecipe[0].isGlutenFree,
+                                    isVegan: extractedRecipe[0].isVegan,
+                                    isVeryHealthy:
+                                        extractedRecipe[0].isVeryHealthy,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color:
+                                                Color.fromARGB(255, 244, 4, 4)),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            extractedRecipe.clear();
+                                            urlController.clear();
+                                            setState(() {
+                                              loaded = true;
+                                            });
+                                          },
+                                          child: Text(
+                                            'Delete',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color:
+                                                Color.fromARGB(255, 244, 4, 4)),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Map<String, dynamic> savedRecipe = {
+                                              'id': extractedRecipe[0].id,
+                                              'title': extractedRecipe[0].name,
+                                              'servings':
+                                                  extractedRecipe[0].servings,
+                                              'ingredients': extractedRecipe[0]
+                                                  .ingredients,
+                                              'preparationSteps':
+                                                  extractedRecipe[0]
+                                                      .preparationSteps,
+                                              'cookTime':
+                                                  extractedRecipe[0].totalTime,
+                                              'thumbnailUrl':
+                                                  extractedRecipe[0].images,
+                                              'isVegetarian': extractedRecipe[0]
+                                                  .isVegetarian,
+                                              'isVegan':
+                                                  extractedRecipe[0].isVegan,
+                                              'isGlutenFree': extractedRecipe[0]
+                                                  .isGlutenFree,
+                                              'isDairyFree': extractedRecipe[0]
+                                                  .isDairyFree,
+                                              'isVeryHealthy':
+                                                  extractedRecipe[0]
+                                                      .isVeryHealthy,
+                                              'isPopular':
+                                                  extractedRecipe[0].isPopular,
+                                            };
+
+                                            db
+                                                .collection("users")
+                                                .doc(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .collection("saved recipes")
+                                                .doc(extractedRecipe[0].name)
+                                                .set(savedRecipe);
+
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text("Recipe Added"),
+                                                  content: Text(
+                                                      "Your recipe has been added successfully!"),
+                                                  actions: [
+                                                    Container(
+                                                      width: 70,
+                                                      height: 40,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        color: Color.fromARGB(
+                                                            255, 244, 4, 4),
+                                                      ),
+                                                      child: TextButton(
+                                                        child: Text(
+                                                          "Ok",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    )
+                                                  ],
+                                                );
+                                              },
+                                            );
+
+                                            setState(() {
+                                              loaded = true;
+                                            });
+                                          },
+                                          child: Text(
+                                            'Add to Liked Recipes',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                   SizedBox(
-                                    width: 10,
+                                    height: 20,
                                   ),
-                                  Container(
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Color.fromARGB(255, 244, 4, 4)),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Map<String, dynamic> savedRecipe = {
-                                          'id': extractedRecipe[0].id,
-                                          'title': extractedRecipe[0].name,
-                                          'servings':
-                                              extractedRecipe[0].servings,
-                                          'ingredients':
-                                              extractedRecipe[0].ingredients,
-                                          'preparationSteps': extractedRecipe[0]
-                                              .preparationSteps,
-                                          'cookTime':
-                                              extractedRecipe[0].totalTime,
-                                          'thumbnailUrl':
-                                              extractedRecipe[0].images,
-                                          'isVegetarian':
-                                              extractedRecipe[0].isVegetarian,
-                                          'isVegan': extractedRecipe[0].isVegan,
-                                          'isGlutenFree':
-                                              extractedRecipe[0].isGlutenFree,
-                                          'isDairyFree':
-                                              extractedRecipe[0].isDairyFree,
-                                          'isVeryHealthy':
-                                              extractedRecipe[0].isVeryHealthy,
-                                          'isPopular':
-                                              extractedRecipe[0].isPopular,
-                                        };
-
-                                        db
-                                            .collection("users")
-                                            .doc(FirebaseAuth
-                                                .instance.currentUser!.uid)
-                                            .collection("saved recipes")
-                                            .doc(extractedRecipe[0].name)
-                                            .set(savedRecipe);
-
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text("Recipe Added"),
-                                              content: Text(
-                                                  "Your recipe has been added successfully!"),
-                                              actions: [
-                                                Container(
-                                                  width: 70,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    color: Color.fromARGB(
-                                                        255, 244, 4, 4),
-                                                  ),
-                                                  child: TextButton(
-                                                    child: Text(
-                                                      "Ok",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                )
-                                              ],
-                                            );
-                                          },
-                                        );
-
-                                        setState(() {
-                                          loaded = true;
-                                        });
-                                      },
-                                      child: Text(
-                                        'Add to Liked Recipes',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                    ),
-                                  )
                                 ],
                               ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
               ],
             ),
           ),
@@ -335,8 +380,8 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
 
   Container floatingIcon(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 244, 4, 4),
         borderRadius: BorderRadius.circular(30),
@@ -378,7 +423,7 @@ class CreateRecipeFromURLPageState extends State<CreateRecipeFromURLPage> {
           Icons.info_sharp,
           color: Colors.white,
           weight: 70,
-          size: 35,
+          size: 20,
         ),
       ),
     );

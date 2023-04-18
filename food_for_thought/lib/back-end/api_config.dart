@@ -27,7 +27,7 @@ class RecipeApi {
     return Recipe.recipesFromSnapshot(_temp);
   }
 
-  static Future<List<Recipe>> extractFromUrl(String url) async {
+  static Future<dynamic> extractFromUrl(String url) async {
     var uri = Uri.https('spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
         '/recipes/extract', {
       "url": url,
@@ -41,9 +41,16 @@ class RecipeApi {
 
     Map data = jsonDecode(response.body);
     List temp = [];
+    List<Recipe> recipes = [];
     temp.add(data);
 
-    return Recipe.recipesFromSnapshot(temp);
+    recipes = Recipe.recipesFromSnapshot(temp);
+
+    if (recipes.isEmpty) {
+      return null;
+    } else {
+      return recipes;
+    }
   }
 
   static Future<Nutrition> nutritionById(int id) async {

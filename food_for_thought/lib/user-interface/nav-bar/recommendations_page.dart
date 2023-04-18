@@ -311,4 +311,55 @@ class RecommendationPageState extends State<RecommendationPage> {
             ),
     );
   }
+
+  Container floatingIcon(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 244, 4, 4),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Welcome to Recipeal!"),
+                content: Text(
+                    "This is the feed page. Here, you will find a wide variety of recipes, unless you would like to apply a filter! Simply choose the like or dislike button to begin!"),
+                actions: [
+                  Container(
+                    width: 70,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Color.fromARGB(255, 244, 4, 4),
+                    ),
+                    child: TextButton(
+                      child: Text(
+                        "Ok",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  )
+                ],
+              );
+            },
+          );
+        },
+        icon: Icon(
+          Icons.info,
+          color: Colors.white,
+          weight: 70,
+          size: 20,
+        ),
+      ),
+    );
+  }
 }

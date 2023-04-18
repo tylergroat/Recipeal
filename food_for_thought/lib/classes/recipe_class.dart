@@ -36,21 +36,35 @@ class Recipe {
   //method to create recipe object from json object
 
   factory Recipe.fromJson(dynamic json) {
-    return Recipe(
-      id: json['id'],
-      name: json['title'] as String,
-      servings: json['servings'],
-      ingredients: json['extendedIngredients'],
-      preparationSteps: json['instructions'] as String,
-      images: json['image'] as String,
-      totalTime: json['readyInMinutes'],
-      isVegetarian: json['vegetarian'],
-      isVegan: json['vegan'],
-      isGlutenFree: json['glutenFree'],
-      isDairyFree: json['dairyFree'],
-      isVeryHealthy: json['veryHealthy'],
-      isPopular: json['veryPopular'],
-    );
+    if (json['id'] != null &&
+        json['title'] != null &&
+        json['servings'] != null &&
+        json['instructions'] != null &&
+        json['image'] != null &&
+        json['readyInMinutes'] != null &&
+        json['vegetarian'] != null &&
+        json['glutenFree'] != null &&
+        json['dairyFree'] != null &&
+        json['veryHealthy'] != null &&
+        json['veryPopular'] != null) {
+      return Recipe(
+        id: json['id'],
+        name: json['title'] as String,
+        servings: json['servings'],
+        ingredients: json['extendedIngredients'],
+        preparationSteps: json['instructions'] as String,
+        images: json['image'] as String,
+        totalTime: json['readyInMinutes'],
+        isVegetarian: json['vegetarian'],
+        isVegan: json['vegan'],
+        isGlutenFree: json['glutenFree'],
+        isDairyFree: json['dairyFree'],
+        isVeryHealthy: json['veryHealthy'],
+        isPopular: json['veryPopular'],
+      );
+    } else {
+      throw Exception('Error creating recipe from JSON');
+    }
   }
 
   //method to create recipe object from firestore mapping
@@ -72,17 +86,6 @@ class Recipe {
         isDairyFree: data?['isDairyFree'],
         isVeryHealthy: data?['isVeryHealthy'],
         isPopular: data?['isPopular']);
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      if (name != null) "title": name,
-      if (servings != null) "servings": servings,
-      if (ingredients != null) "ingredients": ingredients,
-      if (preparationSteps != null) "preparationSteps": preparationSteps,
-      if (images != null) "images": images,
-      if (totalTime != totalTime) "regions": totalTime,
-    };
   }
 
   @override
