@@ -67,33 +67,7 @@ class AdminPageState extends State<AdminPage> {
     return RefreshIndicator(
       onRefresh: () => getStatistics(),
       child: loading
-          ? Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 220,
-                  ),
-                  SizedBox(
-                    height: 70,
-                    width: 70,
-                    child: LoadingIndicator(
-                      indicatorType: Indicator.ballRotateChase,
-                      colors: [Color.fromARGB(255, 244, 4, 4)],
-                      strokeWidth: 2,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Loading Statistics...',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 244, 4, 4),
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            )
+          ? loadingIndicator()
           : Center(
               child: Column(
                 children: [
@@ -265,6 +239,36 @@ class AdminPageState extends State<AdminPage> {
                 ],
               ),
             ),
+    );
+  }
+
+  Center loadingIndicator() {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 220,
+          ),
+          SizedBox(
+            height: 70,
+            width: 70,
+            child: LoadingIndicator(
+              indicatorType: Indicator.ballRotateChase,
+              colors: [Color.fromARGB(255, 244, 4, 4)],
+              strokeWidth: 2,
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            'Loading Statistics...',
+            style: TextStyle(
+                color: Color.fromARGB(255, 244, 4, 4),
+                fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
     );
   }
 

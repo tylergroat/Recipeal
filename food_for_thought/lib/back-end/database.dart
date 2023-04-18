@@ -72,7 +72,7 @@ class DatabaseService {
   }
 
   //get recipes for recommending given filter
-  static Future<List<Recipe>> getAllRecipes(String filter) async {
+  static Future<List<Recipe>> recommendRecipes(String filter) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("recipes")

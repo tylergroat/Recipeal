@@ -14,6 +14,14 @@ class ChangeNamePage extends StatefulWidget {
 }
 
 class ChangeNamePageState extends State<ChangeNamePage> {
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  final RoundedLoadingButtonController updateInfoButton =
+      RoundedLoadingButtonController();
+  final user = FirebaseAuth.instance.currentUser!;
+  final userEmail = FirebaseAuth.instance.currentUser?.email;
+
   static const creationSuccessful = SnackBar(
     content: Text('Name Updated! Redirecting.....'),
   );
@@ -59,14 +67,6 @@ class ChangeNamePageState extends State<ChangeNamePage> {
       },
     );
   }
-
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  final RoundedLoadingButtonController updateInfoButton =
-      RoundedLoadingButtonController();
-  final user = FirebaseAuth.instance.currentUser!;
-  final userEmail = FirebaseAuth.instance.currentUser?.email;
 
   final incorrectPasswordMessage = MaterialBanner(
     backgroundColor: Colors.transparent,

@@ -46,16 +46,7 @@ class AllRecipesPageState extends State<AllRecipesPage> {
     return RefreshIndicator(
       onRefresh: () => getRecipes(),
       child: loaded
-          ? Center(
-              child: SizedBox(
-              height: 70,
-              width: 70,
-              child: LoadingIndicator(
-                indicatorType: Indicator.ballRotateChase,
-                strokeWidth: 2,
-                colors: [Color.fromARGB(255, 244, 4, 4)],
-              ),
-            ))
+          ? loadingIndicator()
           : Scrollbar(
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -82,6 +73,19 @@ class AllRecipesPageState extends State<AllRecipesPage> {
               ),
             ),
     );
+  }
+
+  Center loadingIndicator() {
+    return Center(
+        child: SizedBox(
+      height: 70,
+      width: 70,
+      child: LoadingIndicator(
+        indicatorType: Indicator.ballRotateChase,
+        strokeWidth: 2,
+        colors: [Color.fromARGB(255, 244, 4, 4)],
+      ),
+    ));
   }
 
   AppBar appBar() {

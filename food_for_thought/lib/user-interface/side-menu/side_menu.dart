@@ -86,147 +86,151 @@ class _NavDrawerState extends State<NavDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          Container(
-            height: 110,
-            child: DrawerHeader(
-              decoration:
-                  BoxDecoration(color: Color.fromARGB(255, 151, 151, 151)),
-              child: loading
-                  ? Center(
-                      child: SizedBox(
-                        height: 30,
-                        width: 70,
-                        child: LoadingIndicator(
-                          indicatorType: Indicator.ballPulse,
-                          strokeWidth: 2,
-                          colors: [Color.fromARGB(255, 244, 4, 4)],
+      child: sideMenu(context),
+    );
+  }
+
+  ListView sideMenu(BuildContext context) {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        Container(
+          height: 110,
+          child: DrawerHeader(
+            decoration:
+                BoxDecoration(color: Color.fromARGB(255, 151, 151, 151)),
+            child: loading
+                ? Center(
+                    child: SizedBox(
+                      height: 30,
+                      width: 70,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.ballPulse,
+                        strokeWidth: 2,
+                        colors: [Color.fromARGB(255, 244, 4, 4)],
+                      ),
+                    ),
+                  )
+                : Row(
+                    children: [
+                      SizedBox(
+                        width: 220,
+                        height: 100,
+                        child: RichText(
+                          text: TextSpan(
+                              text:
+                                  '${userInformation?.firstName} ${userInformation?.lastName}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '\n@${userInformation?.userName}',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.normal),
+                                )
+                              ]),
                         ),
                       ),
-                    )
-                  : Row(
-                      children: [
-                        SizedBox(
-                          width: 220,
-                          height: 100,
-                          child: RichText(
-                            text: TextSpan(
-                                text:
-                                    '${userInformation?.firstName} ${userInformation?.lastName}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 20),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: '\n@${userInformation?.userName}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal),
-                                  )
-                                ]),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showAlertDialog(context);
-                          },
-                          icon: Icon(Icons.logout),
-                          color: Colors.white,
-                          iconSize: 35,
-                        )
-                      ],
-                    ),
-            ),
+                      IconButton(
+                        onPressed: () {
+                          showAlertDialog(context);
+                        },
+                        icon: Icon(Icons.logout),
+                        color: Colors.white,
+                        iconSize: 35,
+                      )
+                    ],
+                  ),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.person,
-              color: Colors.blue,
-            ),
-            title: Text('User Details'),
-            onTap: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => ProfilePage()))
-            },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.person,
+            color: Colors.blue,
           ),
-          ListTile(
-            leading: Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
-            title: Text('Liked Recipes'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => ViewSavedRecipesPage()))
-            },
+          title: Text('User Details'),
+          onTap: () => {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => ProfilePage()))
+          },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.favorite,
+            color: Colors.red,
           ),
-          ListTile(
-            leading: Icon(
-              Icons.push_pin,
-              color: Colors.orange,
-            ),
-            title: Text('Pinned Recipes'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => ViewPinnedRecipesPage()))
-            },
+          title: Text('Liked Recipes'),
+          onTap: () => {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => ViewSavedRecipesPage()))
+          },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.push_pin,
+            color: Colors.orange,
           ),
-          ListTile(
-            leading: Icon(
-              Icons.create,
-              color: Colors.green,
-            ),
-            title: Text('Created Recipes'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => CreatedRecipesPage()))
-            },
+          title: Text('Pinned Recipes'),
+          onTap: () => {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => ViewPinnedRecipesPage()))
+          },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.create,
+            color: Colors.green,
           ),
-          ListTile(
-            leading: Icon(
-              Icons.verified,
-              color: Colors.blue,
-            ),
-            title: Text('My Public Recipes'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => PublicCreatedRecipesPage()))
-            },
+          title: Text('Created Recipes'),
+          onTap: () => {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => CreatedRecipesPage()))
+          },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.verified,
+            color: Colors.blue,
           ),
-          ListTile(
-            leading: Icon(
-              Icons.help,
-              color: Colors.blueGrey,
-            ),
-            title: Text('Help'),
-            onTap: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => HelpPage()))
-            },
+          title: Text('My Public Recipes'),
+          onTap: () => {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => PublicCreatedRecipesPage()))
+          },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.help,
+            color: Colors.blueGrey,
           ),
-          ListTile(
-            leading: Icon(
-              Icons.people,
-              color: Colors.purple,
-            ),
-            title: Text('About Us'),
-            onTap: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => AboutUs()))
-            },
+          title: Text('Help'),
+          onTap: () => {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => HelpPage()))
+          },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.people,
+            color: Colors.purple,
           ),
-          SizedBox(
-            height: 120,
-          ),
-          // ListTile(
-          //   leading: Icon(Icons.exit_to_app),
-          //   title: Text('Logout'),
-          //   onTap: () => {showAlertDialog(context)},
-          // ),
-        ],
-      ),
+          title: Text('About Us'),
+          onTap: () => {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => AboutUs()))
+          },
+        ),
+        SizedBox(
+          height: 120,
+        ),
+        // ListTile(
+        //   leading: Icon(Icons.exit_to_app),
+        //   title: Text('Logout'),
+        //   onTap: () => {showAlertDialog(context)},
+        // ),
+      ],
     );
   }
 }
