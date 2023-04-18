@@ -8,13 +8,14 @@ import '../classes/public_created_recipe_class.dart';
 //class to define database operations involivng recipes -- Implemented by : Gavin Fromm
 
 class DatabaseService {
+  //get users recipe based on path given
   static Future<List<Recipe>> getRecipes(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
         .collection(path)
-        .get();
+        .get(); //get collection based on path
 
     await docs.then(
       (querySnapshot) {
@@ -26,9 +27,10 @@ class DatabaseService {
       onError: (e) => print("Error completing: $e"),
     );
 
-    return recipes;
+    return recipes; //return list of recipes
   }
 
+  //get recipes created by the user that are public
   static Future<List<PublicCreatedRecipe>> getPublicCreatedRecipes(
       String uid, String path) async {
     late List<PublicCreatedRecipe> recipes = [];
@@ -51,6 +53,7 @@ class DatabaseService {
     return recipes;
   }
 
+  //get all recipes stored in the system
   static Future<List<Recipe>> getStoredRecipes() async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance.collection("recipes").get();
@@ -68,6 +71,7 @@ class DatabaseService {
     return recipes;
   }
 
+  //get recipes for recommending given filter
   static Future<List<Recipe>> getAllRecipes(String filter) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
@@ -89,6 +93,7 @@ class DatabaseService {
     return recipes;
   }
 
+  //get a users created recipe
   static Future<List<CreatedRecipe>> getCreatedRecipes(String uid) async {
     late List<CreatedRecipe> recipes = [];
     final docs = FirebaseFirestore.instance
@@ -191,6 +196,7 @@ class DatabaseService {
     return recipes;
   }
 
+  //sort recipes in aplhpabetical order
   static Future<List<Recipe>> sortByAlpha(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
@@ -212,6 +218,8 @@ class DatabaseService {
 
     return recipes;
   }
+
+  //sort recipes in reverse aplhpabetical order
 
   static Future<List<Recipe>> sortByAlphaDescending(
       String uid, String path) async {
@@ -236,6 +244,8 @@ class DatabaseService {
     return recipes;
   }
 
+  //sort recipes by shortest time cook
+
   static Future<List<Recipe>> sortByTime(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
@@ -257,6 +267,8 @@ class DatabaseService {
 
     return recipes;
   }
+
+  //sort recipes by longest time cook
 
   static Future<List<Recipe>> sortByTimeDescending(
       String uid, String path) async {
@@ -281,6 +293,7 @@ class DatabaseService {
     return recipes;
   }
 
+  //sort recipes by servings
   static Future<List<Recipe>> sortByServings(String uid, String path) async {
     late List<Recipe> recipes = [];
     final docs = FirebaseFirestore.instance
@@ -302,6 +315,8 @@ class DatabaseService {
 
     return recipes;
   }
+
+  //method to handle recipe filtering
 
   static Future<List<Recipe>> filterBy(
       String uid, String path, String filter) async {
@@ -350,6 +365,8 @@ class DatabaseService {
     return recipes;
   }
 
+  //get user based on uid
+
   static Future<UserInformation> getUser(String uid) async {
     late UserInformation user;
     final doc = FirebaseFirestore.instance.collection("users").doc(uid).get();
@@ -360,6 +377,7 @@ class DatabaseService {
     return user;
   }
 
+  //get users name from uid
   static Future<String> getUsersName(String uid) async {
     late UserInformation user;
     String name = '';
@@ -373,6 +391,7 @@ class DatabaseService {
     return name;
   }
 
+  //mehtod to get all users
   static Future<List<UserInformation>> getAllUsers() async {
     late List<UserInformation> users = [];
     final doc = FirebaseFirestore.instance.collection("users").get();
@@ -385,6 +404,7 @@ class DatabaseService {
     return users;
   }
 
+  //method to get number of users
   static Future<int> countUsers() async {
     late int count = 0;
     late List<UserInformation> users = [];
@@ -399,6 +419,8 @@ class DatabaseService {
     });
     return count;
   }
+
+  //method to get number of recipes
 
   static Future<int> countRecipes() async {
     late int count = 0;

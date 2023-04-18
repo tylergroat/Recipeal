@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/classes/user_class.dart';
-import 'package:food_for_thought/user-interface/user-functions/user_card.dart';
+import 'package:food_for_thought/user-interface/cards/user_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/database.dart';
 
