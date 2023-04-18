@@ -98,204 +98,209 @@ class FeedPageState extends State<FeedPage> {
       floatingActionButton: floatingIcon(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       appBar: appBar(),
-      body: isLoading
-          ? Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 220,
-                  ),
-                  SizedBox(
-                    height: 70,
-                    width: 70,
-                    child: LoadingIndicator(
-                      indicatorType: Indicator.ballRotateChase,
-                      strokeWidth: 2,
-                      colors: [Color.fromARGB(255, 244, 4, 4)],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Loading Recipes...',
-                    style: TextStyle(
-                        color: Color.fromARGB(
-                          255,
-                          244,
-                          4,
-                          4,
-                        ),
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
+      body: isLoading ? loadingIndicator() : body(dropDownMenuItems),
+    );
+  }
+
+  SingleChildScrollView body(List<DropdownMenuItem<String>> dropDownMenuItems) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Align(
+            alignment: Alignment(.75, 0),
+            child: Container(
+              height: 40,
+              width: 150,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 190, 189, 189),
+                borderRadius: BorderRadius.circular(15),
               ),
-            )
-          : SingleChildScrollView(
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Align(
-                    alignment: Alignment(.75, 0),
-                    child: Container(
-                      height: 40,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 190, 189, 189),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.filter_list,
-                            color: Colors.white,
-                            weight: 40,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          StatefulBuilder(
-                            builder: (context, setState) {
-                              return Center(
-                                child: DropdownButton<String>(
-                                  onChanged: (s) {
-                                    print(s?.toLowerCase());
-                                    setState(() {
-                                      selectedTag = s;
-                                    });
-                                    getRecipes(selectedTag?.toLowerCase());
-                                  },
-                                  items: dropDownMenuItems,
-                                  value: selectedTag,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  RecipeCard(
-                    id: recipes[index].id,
-                    title: recipes[index].name,
-                    servings: recipes[index].servings,
-                    ingredients: recipes[index].ingredients,
-                    preparationSteps: recipes[index].preparationSteps,
-                    cookTime: recipes[index].totalTime,
-                    thumbnailUrl: recipes[index].images,
-                    isVegetarian: recipes[index].isVegetarian,
-                    isDairyFree: recipes[index].isDairyFree,
-                    isPopular: recipes[index].isPopular,
-                    isGlutenFree: recipes[index].isGlutenFree,
-                    isVegan: recipes[index].isVegan,
-                    isVeryHealthy: recipes[index].isVeryHealthy,
+                  Icon(
+                    Icons.filter_list,
+                    color: Colors.white,
+                    weight: 40,
                   ),
                   SizedBox(
-                    height: 5,
+                    width: 5,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Material(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Color.fromARGB(255, 244, 4, 4),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(30),
-                          radius: 30,
-                          onTap: () {
-                            if (index >= lastIndex) {
-                              index = 0;
-                              getRecipes(selectedTag?.toLowerCase());
-                              print('Getting ${selectedTag} recipes');
-                            } else {
-                              index++;
-                              recipes.removeAt(index);
-                              setState(() {});
-                            }
+                  StatefulBuilder(
+                    builder: (context, setState) {
+                      return Center(
+                        child: DropdownButton<String>(
+                          onChanged: (s) {
+                            print(s?.toLowerCase());
+                            setState(() {
+                              selectedTag = s;
+                            });
+                            getRecipes(selectedTag?.toLowerCase());
                           },
-                          splashColor: Colors.white,
-                          highlightColor: Colors.grey,
-                          child: Container(
-                            height: 65,
-                            width: 100,
-                            child: Icon(
-                              Icons.thumb_down_alt,
-                              color: Colors.white,
-                              size: 35,
-                            ),
-                          ),
+                          items: dropDownMenuItems,
+                          value: selectedTag,
                         ),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Material(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Color.fromARGB(255, 244, 4, 4),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(30),
-                          radius: 30,
-                          onTap: () {
-                            Map<String, dynamic> savedRecipe = {
-                              'id': recipes[index].id,
-                              'title': recipes[index].name,
-                              'servings': recipes[index].servings,
-                              'ingredients': recipes[index].ingredients,
-                              'preparationSteps':
-                                  recipes[index].preparationSteps,
-                              'cookTime': recipes[index].totalTime,
-                              'thumbnailUrl': recipes[index].images,
-                              'isVegetarian': recipes[index].isVegetarian,
-                              'isVegan': recipes[index].isVegan,
-                              'isGlutenFree': recipes[index].isGlutenFree,
-                              'isDairyFree': recipes[index].isDairyFree,
-                              'isVeryHealthy': recipes[index].isVeryHealthy,
-                              'isPopular': recipes[index].isPopular,
-                            };
-
-                            db
-                                .collection("users")
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .collection("saved recipes")
-                                .doc(recipes[index].name)
-                                .set(savedRecipe);
-
-                            if (index >= lastIndex) {
-                              index = 0;
-                              getRecipes(selectedTag?.toLowerCase());
-                              print('Getting : ${selectedTag} recipes');
-                              ;
-                            } else {
-                              recipes.removeAt(index);
-                              index++;
-                              setState(
-                                () {
-                                  index = index;
-                                },
-                              );
-                            }
-                          },
-                          splashColor: Colors.white,
-                          highlightColor: Colors.grey,
-                          child: Container(
-                            height: 65,
-                            width: 100,
-                            child: Icon(
-                              Icons.thumb_up_alt,
-                              color: Colors.white,
-                              size: 35,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ],
               ),
             ),
+          ),
+          RecipeCard(
+            id: recipes[index].id,
+            title: recipes[index].name,
+            servings: recipes[index].servings,
+            ingredients: recipes[index].ingredients,
+            preparationSteps: recipes[index].preparationSteps,
+            cookTime: recipes[index].totalTime,
+            thumbnailUrl: recipes[index].images,
+            isVegetarian: recipes[index].isVegetarian,
+            isDairyFree: recipes[index].isDairyFree,
+            isPopular: recipes[index].isPopular,
+            isGlutenFree: recipes[index].isGlutenFree,
+            isVegan: recipes[index].isVegan,
+            isVeryHealthy: recipes[index].isVeryHealthy,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Material(
+                borderRadius: BorderRadius.circular(30),
+                color: Color.fromARGB(255, 244, 4, 4),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  radius: 30,
+                  onTap: () {
+                    if (index >= lastIndex) {
+                      index = 0;
+                      getRecipes(selectedTag?.toLowerCase());
+                      print('Getting ${selectedTag} recipes');
+                    } else {
+                      index++;
+                      recipes.removeAt(index);
+                      setState(() {});
+                    }
+                  },
+                  splashColor: Colors.white,
+                  highlightColor: Colors.grey,
+                  child: Container(
+                    height: 65,
+                    width: 100,
+                    child: Icon(
+                      Icons.thumb_down_alt,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 30,
+              ),
+              Material(
+                borderRadius: BorderRadius.circular(30),
+                color: Color.fromARGB(255, 244, 4, 4),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  radius: 30,
+                  onTap: () {
+                    Map<String, dynamic> savedRecipe = {
+                      'id': recipes[index].id,
+                      'title': recipes[index].name,
+                      'servings': recipes[index].servings,
+                      'ingredients': recipes[index].ingredients,
+                      'preparationSteps': recipes[index].preparationSteps,
+                      'cookTime': recipes[index].totalTime,
+                      'thumbnailUrl': recipes[index].images,
+                      'isVegetarian': recipes[index].isVegetarian,
+                      'isVegan': recipes[index].isVegan,
+                      'isGlutenFree': recipes[index].isGlutenFree,
+                      'isDairyFree': recipes[index].isDairyFree,
+                      'isVeryHealthy': recipes[index].isVeryHealthy,
+                      'isPopular': recipes[index].isPopular,
+                    };
+
+                    db
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .collection("saved recipes")
+                        .doc(recipes[index].name)
+                        .set(savedRecipe);
+
+                    if (index >= lastIndex) {
+                      index = 0;
+                      getRecipes(selectedTag?.toLowerCase());
+                      print('Getting : ${selectedTag} recipes');
+                      ;
+                    } else {
+                      recipes.removeAt(index);
+                      index++;
+                      setState(
+                        () {
+                          index = index;
+                        },
+                      );
+                    }
+                  },
+                  splashColor: Colors.white,
+                  highlightColor: Colors.grey,
+                  child: Container(
+                    height: 65,
+                    width: 100,
+                    child: Icon(
+                      Icons.thumb_up_alt,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Center loadingIndicator() {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 220,
+          ),
+          SizedBox(
+            height: 70,
+            width: 70,
+            child: LoadingIndicator(
+              indicatorType: Indicator.ballRotateChase,
+              strokeWidth: 2,
+              colors: [Color.fromARGB(255, 244, 4, 4)],
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            'Loading Recipes...',
+            style: TextStyle(
+                color: Color.fromARGB(
+                  255,
+                  244,
+                  4,
+                  4,
+                ),
+                fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
     );
   }
 

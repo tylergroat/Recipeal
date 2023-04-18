@@ -1,70 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-
 // Help page implemented by : Jaideep Chunduri
 class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-        backgroundColor: Color.fromARGB(255, 244, 4, 4),
-        toolbarHeight: 40,
-        centerTitle: true,
-        title: Text(
-          'Help',
-          style: TextStyle(
-              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-        ),
-        automaticallyImplyLeading: true,
+      appBar: appBar(),
+      body: body(context),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
+      backgroundColor: Color.fromARGB(255, 244, 4, 4),
+      toolbarHeight: 40,
+      centerTitle: true,
+      title: Text(
+        'Help',
+        style:
+            TextStyle(color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Divider(
-              thickness: 1,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CarouselSlider(
-              options: CarouselOptions(height: 400.0),
-              items: [
-                feedPage(context),
-                likedRecipes(context),
-                pinnedRecipes(context),
-                createdRecipes(context),
-                userInformation(context),
-                recommendedRecipes(context)
-              ].map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 83, 83, 83),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: i,
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey,
-            ),
-          ],
-        ),
+      automaticallyImplyLeading: true,
+    );
+  }
+
+  Center body(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CarouselSlider(
+            options: CarouselOptions(height: 400.0),
+            items: [
+              feedPage(context),
+              likedRecipes(context),
+              pinnedRecipes(context),
+              createdRecipes(context),
+              userInformation(context),
+              recommendedRecipes(context)
+            ].map((i) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 83, 83, 83),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: i,
+                  );
+                },
+              );
+            }).toList(),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
+          ),
+        ],
       ),
     );
   }

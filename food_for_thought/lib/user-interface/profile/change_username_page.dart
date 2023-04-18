@@ -99,112 +99,119 @@ class ChangeUsernamePageState extends State<ChangeUsernamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-        backgroundColor: Color.fromARGB(255, 244, 4, 4),
-        toolbarHeight: 40,
-        centerTitle: true,
-        title: Text(
-          'Update Username',
-          style: TextStyle(
-              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-        ),
-        automaticallyImplyLeading: true,
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(children: [
-            SizedBox(
-              height: 150,
+      appBar: appBar(),
+      body: body(context),
+    );
+  }
+
+  SingleChildScrollView body(BuildContext context) {
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(children: [
+          SizedBox(
+            height: 150,
+          ),
+          SizedBox(
+              width: 200,
+              height: 90,
+              child: Icon(
+                Icons.person,
+                size: 70,
+              ) //to display the image
+              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: newUsernameController,
+              //Text Field for username/email
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                icon: Icon(Icons.verified_user),
+                labelText: 'New Username',
+              ),
             ),
-            SizedBox(
-                width: 200,
-                height: 90,
-                child: Icon(
-                  Icons.person,
-                  size: 70,
-                ) //to display the image
-                ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: newUsernameController,
-                //Text Field for username/email
-                decoration: InputDecoration(
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              obscureText: true,
+              controller: confirmPasswordController,
+              //Text Field for username/email
+              decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  icon: Icon(Icons.verified_user),
-                  labelText: 'New Username',
-                ),
-              ),
+                  icon: Icon(Icons.lock),
+                  labelText: 'Confirm Password',
+                  hintText: ''),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                obscureText: true,
-                controller: confirmPasswordController,
-                //Text Field for username/email
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    icon: Icon(Icons.lock),
-                    labelText: 'Confirm Password',
-                    hintText: ''),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 40.0, right: 40.0, top: 10, bottom: 0),
-              child: RoundedLoadingButton(
-                borderRadius: 8,
-                width: 250,
-                animateOnTap: false,
-                resetDuration: Duration(seconds: 3),
-                color: Color.fromARGB(255, 244, 4, 4),
-                controller: updateInfoButton,
-                onPressed: () async {
-                  if (newUsernameController.text.isEmpty ||
-                      confirmPasswordController.text.isEmpty) {
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 40.0, right: 40.0, top: 10, bottom: 0),
+            child: RoundedLoadingButton(
+              borderRadius: 8,
+              width: 250,
+              animateOnTap: false,
+              resetDuration: Duration(seconds: 3),
+              color: Color.fromARGB(255, 244, 4, 4),
+              controller: updateInfoButton,
+              onPressed: () async {
+                if (newUsernameController.text.isEmpty ||
+                    confirmPasswordController.text.isEmpty) {
+                  updateInfoButton.error();
+                  Timer(Duration(seconds: 1), () => updateInfoButton.reset());
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentMaterialBanner()
+                    ..showMaterialBanner(emptyInputMessage);
+                  Timer(
+                      Duration(seconds: 2),
+                      () => ScaffoldMessenger.of(context)
+                          .hideCurrentMaterialBanner());
+                } else {
+                  User? user = await signInWithEmailPassword(
+                      userEmail.toString(),
+                      confirmPasswordController.text.toString());
+                  if (user != null) {
+                    // ignore: use_build_context_synchronously
+                    showAlertDialog(context);
+                  } else {
                     updateInfoButton.error();
-                    Timer(Duration(seconds: 1), () => updateInfoButton.reset());
+                    Timer(Duration(seconds: 2), () => updateInfoButton.reset());
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context)
                       ..hideCurrentMaterialBanner()
-                      ..showMaterialBanner(emptyInputMessage);
+                      ..showMaterialBanner(incorrectPasswordMessage);
                     Timer(
                         Duration(seconds: 2),
                         () => ScaffoldMessenger.of(context)
                             .hideCurrentMaterialBanner());
-                  } else {
-                    User? user = await signInWithEmailPassword(
-                        userEmail.toString(),
-                        confirmPasswordController.text.toString());
-                    if (user != null) {
-                      // ignore: use_build_context_synchronously
-                      showAlertDialog(context);
-                    } else {
-                      updateInfoButton.error();
-                      Timer(
-                          Duration(seconds: 2), () => updateInfoButton.reset());
-                      // ignore: use_build_context_synchronously
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentMaterialBanner()
-                        ..showMaterialBanner(incorrectPasswordMessage);
-                      Timer(
-                          Duration(seconds: 2),
-                          () => ScaffoldMessenger.of(context)
-                              .hideCurrentMaterialBanner());
-                    }
                   }
-                },
-                child: Text(
-                  'Update',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
+                }
+              },
+              child: Text(
+                'Update',
+                style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
+      backgroundColor: Color.fromARGB(255, 244, 4, 4),
+      toolbarHeight: 40,
+      centerTitle: true,
+      title: Text(
+        'Update Username',
+        style:
+            TextStyle(color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+      ),
+      automaticallyImplyLeading: true,
     );
   }
 }

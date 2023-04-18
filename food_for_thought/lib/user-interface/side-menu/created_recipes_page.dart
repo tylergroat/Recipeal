@@ -40,83 +40,79 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: EasySearchBar(
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Sort Options'),
-                        content: Text('Sort data:'),
-                        actions: [
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 244, 4, 4)),
-                            child: Text(
-                              "Alphabetically",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // sortByAlpha();
-                            },
-                          ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 244, 4, 4)),
-                            child: Text(
-                              "Cook Time",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // sortByTime();
-                            },
-                          ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 244, 4, 4)),
-                            child: Text(
-                              "Servings",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // sortByServings();
-                            },
-                          ),
-                        ],
-                      );
-                    },
+    return Scaffold(appBar: appBar(context), body: body());
+  }
+
+  EasySearchBar appBar(BuildContext context) {
+    return EasySearchBar(
+      actions: [
+        IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Sort Options'),
+                    content: Text('Sort data:'),
+                    actions: [
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Alphabetically",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // sortByAlpha();
+                        },
+                      ),
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Cook Time",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // sortByTime();
+                        },
+                      ),
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Servings",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // sortByServings();
+                        },
+                      ),
+                    ],
                   );
                 },
-                icon: Icon(Icons.sort))
-          ],
-          backgroundColor: Color.fromARGB(255, 244, 4, 4),
-          foregroundColor: Colors.white,
-          title: Center(
-            child: Text('Created Recipes',
-                style: TextStyle(
-                    color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
-          ),
-          onSearch: (value) {
-            setState(() => searchValue = value);
-            // searchByTitle(value);
-          },
-        ),
-        body: body());
+              );
+            },
+            icon: Icon(Icons.sort))
+      ],
+      backgroundColor: Color.fromARGB(255, 244, 4, 4),
+      foregroundColor: Colors.white,
+      title: Center(
+        child: Text('Created Recipes',
+            style: TextStyle(
+                color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+      ),
+      onSearch: (value) {
+        setState(() => searchValue = value);
+        // searchByTitle(value);
+      },
+    );
   }
 
   RefreshIndicator body() {
@@ -156,10 +152,11 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
               ),
             )
           : recipes.isEmpty
-              ? Center(child: Text('No Created Recipes',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              )))
+              ? Center(
+                  child: Text('No Created Recipes',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )))
               : ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: recipes.length,

@@ -40,50 +40,62 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(),
-      appBar: AppBar(
-        toolbarHeight: 45,
-        backgroundColor: Color.fromARGB(255, 244, 4, 4),
-        centerTitle: true,
-        title: const Text(
-          'Recipeal',
-          style: TextStyle(fontWeight: FontWeight.bold),
+      appBar: appBar(),
+      body: body(),
+      bottomNavigationBar: bottomNavigationBar(),
+    );
+  }
+
+  BottomNavigationBar bottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Color.fromARGB(255, 151, 151, 151),
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white70,
+      selectedIconTheme: IconThemeData(size: 30),
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.link),
+          label: 'NA',
         ),
-      ),
-      body: Center(
-        child: screens[selectedIndex],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Color.fromARGB(255, 151, 151, 151),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        selectedIconTheme: IconThemeData(size: 30),
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.link),
-            label: 'NA',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.create),
-            label: 'Create',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.feed),
-            label: 'Feed',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.recommend),
-            label: 'Recommendations',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.verified_rounded),
-            label: 'Community Recipes ',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        onTap: _onItemTapped,
+        BottomNavigationBarItem(
+          icon: Icon(Icons.create),
+          label: 'Create',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.feed),
+          label: 'Feed',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.recommend),
+          label: 'Recommendations',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.verified_rounded),
+          label: 'Community Recipes ',
+        ),
+      ],
+      currentIndex: selectedIndex,
+      onTap: _onItemTapped,
+    );
+  }
+
+  Center body() {
+    return Center(
+      child: screens[selectedIndex],
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      toolbarHeight: 45,
+      backgroundColor: Color.fromARGB(255, 244, 4, 4),
+      centerTitle: true,
+      title: const Text(
+        'Recipeal',
+        style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }

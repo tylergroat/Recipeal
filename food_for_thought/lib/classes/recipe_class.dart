@@ -88,13 +88,6 @@ class Recipe {
         isPopular: data?['isPopular']);
   }
 
-  @override
-  bool operator ==(Object other) {
-    return other is Recipe && other.hashCode == hashCode;
-  }
-
-  @override
-  int get hashCode => Object.hash(name, id);
   //method to turn recipes created from JSON, into a List of Recipe objects
 
   static List<Recipe> recipesFromSnapshot(List snapshot) {

@@ -115,135 +115,142 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
-        backgroundColor: Color.fromARGB(255, 244, 4, 4),
-        toolbarHeight: 40,
-        centerTitle: true,
-        title: Text(
-          'Update Password',
-          style: TextStyle(
-              color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-        ),
-        automaticallyImplyLeading: true,
+      appBar: appBar(),
+      body: body(context),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(8))),
+      backgroundColor: Color.fromARGB(255, 244, 4, 4),
+      toolbarHeight: 40,
+      centerTitle: true,
+      title: Text(
+        'Update Password',
+        style:
+            TextStyle(color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(children: [
-            SizedBox(
-              height: 100,
-            ),
-            SizedBox(
-                width: 200,
-                height: 90,
-                child: Icon(
-                  Icons.lock_clock,
-                  size: 70,
-                ) //to display the image
-                ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: oldPasswordController,
-                //Text Field for username/email
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  icon: Icon(Icons.lock),
-                  labelText: 'Current Password',
-                ),
+      automaticallyImplyLeading: true,
+    );
+  }
+
+  SingleChildScrollView body(BuildContext context) {
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(children: [
+          SizedBox(
+            height: 100,
+          ),
+          SizedBox(
+              width: 200,
+              height: 90,
+              child: Icon(
+                Icons.lock_clock,
+                size: 70,
+              ) //to display the image
+              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: oldPasswordController,
+              //Text Field for username/email
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                icon: Icon(Icons.lock),
+                labelText: 'Current Password',
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: newPasswordController,
-                //Text Field for username/email
-                decoration: InputDecoration(
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: newPasswordController,
+              //Text Field for username/email
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                icon: Icon(Icons.password_sharp),
+                labelText: 'New Password',
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              obscureText: true,
+              controller: confirmNewPasswordController,
+              //Text Field for username/email
+              decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   icon: Icon(Icons.password_sharp),
-                  labelText: 'New Password',
-                ),
-              ),
+                  labelText: 'Confirm Password',
+                  hintText: ''),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                obscureText: true,
-                controller: confirmNewPasswordController,
-                //Text Field for username/email
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    icon: Icon(Icons.password_sharp),
-                    labelText: 'Confirm Password',
-                    hintText: ''),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 40.0, right: 40.0, top: 10, bottom: 0),
-              child: RoundedLoadingButton(
-                borderRadius: 8,
-                width: 250,
-                animateOnTap: false,
-                resetDuration: Duration(seconds: 3),
-                color: Color.fromARGB(255, 244, 4, 4),
-                controller: updateInfoButton,
-                onPressed: () async {
-                  if (oldPasswordController.text.isEmpty ||
-                      newPasswordController.text.isEmpty ||
-                      confirmNewPasswordController.text.isEmpty) {
-                    updateInfoButton.error();
-                    Timer(Duration(seconds: 1), () => updateInfoButton.reset());
-                    // ignore: use_build_context_synchronously
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentMaterialBanner()
-                      ..showMaterialBanner(emptyInputMessage);
-                    Timer(
-                        Duration(seconds: 2),
-                        () => ScaffoldMessenger.of(context)
-                            .hideCurrentMaterialBanner());
-                  } else if (newPasswordController.text !=
-                      confirmNewPasswordController.text) {
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 40.0, right: 40.0, top: 10, bottom: 0),
+            child: RoundedLoadingButton(
+              borderRadius: 8,
+              width: 250,
+              animateOnTap: false,
+              resetDuration: Duration(seconds: 3),
+              color: Color.fromARGB(255, 244, 4, 4),
+              controller: updateInfoButton,
+              onPressed: () async {
+                if (oldPasswordController.text.isEmpty ||
+                    newPasswordController.text.isEmpty ||
+                    confirmNewPasswordController.text.isEmpty) {
+                  updateInfoButton.error();
+                  Timer(Duration(seconds: 1), () => updateInfoButton.reset());
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentMaterialBanner()
+                    ..showMaterialBanner(emptyInputMessage);
+                  Timer(
+                      Duration(seconds: 2),
+                      () => ScaffoldMessenger.of(context)
+                          .hideCurrentMaterialBanner());
+                } else if (newPasswordController.text !=
+                    confirmNewPasswordController.text) {
+                  updateInfoButton.error();
+                  Timer(Duration(seconds: 2), () => updateInfoButton.reset());
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentMaterialBanner()
+                    ..showMaterialBanner(matchingPasswordMessage);
+                  Timer(
+                      Duration(seconds: 2),
+                      () => ScaffoldMessenger.of(context)
+                          .hideCurrentMaterialBanner());
+                } else {
+                  User? user = await signInWithEmailPassword(
+                      userEmail.toString(),
+                      oldPasswordController.text.toString());
+                  if (user != null) {
+                    showAlertDialog(context);
+                  } else {
                     updateInfoButton.error();
                     Timer(Duration(seconds: 2), () => updateInfoButton.reset());
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context)
                       ..hideCurrentMaterialBanner()
-                      ..showMaterialBanner(matchingPasswordMessage);
+                      ..showMaterialBanner(incorrectPasswordMessage);
                     Timer(
                         Duration(seconds: 2),
                         () => ScaffoldMessenger.of(context)
                             .hideCurrentMaterialBanner());
-                  } else {
-                    User? user = await signInWithEmailPassword(
-                        userEmail.toString(),
-                        oldPasswordController.text.toString());
-                    if (user != null) {
-                      showAlertDialog(context);
-                    } else {
-                      updateInfoButton.error();
-                      Timer(
-                          Duration(seconds: 2), () => updateInfoButton.reset());
-                      // ignore: use_build_context_synchronously
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentMaterialBanner()
-                        ..showMaterialBanner(incorrectPasswordMessage);
-                      Timer(
-                          Duration(seconds: 2),
-                          () => ScaffoldMessenger.of(context)
-                              .hideCurrentMaterialBanner());
-                    }
                   }
-                },
-                child: Text(
-                  'Update',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
+                }
+              },
+              child: Text(
+                'Update',
+                style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
     );
   }

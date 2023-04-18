@@ -14,6 +14,13 @@ class ChangeEmailPage extends StatefulWidget {
 }
 
 class ChangeEmailPageState extends State<ChangeEmailPage> {
+  TextEditingController oldEmailController = TextEditingController();
+  TextEditingController newEmailController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  final RoundedLoadingButtonController updateInfoButton =
+      RoundedLoadingButtonController();
+  final user = FirebaseAuth.instance.currentUser!;
+
   static const creationSuccessful = SnackBar(
     content: Text('Email Updated! Redirecting.....'),
   );
@@ -59,13 +66,6 @@ class ChangeEmailPageState extends State<ChangeEmailPage> {
       },
     );
   }
-
-  TextEditingController oldEmailController = TextEditingController();
-  TextEditingController newEmailController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  final RoundedLoadingButtonController updateInfoButton =
-      RoundedLoadingButtonController();
-  final user = FirebaseAuth.instance.currentUser!;
 
   final incorrectEmailMessage = MaterialBanner(
     backgroundColor: Colors.transparent,

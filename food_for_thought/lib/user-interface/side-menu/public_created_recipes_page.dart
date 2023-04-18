@@ -64,83 +64,79 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: EasySearchBar(
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Sort Options'),
-                        content: Text('Sort data:'),
-                        actions: [
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 244, 4, 4)),
-                            child: Text(
-                              "Alphabetically",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // sortByAlpha();
-                            },
-                          ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 244, 4, 4)),
-                            child: Text(
-                              "Cook Time",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // sortByTime();
-                            },
-                          ),
-                          TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 244, 4, 4)),
-                            child: Text(
-                              "Servings",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // sortByServings();
-                            },
-                          ),
-                        ],
-                      );
-                    },
+    return Scaffold(appBar: appBar(context), body: scaffoldBody());
+  }
+
+  EasySearchBar appBar(BuildContext context) {
+    return EasySearchBar(
+      actions: [
+        IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Sort Options'),
+                    content: Text('Sort data:'),
+                    actions: [
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Alphabetically",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // sortByAlpha();
+                        },
+                      ),
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Cook Time",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // sortByTime();
+                        },
+                      ),
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Servings",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // sortByServings();
+                        },
+                      ),
+                    ],
                   );
                 },
-                icon: Icon(Icons.sort))
-          ],
-          backgroundColor: Color.fromARGB(255, 244, 4, 4),
-          foregroundColor: Colors.white,
-          title: Center(
-            child: Text('My Public Recipes',
-                style: TextStyle(
-                    color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
-          ),
-          onSearch: (value) {
-            // setState(() => searchValue = value);
-            // searchByTitle(value);
-          },
-        ),
-        body: scaffoldBody());
+              );
+            },
+            icon: Icon(Icons.sort))
+      ],
+      backgroundColor: Color.fromARGB(255, 244, 4, 4),
+      foregroundColor: Colors.white,
+      title: Center(
+        child: Text('My Public Recipes',
+            style: TextStyle(
+                color: Color.fromARGB(255, 247, 247, 247), fontSize: 20)),
+      ),
+      onSearch: (value) {
+        // setState(() => searchValue = value);
+        // searchByTitle(value);
+      },
+    );
   }
 
   Widget scaffoldBody() {
@@ -243,10 +239,11 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
                     children: [
                     // First child widget - Verified recipes ListView
                     verifiedRecipes.isEmpty
-                        ? Center(child: Text('You Have No Verified Recipes',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              )))
+                        ? Center(
+                            child: Text('You Have No Verified Recipes',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )))
                         : Expanded(
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
