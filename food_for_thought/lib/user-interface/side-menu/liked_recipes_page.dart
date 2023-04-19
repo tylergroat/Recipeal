@@ -160,26 +160,50 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   RefreshIndicator body() {
     return RefreshIndicator(
         onRefresh: _showingFeedLikes ? getRecipes : getUserCreatedRecipes,
-        child: loaded
-            ? loadingIndicator()
-            : _showingFeedLikes
-                ? (recipes.isEmpty
-                    ? Center(
-                        child: Text('No Liked Recipes',
+        child: Scaffold(
+          appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(80),
+            ),
+          ),
+          backgroundColor: Colors.grey,
+          toolbarHeight: 30,
+          centerTitle: true,
+          title: _showingFeedLikes
+              ? Text(
+                  'Feed',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+                )
+              : Text(
+                  'User Created',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+                ),
+          automaticallyImplyLeading: false,
+        ),
+          body: loaded
+              ? loadingIndicator()
+              : _showingFeedLikes
+                  ? (recipes.isEmpty
+                      ? Center(
+                          child: Text('No Liked Recipes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )))
+                      : showSystemRecipes())
+                  : (publicRecipes.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No Liked Community Recipes',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                            )))
-                    : showSystemRecipes())
-                : (publicRecipes.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No Liked Community Recipes',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      )
-                    : showCommuityRecipes()));
+                        )
+                      : showCommuityRecipes()),
+        ));
   }
 
   Scrollbar showCommuityRecipes() {
