@@ -139,6 +139,7 @@ class PublicCreatedRecipesPageState extends State<PublicCreatedRecipesPage>
     );
   }
 
+//changes body depending on the toggle button
   Widget scaffoldBody() {
     return Scaffold(
         appBar: AppBar(
