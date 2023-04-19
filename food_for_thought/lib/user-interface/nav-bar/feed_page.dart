@@ -7,6 +7,7 @@ import 'package:food_for_thought/classes/recipe_class.dart';
 import 'package:food_for_thought/user-interface/cards/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/api_config.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 //class to define how the recipe feed is presented to the user -- Implemented by : Gavin Fromm
 //Tags for Filtering system Implemented by : Jaideep Chunduri
@@ -18,6 +19,7 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage> {
   //initilize varibles
+  final cardController = CardSwiperController();
   int index = 0;
   bool isLoading = true;
   late List<Recipe> recipes = [];
@@ -150,20 +152,28 @@ class FeedPageState extends State<FeedPage> {
               ),
             ),
           ),
-          RecipeCard(
-            id: recipes[index].id,
-            title: recipes[index].name,
-            servings: recipes[index].servings,
-            ingredients: recipes[index].ingredients,
-            preparationSteps: recipes[index].preparationSteps,
-            cookTime: recipes[index].totalTime,
-            thumbnailUrl: recipes[index].images,
-            isVegetarian: recipes[index].isVegetarian,
-            isDairyFree: recipes[index].isDairyFree,
-            isPopular: recipes[index].isPopular,
-            isGlutenFree: recipes[index].isGlutenFree,
-            isVegan: recipes[index].isVegan,
-            isVeryHealthy: recipes[index].isVeryHealthy,
+          CardSwiper(
+            cardBuilder: (BuildContext context, int index) => RecipeCard(
+              id: recipes[index].id,
+              title: recipes[index].name,
+              servings: recipes[index].servings,
+              ingredients: recipes[index].ingredients,
+              preparationSteps: recipes[index].preparationSteps,
+              cookTime: recipes[index].totalTime,
+              thumbnailUrl: recipes[index].images,
+              isVegetarian: recipes[index].isVegetarian,
+              isDairyFree: recipes[index].isDairyFree,
+              isPopular: recipes[index].isPopular,
+              isGlutenFree: recipes[index].isGlutenFree,
+              isVegan: recipes[index].isVegan,
+              isVeryHealthy: recipes[index].isVeryHealthy,
+            ),
+            cardsCount: recipes.length,
+            // layout: SwiperLayout.STACK,
+            // itemWidth: 300,
+            // itemHeight: 400,
+            // pagination: SwiperPagination(),
+            controller: cardController,
           ),
           SizedBox(
             height: 5,
