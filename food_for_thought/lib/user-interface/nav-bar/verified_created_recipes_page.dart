@@ -185,7 +185,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
                       ),
                       Center(
                         child: Text(
-                          'Created By: ${names[index]}',
+                          'Created By: @${names[index]}',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,

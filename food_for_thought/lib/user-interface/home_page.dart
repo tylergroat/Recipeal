@@ -97,6 +97,17 @@ class HomePageState extends State<HomePage> {
         'Recipeal',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
+      actions: [
+        SizedBox(
+          width: 30,
+          height: 30,
+          child: Image.asset('assets/logo/lovefood.png' //to display the image
+              ),
+        ),
+        SizedBox(
+          width: 15,
+        )
+      ],
     );
   }
 }

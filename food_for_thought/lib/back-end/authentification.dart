@@ -126,3 +126,8 @@ Future<String> signOut() async {
 
   return 'User signed out';
 }
+
+Future<void> deleteUser(User user, String uid) async {
+  await user.delete();
+  await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+}

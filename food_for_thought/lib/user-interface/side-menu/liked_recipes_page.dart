@@ -205,50 +205,49 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
             onLongPress: () {
               print(publicRecipes[index].name);
               showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Confirm"),
-                      content: Text(
-                          "Are you sure you want to remove ${publicRecipes[index].name} from your liked community recipes?"),
-                      actions: [
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Confirm"),
+                    content: Text(
+                        "Are you sure you want to remove ${publicRecipes[index].name} from your liked community recipes?"),
+                    actions: [
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        TextButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                          child: Text(
-                            "Delete",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            db
-                                .collection("users")
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .collection("liked recipe (user)")
-                                .doc(publicRecipes[index].name)
-                                .delete();
-                            getUserCreatedRecipes();
-                            setState(() {});
-                          },
-                        )
-                      ],
-                    );
-                  });
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                        child: Text(
+                          "Delete",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          db
+                              .collection("users")
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection("liked recipe (user)")
+                              .doc(publicRecipes[index].name)
+                              .delete();
+                          getUserCreatedRecipes();
+                          setState(() {});
+                        },
+                      )
+                    ],
+                  );
+                },
+              );
             },
           );
         },

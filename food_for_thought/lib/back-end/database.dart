@@ -385,7 +385,7 @@ class DatabaseService {
 
     await doc.then((querySnapshot) {
       user = UserInformation.fromFirestore(querySnapshot);
-      name = user.firstName;
+      name = user.userName;
     });
     print(name);
     return name;

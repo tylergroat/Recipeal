@@ -149,7 +149,6 @@ class LoginPageState extends State<LoginPage> {
                       Icons.visibility,
                     ),
                     onPressed: () {
-                      print(isHidden);
                       togglePasswordView();
                       setState(
                         () {

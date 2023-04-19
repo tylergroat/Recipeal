@@ -105,6 +105,8 @@ flutter:
     - assets/logo/1.png
     - assets/logo/2.png
     - assets/logo/logo.png
+    - assets/logo/lovefood.png
+
 
     # - assets/images/splash_screen.png
     # - assets/images/background_color_screen.png

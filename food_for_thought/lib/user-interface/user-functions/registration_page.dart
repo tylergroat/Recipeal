@@ -15,10 +15,24 @@ class RegistrationPageState extends State<RegistrationPage> {
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  bool isHiddenPassword = true;
+  bool isHiddenConfirmPassword = true;
+
+  void togglePasswordView() {
+    setState(() {
+      isHiddenPassword = !isHiddenPassword;
+    });
+  }
+
+  void toggleConfirmPasswordView() {
+    setState(() {
+      isHiddenConfirmPassword = !isHiddenConfirmPassword;
+    });
+  }
 
   final emptyInputMessage = MaterialBanner(
     backgroundColor: Colors.transparent,
@@ -178,7 +192,7 @@ class RegistrationPageState extends State<RegistrationPage> {
             child: TextField(
               controller: passwordController,
               //Text Field for password
-              obscureText: true, //to hide text (password field)
+              obscureText: isHiddenPassword, //to hide text (password field)
               decoration: InputDecoration(
                 focusColor: Colors.black,
                 icon: Icon(Icons.lock),
@@ -188,6 +202,19 @@ class RegistrationPageState extends State<RegistrationPage> {
                 labelText: 'Password',
                 hintText:
                     'Password must have at least 6 alphanumeric characters',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.visibility,
+                  ),
+                  onPressed: () {
+                    togglePasswordView();
+                    setState(
+                      () {
+                        isHiddenPassword;
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -197,13 +224,27 @@ class RegistrationPageState extends State<RegistrationPage> {
             child: TextField(
               controller: confirmPasswordController,
               //Text Field for password
-              obscureText: true, //to hide text (password field)
+              obscureText:
+                  isHiddenConfirmPassword, //to hide text (password field)
               decoration: InputDecoration(
                 icon: Icon(Icons.lock),
                 border: OutlineInputBorder(),
                 labelText: 'Confirm Password',
                 hintText:
                     'Password must have at least 6 alphanumeric characters',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.visibility,
+                  ),
+                  onPressed: () {
+                    toggleConfirmPasswordView();
+                    setState(
+                      () {
+                        isHiddenConfirmPassword;
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),

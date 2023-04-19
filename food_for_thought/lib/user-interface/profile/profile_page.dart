@@ -1,13 +1,18 @@
+import 'dart:async';
+
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:food_for_thought/back-end/authentification.dart';
 import 'package:food_for_thought/user-interface/profile/change_email_page.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/user_class.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'dart:io';
+import '../user-functions/login_page.dart';
 import 'change_name_page.dart';
 import 'change_password_page.dart';
 import 'change_username_page.dart';
@@ -20,13 +25,46 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+  final emptyInputMessage = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Empty Input',
+      message: 'Please input a password',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+
+  final incorrectPassword = MaterialBanner(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    forceActionsBelow: true,
+    content: AwesomeSnackbarContent(
+      color: Colors.red,
+      title: 'Incorrect Password',
+      message: 'The password is incorrect',
+
+      contentType: ContentType.failure,
+      // to configure for material banner
+    ),
+    actions: const [SizedBox.shrink()],
+  );
+
   FirebaseFirestore db = FirebaseFirestore.instance;
   final user = FirebaseAuth.instance.currentUser!;
   String uid = FirebaseAuth.instance.currentUser!.uid.toString();
+  final userEmail = FirebaseAuth.instance.currentUser?.email;
   String profilePicLink = " ";
   late String userId = uid.toString();
   UserInformation? userInformation;
   bool _isLoading = true;
+  TextEditingController passwordFieldController = TextEditingController();
+  bool loading = false;
 
   @override
   void initState() {
@@ -41,34 +79,17 @@ class ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  void setProfilePhoto() async {
-    final profilePhoto = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 512,
-        maxHeight: 512,
-        imageQuality: 90);
-
-    Reference ref = FirebaseStorage.instance.ref().child("profilepic.jpg");
-
-    await ref.putFile(File(profilePhoto!.path));
-    ref.getDownloadURL().then((value) => {
-          print(value),
-          setState(() {
-            profilePicLink = value;
-          })
-        });
-  }
-
   static const logOutMessage = SnackBar(
     content: Text('User Logged out'),
+  );
+  static const deletedMessage = SnackBar(
+    content: Text('Account Deleted'),
   );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-/////////  APP BAR  //////////////
       appBar: appBar(),
-/////////  APP BAR  //////////////
       body: _isLoading ? loadingIndicator() : body(context),
     );
   }
@@ -85,9 +106,6 @@ class ProfilePageState extends State<ProfilePage> {
             ////
 ///////////////////////  PROFILE PHOTO  /////////////////////////
             GestureDetector(
-              onTap: () {
-                setProfilePhoto();
-              },
               child: Container(
                 margin: const EdgeInsets.only(top: 5, bottom: 12),
                 height: 120,
@@ -98,17 +116,11 @@ class ProfilePageState extends State<ProfilePage> {
                   color: Colors.grey,
                 ),
                 child: Center(
-                  child: profilePicLink == " "
-                      ? const Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 70,
-                        )
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(profilePicLink),
-                        ),
-                ),
+                    child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 70,
+                )),
               ),
             ),
 ///////////////////////  PROFILE PHOTO  /////////////////////////
@@ -275,7 +287,231 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ],
-            )
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 244, 4, 4),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 50,
+              width: 160,
+              child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Confirm"),
+                        content: Text(
+                            "Are you sure you want to delete your account? All data will be lost."),
+                        actions: [
+                          TextButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 244, 4, 4)),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          TextButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 244, 4, 4)),
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return loading
+                                      ? Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 220,
+                                            ),
+                                            Center(
+                                              child: SizedBox(
+                                                height: 70,
+                                                width: 70,
+                                                child: LoadingIndicator(
+                                                  indicatorType:
+                                                      Indicator.ballRotateChase,
+                                                  strokeWidth: 2,
+                                                  colors: [
+                                                    Color.fromARGB(
+                                                        255, 244, 4, 4)
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            Text(
+                                              'Loading Community Recipes...',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    244,
+                                                    4,
+                                                    4,
+                                                  ),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        )
+                                      : AlertDialog(
+                                          title: Text("Enter Password"),
+                                          content: Text(
+                                              "Please enter your password to confirm account deletion."),
+                                          actions: [
+                                            TextField(
+                                              controller:
+                                                  passwordFieldController,
+                                              //Text Field for username/email
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                icon: Icon(Icons.lock),
+                                                labelText: 'Password',
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                TextButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  244,
+                                                                  4,
+                                                                  4)),
+                                                  child: Text(
+                                                    "Cancel",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                TextButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  244,
+                                                                  4,
+                                                                  4)),
+                                                  child: Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  onPressed: () async {
+                                                    if (passwordFieldController
+                                                        .value
+                                                        .text
+                                                        .isNotEmpty) {
+                                                      User? user =
+                                                          await signInWithEmailPassword(
+                                                              userEmail
+                                                                  .toString(),
+                                                              passwordFieldController
+                                                                  .value.text);
+                                                      if (user != null) {
+                                                        deleteUser(user!, uid);
+                                                        // ignore: use_build_context_synchronously
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (_) =>
+                                                                    LoginPage()));
+                                                        // ignore: use_build_context_synchronously
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                deletedMessage);
+                                                      } else {
+                                                        // ignore: use_build_context_synchronously
+                                                        passwordFieldController
+                                                            .clear();
+                                                        // ignore: use_build_context_synchronously
+                                                        ScaffoldMessenger.of(
+                                                            context)
+                                                          ..hideCurrentMaterialBanner()
+                                                          ..showMaterialBanner(
+                                                              incorrectPassword);
+                                                        Timer(
+                                                            Duration(
+                                                                seconds: 2),
+                                                            () => ScaffoldMessenger
+                                                                    .of(context)
+                                                                .hideCurrentMaterialBanner());
+                                                      }
+                                                    } else {
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentMaterialBanner()
+                                                        ..showMaterialBanner(
+                                                            emptyInputMessage);
+                                                      Timer(
+                                                          Duration(seconds: 2),
+                                                          () => ScaffoldMessenger
+                                                                  .of(context)
+                                                              .hideCurrentMaterialBanner());
+                                                    }
+                                                  },
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                },
+                              );
+                            },
+                          )
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Text(
+                  'Delete Account',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
           ],
         ),
       ),
