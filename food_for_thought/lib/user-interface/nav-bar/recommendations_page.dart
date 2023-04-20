@@ -93,8 +93,8 @@ class RecommendationPageState extends State<RecommendationPage> {
 
   Container floatingActionButton() {
     return Container(
-      width: 50,
-      height: 50,
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 244, 4, 4),
         borderRadius: BorderRadius.circular(30),
@@ -110,7 +110,7 @@ class RecommendationPageState extends State<RecommendationPage> {
           Icons.refresh,
           color: Colors.white,
           weight: 70,
-          size: 35,
+          size: 25,
         ),
       ),
     );
