@@ -19,13 +19,13 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
   final user = FirebaseAuth.instance.currentUser!;
   String uid = FirebaseAuth.instance.currentUser!.uid.toString();
   List<PublicCreatedRecipe> createdRecipes = [];
-  bool loaded = true;
+  bool loading = true;
 
   Future<void> getRecipes() async {
     createdRecipes = await DatabaseService.getCreatedRecipesForVerification();
     setState(() {
       createdRecipes;
-      loaded = false;
+      loading = false;
     });
   }
 
@@ -46,8 +46,13 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
 
   RefreshIndicator body() {
     return RefreshIndicator(
-      onRefresh: () => getRecipes(),
-      child: loaded
+      onRefresh: () async {
+        setState(() {
+          loading = true;
+        });
+        getRecipes();
+      },
+      child: loading
           ? Center(
               child: SizedBox(
                 height: 70,
@@ -126,6 +131,9 @@ class ApproveCreatedRecipesPageState extends State<ApproveCreatedRecipesPage> {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: 10,
+                          )
                         ],
                       );
                     },

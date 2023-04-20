@@ -35,7 +35,7 @@ class UserCardState extends State<UserCard> {
           child: Row(
             children: [
               SizedBox(
-                width: 40,
+                width: 10,
               ),
               Icon(
                 Icons.person,
