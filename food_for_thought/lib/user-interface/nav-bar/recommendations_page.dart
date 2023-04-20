@@ -25,7 +25,6 @@ class RecommendationPageState extends State<RecommendationPage> {
   int vegan = 0;
   int glutenFree = 0;
   int dairyFree = 0;
-  int popular = 0;
   int healthy = 0;
 
   Future<void> getRecipes() async {
@@ -39,9 +38,7 @@ class RecommendationPageState extends State<RecommendationPage> {
       if (likedRecipes[i].isGlutenFree == true) {
         glutenFree++;
       }
-      if (likedRecipes[i].isPopular == true) {
-        popular++;
-      }
+
       if (likedRecipes[i].isVegan == true) {
         vegan++;
       }
@@ -56,7 +53,6 @@ class RecommendationPageState extends State<RecommendationPage> {
     Map<String, int> filters = {
       'isVegan': vegan,
       'isVegetarian': vegetarian,
-      'isPopular': popular,
       'isGlutenFree': glutenFree,
       'isDairyFree': dairyFree,
       'isVeryHealthy': healthy,
