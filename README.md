@@ -71,3 +71,5 @@ Enter '2' to run the application on Chrome
 ![Readme Image 3](https://user-images.githubusercontent.com/109327531/231539434-6437bd7b-4441-4c53-9e22-2ae28fba5741.png)
 
 
+## Notes
+To login as an admin use these credentials - Email: admin@admin.com, Password: admin00. To login regularly, you may create and use your own personal account, or you can use the account we have made for you - Email: profseyed@wayne.edu, Password: Recipeal-CSC4996
