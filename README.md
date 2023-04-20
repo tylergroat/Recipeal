@@ -13,7 +13,7 @@ We make use of the **Spoonacular API** to supply our application with recipe dat
 
 We use **Firebase** for our backend. We use the built in authentification features that firebase provides, as well as the NO-SQL Firestore database for data retention.
 
-## Installation
+# Installation
 
 ### Clone this repository
 ```bash
@@ -21,13 +21,15 @@ $ git clone https://github.com/gavin-fromm/Recipeal.git
 ```
 ### Navigate to the repository
 ```
-$ cd Recipe-Tinder
+$ cd Recipe-Tinder/food_for_thought
 ```
 ### Install Dependencies
 ```bash
 flutter clean
 flutter pub get
 ```
+
+# Running the Application
 
 ## Android Emulator 
 (Note: You must have android studio and an emulation device added. The device we worked with, is the Google Pixel XL 5.5" with the API level 30)
@@ -69,3 +71,5 @@ Enter '2' to run the application on Chrome
 ![Readme Image 3](https://user-images.githubusercontent.com/109327531/231539434-6437bd7b-4441-4c53-9e22-2ae28fba5741.png)
 
 
+## Notes
+To login as an admin use these credentials - Email: admin@admin.com, Password: admin00. To login regularly, you may create and use your own personal account, or you can use the account we have made for you - Email: profseyed@wayne.edu, Password: Recipeal-CSC4996
