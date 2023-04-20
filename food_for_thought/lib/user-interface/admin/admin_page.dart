@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_for_thought/back-end/authentification.dart';
 import 'package:food_for_thought/back-end/database.dart';
-import 'package:food_for_thought/classes/created_recipe_class.dart';
 import 'package:food_for_thought/classes/public_created_recipe_class.dart';
-import 'package:food_for_thought/user-interface/admin/all_recipes_page.dart';
 import 'package:food_for_thought/user-interface/admin/created_recipes_approval_page.dart';
 import 'package:food_for_thought/user-interface/user-functions/login_page.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -34,7 +32,7 @@ class AdminPageState extends State<AdminPage> {
   bool loading = true; //variable to display loading icon
 
   Future<void> getStatistics() async {
-    recipeCount = await DatabaseService.countRecipes(); //get recipe count
+    // recipeCount = await DatabaseService.countRecipes(); //get recipe count
     userCount = await DatabaseService.countUsers(); //get user count
     createdRecipesVerification = await DatabaseService
         .getCreatedRecipesForVerification(); //get recipes waiting for approval
@@ -55,195 +53,182 @@ class AdminPageState extends State<AdminPage> {
     getStatistics();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(context),
-      body: body(context),
+  Container floatingActionButton() {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 244, 4, 4),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: IconButton(
+        onPressed: () {
+          setState(() {
+            loading = true;
+          });
+          getStatistics();
+        },
+        icon: Icon(
+          Icons.refresh,
+          color: Colors.white,
+          weight: 70,
+          size: 25,
+        ),
+      ),
     );
   }
 
-  RefreshIndicator body(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        setState(() {
-          loading = true;
-        });
-        getStatistics();
-      },
-      child: loading
-          ? loadingIndicator()
-          : Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: floatingActionButton(),
+      appBar: appBar(context),
+      body: loading ? loadingIndicator() : body(context),
+    );
+  }
+
+  Center body(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 100,
+          ),
+          Container(
+            height: 50,
+            width: 300,
+            decoration: BoxDecoration(
+                color: Colors.grey, borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Center(
+                  child: Text(
+                    'Total Users: $userCount',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(12)),
-                        height: 50,
-                        width: 180,
-                        child: Center(
-                          child: Text(
-                            'Total Recipes: $recipeCount',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(12)),
-                        height: 50,
-                        width: 180,
-                        child: Center(
-                          child: Text(
-                            'Total Users: $userCount',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey, borderRadius: BorderRadius.circular(12)),
+            height: 50,
+            width: 300,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.pending_actions,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Center(
+                  child: Text(
+                    'Recipes Waiting For Verification: $recipesWaiting',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    height: 10,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey, borderRadius: BorderRadius.circular(12)),
+            height: 50,
+            width: 300,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.verified,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Center(
+                  child: Text(
+                    'Recipes Verified: $recipesVerified',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(12)),
-                        height: 50,
-                        width: 300,
-                        child: Center(
-                          child: Text(
-                            'Recipes Waiting For Verification: $recipesWaiting',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Color.fromARGB(255, 244, 4, 4),
+            ),
+            height: 70,
+            width: 150,
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AllUsersPage(),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(12)),
-                        height: 50,
-                        width: 300,
-                        child: Center(
-                          child: Text(
-                            'Recipes Verified: $recipesVerified',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Color.fromARGB(255, 244, 4, 4),
-                    ),
-                    height: 70,
-                    width: 150,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => AllRecipesPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'View All Recipes',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Color.fromARGB(255, 244, 4, 4),
-                    ),
-                    height: 70,
-                    width: 150,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => AllUsersPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'View All Users',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Color.fromARGB(255, 244, 4, 4),
-                    ),
-                    height: 70,
-                    width: 180,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ApproveCreatedRecipesPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Created Recipe Approval',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
+                );
+              },
+              child: Text(
+                'View All Users',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Color.fromARGB(255, 244, 4, 4),
+            ),
+            height: 70,
+            width: 180,
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ApproveCreatedRecipesPage(),
+                  ),
+                );
+              },
+              child: Text(
+                'Created Recipe Approval',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
