@@ -131,8 +131,8 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
       appBar: appBar(context),
       body: body(),
       floatingActionButton: Container(
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 244, 4, 4),
           borderRadius: BorderRadius.circular(30),
@@ -144,13 +144,13 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
                   Icons.verified,
                   color: Colors.white,
                   weight: 70,
-                  size: 35,
+                  size: 25,
                 )
               : Icon(
                   Icons.feed,
                   color: Colors.white,
                   weight: 70,
-                  size: 35,
+                  size: 25,
                 ),
         ),
       ),
