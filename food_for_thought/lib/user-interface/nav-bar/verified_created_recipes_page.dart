@@ -19,16 +19,18 @@ class CommunityFeedPage extends StatefulWidget {
   CommunityFeedPageState createState() => CommunityFeedPageState();
 }
 
+// Creates the community feed page
 class CommunityFeedPageState extends State<CommunityFeedPage> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   late UserInformation user;
-
+// empty array to feed in recipes
   late List<PublicCreatedRecipe> recipes = [];
   late List<String> names = [];
   final FirebaseStorage storage = FirebaseStorage.instance;
   bool _isLoading = true;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
+//Getting recipes from the database
   Future<void> getRecipes() async {
     FirebaseFirestore.instance
         .collection('verified-created-recipes')
@@ -58,6 +60,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
     });
   }
 
+// gets recipes based on UID
   Future<void> getUser(String uid) async {
     user = await DatabaseService.getUser(uid);
   }
@@ -68,6 +71,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
     Timer(Duration(seconds: 1), () => getRecipes());
   }
 
+// If there are no community recipes this is the pop up
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +89,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
     );
   }
 
+// Recipe card is formated and is displayed with the option to like the recipe
   Scrollbar body() {
     return Scrollbar(
       interactive: true,
@@ -211,6 +216,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
     );
   }
 
+// Loading indicator will pop up in the wait time from users interaction with the page
   Column loadingIndicator() {
     return Column(
       children: [
@@ -246,6 +252,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
     );
   }
 
+//App bar at the top of the application
   AppBar appBar() {
     return AppBar(
       shape: RoundedRectangleBorder(
@@ -262,6 +269,7 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
     );
   }
 
+//Refresh button updates the recipes on the page with the latest verifed recipes
   Container floatingActionButton() {
     return Container(
       width: 50,

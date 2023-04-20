@@ -7,6 +7,7 @@ import 'package:food_for_thought/classes/recipe_class.dart';
 import 'package:food_for_thought/user-interface/cards/recipe_card.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../back-end/api_config.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 //class to define how the recipe feed is presented to the user -- Implemented by : Gavin Fromm
 //Tags for Filtering system Implemented by : Jaideep Chunduri
@@ -17,12 +18,13 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedPageState extends State<FeedPage> {
-  //initilize varibles
+  //initialize variables
+  // CardSwiperController cardController = CardSwiperController();
   int index = 0;
   bool isLoading = true;
   late List<Recipe> recipes = [];
   late List<String> ingredients = [];
-  late int lastIndex = recipes.length - 3; //max length before refresh
+  late int lastIndex = recipes.length; //max length before refresh
   FirebaseFirestore db = FirebaseFirestore.instance; //instance of database
   //list of tags for filtering
   List<String> tags = [
@@ -41,12 +43,23 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
+    // cardController = CardSwiperController();
     try {
       Timer(Duration(seconds: 1), () => getRecipes(selectedTag));
     } on Exception {
       getRecipes(selectedTag);
+      setState(() {});
+    }
+    for (int i = 0; i < recipes.length; i++) {
+      print(recipes[i].name);
     }
   }
+
+  // @override
+  // void dispose() {
+  //   cardController.dispose();
+  //   super.dispose();
+  // }
 
   Future<void> getRecipes(String? tag) async {
     //method to get recipes from api to populate our page
@@ -87,6 +100,9 @@ class FeedPageState extends State<FeedPage> {
     setState(() {
       isLoading = false;
     });
+    for (int i = 0; i < recipes.length; i++) {
+      print(recipes[i].name);
+    }
   }
 
   @override
@@ -107,7 +123,7 @@ class FeedPageState extends State<FeedPage> {
       child: Column(
         children: [
           SizedBox(
-            height: 15,
+            height: 10,
           ),
           Align(
             alignment: Alignment(.75, 0),
@@ -127,7 +143,7 @@ class FeedPageState extends State<FeedPage> {
                     weight: 40,
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 20,
                   ),
                   StatefulBuilder(
                     builder: (context, setState) {
@@ -150,23 +166,42 @@ class FeedPageState extends State<FeedPage> {
               ),
             ),
           ),
-          RecipeCard(
-            id: recipes[index].id,
-            title: recipes[index].name,
-            servings: recipes[index].servings,
-            ingredients: recipes[index].ingredients,
-            preparationSteps: recipes[index].preparationSteps,
-            cookTime: recipes[index].totalTime,
-            thumbnailUrl: recipes[index].images,
-            isVegetarian: recipes[index].isVegetarian,
-            isDairyFree: recipes[index].isDairyFree,
-            isPopular: recipes[index].isPopular,
-            isGlutenFree: recipes[index].isGlutenFree,
-            isVegan: recipes[index].isVegan,
-            isVeryHealthy: recipes[index].isVeryHealthy,
+          SizedBox(
+            height: 10,
+          ),
+          // Formatting the Recipe card with the swiping functionality
+          SizedBox(
+            width: MediaQuery.of(super.context).size.width,
+            height: (MediaQuery.of(super.context).size.width) * .85,
+            child: Expanded(
+              child: CardSwiper(
+                cardBuilder: (context, index) => RecipeCard(
+                  id: recipes[index].id,
+                  title: recipes[index].name,
+                  servings: recipes[index].servings,
+                  ingredients: recipes[index].ingredients,
+                  preparationSteps: recipes[index].preparationSteps,
+                  cookTime: recipes[index].totalTime,
+                  thumbnailUrl: recipes[index].images,
+                  isVegetarian: recipes[index].isVegetarian,
+                  isDairyFree: recipes[index].isDairyFree,
+                  isPopular: recipes[index].isPopular,
+                  isGlutenFree: recipes[index].isGlutenFree,
+                  isVegan: recipes[index].isVegan,
+                  isVeryHealthy: recipes[index].isVeryHealthy,
+                ),
+                scale: .82,
+                cardsCount: recipes.length,
+                padding: const EdgeInsets.all(5.0),
+                isVerticalSwipingEnabled: false,
+                isLoop: false,
+                // Onswipe is the like feature which saves the recipe to the database
+                onSwipe: _onSwipe,
+              ),
+            ),
           ),
           SizedBox(
-            height: 5,
+            height: 15,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -210,6 +245,7 @@ class FeedPageState extends State<FeedPage> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(30),
                   radius: 30,
+                  // Like button saves recipe to database when tapped upon
                   onTap: () {
                     Map<String, dynamic> savedRecipe = {
                       'id': recipes[index].id,
@@ -237,11 +273,10 @@ class FeedPageState extends State<FeedPage> {
                     if (index >= lastIndex) {
                       index = 0;
                       getRecipes(selectedTag?.toLowerCase());
-                      print('Getting : ${selectedTag} recipes');
-                      ;
+                      print('Getting : $selectedTag recipes');
                     } else {
                       recipes.removeAt(index);
-                      index++;
+                      // index++;
                       setState(
                         () {
                           index = index;
@@ -372,5 +407,45 @@ class FeedPageState extends State<FeedPage> {
         ),
       ),
     );
+  }
+// onSwipe to like recipe
+  bool _onSwipe(
+      int previousIndex, int? currentIndex, CardSwiperDirection direction) {
+    print("Previous index - parameter: $previousIndex");
+    print("Current index - parameter: $currentIndex");
+    print("Index: $index");
+    print("Last index: $lastIndex");
+    Map<String, dynamic> savedRecipe = {
+      'id': recipes[index].id,
+      'title': recipes[index].name,
+      'servings': recipes[index].servings,
+      'ingredients': recipes[index].ingredients,
+      'preparationSteps': recipes[index].preparationSteps,
+      'cookTime': recipes[index].totalTime,
+      'thumbnailUrl': recipes[index].images,
+      'isVegetarian': recipes[index].isVegetarian,
+      'isVegan': recipes[index].isVegan,
+      'isGlutenFree': recipes[index].isGlutenFree,
+      'isDairyFree': recipes[index].isDairyFree,
+      'isVeryHealthy': recipes[index].isVeryHealthy,
+      'isPopular': recipes[index].isPopular,
+    };
+
+    db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("saved recipes")
+        .doc(recipes[index].name)
+        .set(savedRecipe);
+
+    if (currentIndex == null) {
+      setState(() {
+        isLoading = true;
+      });
+      getRecipes(selectedTag?.toLowerCase());
+      print('Getting : $selectedTag recipes');
+    }
+
+    return true;
   }
 }
