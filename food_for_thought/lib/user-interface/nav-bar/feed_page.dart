@@ -18,13 +18,13 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedPageState extends State<FeedPage> {
-  //initilize varibles
-  final cardController = CardSwiperController();
+  //initialize variables
+  // CardSwiperController cardController = CardSwiperController();
   int index = 0;
   bool isLoading = true;
   late List<Recipe> recipes = [];
   late List<String> ingredients = [];
-  late int lastIndex = recipes.length - 3; //max length before refresh
+  late int lastIndex = recipes.length; //max length before refresh
   FirebaseFirestore db = FirebaseFirestore.instance; //instance of database
   //list of tags for filtering
   List<String> tags = [
@@ -43,12 +43,23 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
+    // cardController = CardSwiperController();
     try {
       Timer(Duration(seconds: 1), () => getRecipes(selectedTag));
     } on Exception {
       getRecipes(selectedTag);
+      setState(() {});
+    }
+    for (int i = 0; i < recipes.length; i++) {
+      print(recipes[i].name);
     }
   }
+
+  // @override
+  // void dispose() {
+  //   cardController.dispose();
+  //   super.dispose();
+  // }
 
   Future<void> getRecipes(String? tag) async {
     //method to get recipes from api to populate our page
@@ -89,6 +100,9 @@ class FeedPageState extends State<FeedPage> {
     setState(() {
       isLoading = false;
     });
+    for (int i = 0; i < recipes.length; i++) {
+      print(recipes[i].name);
+    }
   }
 
   @override
@@ -156,7 +170,6 @@ class FeedPageState extends State<FeedPage> {
             height: 10,
           ),
           SizedBox(
-            // margin: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
             width: MediaQuery.of(super.context).size.width,
             height: (MediaQuery.of(super.context).size.width) * .85,
             child: Expanded(
@@ -179,7 +192,6 @@ class FeedPageState extends State<FeedPage> {
                 scale: .82,
                 cardsCount: recipes.length,
                 padding: const EdgeInsets.all(5.0),
-                controller: cardController,
                 isVerticalSwipingEnabled: false,
                 isLoop: false,
                 onSwipe: _onSwipe,
@@ -258,11 +270,10 @@ class FeedPageState extends State<FeedPage> {
                     if (index >= lastIndex) {
                       index = 0;
                       getRecipes(selectedTag?.toLowerCase());
-                      print('Getting : ${selectedTag} recipes');
-                      ;
+                      print('Getting : $selectedTag recipes');
                     } else {
                       recipes.removeAt(index);
-                      index++;
+                      // index++;
                       setState(
                         () {
                           index = index;
@@ -397,6 +408,10 @@ class FeedPageState extends State<FeedPage> {
 
   bool _onSwipe(
       int previousIndex, int? currentIndex, CardSwiperDirection direction) {
+    print("Previous index - parameter: $previousIndex");
+    print("Current index - parameter: $currentIndex");
+    print("Index: $index");
+    print("Last index: $lastIndex");
     Map<String, dynamic> savedRecipe = {
       'id': recipes[index].id,
       'title': recipes[index].name,
@@ -420,20 +435,14 @@ class FeedPageState extends State<FeedPage> {
         .doc(recipes[index].name)
         .set(savedRecipe);
 
-    if (index >= lastIndex) {
-      index = 0;
+    if (currentIndex == null) {
+      setState(() {
+        isLoading = true;
+      });
       getRecipes(selectedTag?.toLowerCase());
-      print('Getting : ${selectedTag} recipes');
-      ;
-    } else {
-      recipes.removeAt(index);
-      index++;
-      setState(
-        () {
-          index = index;
-        },
-      );
+      print('Getting : $selectedTag recipes');
     }
+
     return true;
   }
 }
