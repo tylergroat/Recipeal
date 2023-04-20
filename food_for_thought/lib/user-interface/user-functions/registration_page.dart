@@ -97,7 +97,7 @@ class RegistrationPageState extends State<RegistrationPage> {
     content: AwesomeSnackbarContent(
       color: Colors.red,
       title: 'Passwords Do Not Match',
-      message: 'Please confirn your password',
+      message: 'Please confirm your password',
 
       contentType: ContentType.failure,
       // to configure for material banner

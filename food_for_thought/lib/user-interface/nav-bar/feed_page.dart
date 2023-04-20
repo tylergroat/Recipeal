@@ -47,6 +47,7 @@ class FeedPageState extends State<FeedPage> {
     try {
       Timer(Duration(seconds: 1), () => getRecipes(selectedTag));
     } on Exception {
+      print('handled exception');
       getRecipes(selectedTag);
       setState(() {});
     }
@@ -54,12 +55,6 @@ class FeedPageState extends State<FeedPage> {
       print(recipes[i].name);
     }
   }
-
-  // @override
-  // void dispose() {
-  //   cardController.dispose();
-  //   super.dispose();
-  // }
 
   Future<void> getRecipes(String? tag) async {
     //method to get recipes from api to populate our page

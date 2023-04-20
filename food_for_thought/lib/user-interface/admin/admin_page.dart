@@ -65,7 +65,12 @@ class AdminPageState extends State<AdminPage> {
 
   RefreshIndicator body(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => getStatistics(),
+      onRefresh: () async {
+        setState(() {
+          loading = true;
+        });
+        getStatistics();
+      },
       child: loading
           ? loadingIndicator()
           : Center(
