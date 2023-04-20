@@ -155,6 +155,7 @@ class FeedPageState extends State<FeedPage> {
           SizedBox(
             height: 10,
           ),
+          // Formatting the Recipe card with the swiping functionality
           SizedBox(
             // margin: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
             width: MediaQuery.of(super.context).size.width,
@@ -182,6 +183,7 @@ class FeedPageState extends State<FeedPage> {
                 controller: cardController,
                 isVerticalSwipingEnabled: false,
                 isLoop: false,
+                // Onswipe is the like feature which saves the recipe to the database
                 onSwipe: _onSwipe,
               ),
             ),
@@ -231,6 +233,7 @@ class FeedPageState extends State<FeedPage> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(30),
                   radius: 30,
+                  // Like button saves recipe to database when tapped upon
                   onTap: () {
                     Map<String, dynamic> savedRecipe = {
                       'id': recipes[index].id,
@@ -394,7 +397,7 @@ class FeedPageState extends State<FeedPage> {
       ),
     );
   }
-
+// onSwipe to like recipe
   bool _onSwipe(
       int previousIndex, int? currentIndex, CardSwiperDirection direction) {
     Map<String, dynamic> savedRecipe = {
