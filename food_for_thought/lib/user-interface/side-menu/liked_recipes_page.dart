@@ -162,27 +162,29 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         onRefresh: _showingFeedLikes ? getRecipes : getUserCreatedRecipes,
         child: Scaffold(
           appBar: AppBar(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(80),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(80),
+              ),
             ),
+            backgroundColor: Colors.grey,
+            toolbarHeight: 30,
+            centerTitle: true,
+            title: _showingFeedLikes
+                ? Text(
+                    'Feed',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 247, 247, 247),
+                        fontSize: 20),
+                  )
+                : Text(
+                    'User Created',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 247, 247, 247),
+                        fontSize: 20),
+                  ),
+            automaticallyImplyLeading: false,
           ),
-          backgroundColor: Colors.grey,
-          toolbarHeight: 30,
-          centerTitle: true,
-          title: _showingFeedLikes
-              ? Text(
-                  'Feed',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-                )
-              : Text(
-                  'User Created',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
-                ),
-          automaticallyImplyLeading: false,
-        ),
           body: loaded
               ? loadingIndicator()
               : _showingFeedLikes
@@ -289,132 +291,140 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         scrollDirection: Axis.vertical,
         itemCount: recipes.length,
         itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            child: RecipeCard(
-              id: recipes[index].id,
-              title: recipes[index].name,
-              servings: recipes[index].servings,
-              ingredients: recipes[index].ingredients,
-              preparationSteps: recipes[index].preparationSteps,
-              cookTime: recipes[index].totalTime,
-              thumbnailUrl: recipes[index].images,
-              isVegetarian: recipes[index].isVegetarian,
-              isDairyFree: recipes[index].isDairyFree,
-              isPopular: recipes[index].isPopular,
-              isGlutenFree: recipes[index].isGlutenFree,
-              isVegan: recipes[index].isVegan,
-              isVeryHealthy: recipes[index].isVeryHealthy,
-            ),
-            onLongPress: () {
-              print(recipes[index].name);
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Confirm"),
-                    content: Text(
-                        "Are you sure you want to remove ${recipes[index].name} from your liked recipes?"),
-                    actions: [
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: GestureDetector(
+              child: RecipeCard(
+                id: recipes[index].id,
+                title: recipes[index].name,
+                servings: recipes[index].servings,
+                ingredients: recipes[index].ingredients,
+                preparationSteps: recipes[index].preparationSteps,
+                cookTime: recipes[index].totalTime,
+                thumbnailUrl: recipes[index].images,
+                isVegetarian: recipes[index].isVegetarian,
+                isDairyFree: recipes[index].isDairyFree,
+                isPopular: recipes[index].isPopular,
+                isGlutenFree: recipes[index].isGlutenFree,
+                isVegan: recipes[index].isVegan,
+                isVeryHealthy: recipes[index].isVeryHealthy,
+              ),
+              onLongPress: () {
+                print(recipes[index].name);
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Confirm"),
+                      content: Text(
+                          "Are you sure you want to remove ${recipes[index].name} from your liked recipes?"),
+                      actions: [
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Delete",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                          child: Text(
+                            "Delete",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            final docs = FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(uid)
+                                .collection('saved recipes')
+                                .doc(recipes[index].name)
+                                .delete();
+                            getRecipes();
+                            setState(() {});
+                          },
+                        )
+                      ],
+                    );
+                  },
+                ); // show the dialog
+                // print(recipes[index].name);
+              },
+              onDoubleTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Confirm'),
+                      content: Text(
+                          'Do you want to add ${recipes[index].name} to your pinned recipes?'),
+                      actions: [
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          final docs = FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(uid)
-                              .collection('saved recipes')
-                              .doc(recipes[index].name)
-                              .delete();
-                          getRecipes();
-                          setState(() {});
-                        },
-                      )
-                    ],
-                  );
-                },
-              ); // show the dialog
-              // print(recipes[index].name);
-            },
-            onDoubleTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text('Confirm'),
-                    content: Text(
-                        'Do you want to add ${recipes[index].name} to your pinned recipes?'),
-                    actions: [
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Confirm",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Map<String, dynamic> savedRecipe = {
-                            'id': recipes[index].id,
-                            'title': recipes[index].name,
-                            'servings': recipes[index].servings,
-                            'ingredients': recipes[index].ingredients,
-                            'preparationSteps': recipes[index].preparationSteps,
-                            'cookTime': recipes[index].totalTime,
-                            'thumbnailUrl': recipes[index].images,
-                            'isVegetarian': recipes[index].isVegetarian,
-                            'isVegan': recipes[index].isVegan,
-                            'isGlutenFree': recipes[index].isGlutenFree,
-                            'isDairyFree': recipes[index].isDairyFree,
-                            'isVeryHealthy': recipes[index].isVeryHealthy,
-                            'isPopular': recipes[index].isPopular
-                          };
-                          final docs = FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(uid)
-                              .collection('pinned recipes')
-                              .doc(recipes[index].name)
-                              .set(savedRecipe);
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                          child: Text(
+                            "Confirm",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Map<String, dynamic> savedRecipe = {
+                              'id': recipes[index].id,
+                              'title': recipes[index].name,
+                              'servings': recipes[index].servings,
+                              'ingredients': recipes[index].ingredients,
+                              'preparationSteps':
+                                  recipes[index].preparationSteps,
+                              'cookTime': recipes[index].totalTime,
+                              'thumbnailUrl': recipes[index].images,
+                              'isVegetarian': recipes[index].isVegetarian,
+                              'isVegan': recipes[index].isVegan,
+                              'isGlutenFree': recipes[index].isGlutenFree,
+                              'isDairyFree': recipes[index].isDairyFree,
+                              'isVeryHealthy': recipes[index].isVeryHealthy,
+                              'isPopular': recipes[index].isPopular
+                            };
+                            final docs = FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(uid)
+                                .collection('pinned recipes')
+                                .doc(recipes[index].name)
+                                .set(savedRecipe);
 
-                          getRecipes();
-                          setState(() {});
-                        },
-                      )
-                    ],
-                  );
-                },
-              );
-            },
+                            getRecipes();
+                            setState(() {});
+                          },
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
           );
         },
       ),
