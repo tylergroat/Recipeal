@@ -109,7 +109,7 @@ class FeedPageState extends State<FeedPage> {
       child: Column(
         children: [
           SizedBox(
-            height: 15,
+            height: 10,
           ),
           Align(
             alignment: Alignment(.75, 0),
@@ -129,7 +129,7 @@ class FeedPageState extends State<FeedPage> {
                     weight: 40,
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 20,
                   ),
                   StatefulBuilder(
                     builder: (context, setState) {
@@ -153,9 +153,12 @@ class FeedPageState extends State<FeedPage> {
             ),
           ),
           SizedBox(
+            height: 10,
+          ),
+          SizedBox(
             // margin: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
             width: MediaQuery.of(super.context).size.width,
-            height: (MediaQuery.of(super.context).size.width)*.85,
+            height: (MediaQuery.of(super.context).size.width) * .85,
             child: Expanded(
               child: CardSwiper(
                 cardBuilder: (context, index) => RecipeCard(
@@ -186,7 +189,7 @@ class FeedPageState extends State<FeedPage> {
             ),
           ),
           SizedBox(
-            height: 5,
+            height: 15,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
