@@ -182,6 +182,7 @@ class FeedPageState extends State<FeedPage> {
                 controller: cardController,
                 isVerticalSwipingEnabled: false,
                 isLoop: false,
+                onSwipe: _onSwipe,
               ),
             ),
           ),
@@ -392,5 +393,47 @@ class FeedPageState extends State<FeedPage> {
         ),
       ),
     );
+  }
+
+  bool _onSwipe(
+      int previousIndex, int? currentIndex, CardSwiperDirection direction) {
+    Map<String, dynamic> savedRecipe = {
+      'id': recipes[index].id,
+      'title': recipes[index].name,
+      'servings': recipes[index].servings,
+      'ingredients': recipes[index].ingredients,
+      'preparationSteps': recipes[index].preparationSteps,
+      'cookTime': recipes[index].totalTime,
+      'thumbnailUrl': recipes[index].images,
+      'isVegetarian': recipes[index].isVegetarian,
+      'isVegan': recipes[index].isVegan,
+      'isGlutenFree': recipes[index].isGlutenFree,
+      'isDairyFree': recipes[index].isDairyFree,
+      'isVeryHealthy': recipes[index].isVeryHealthy,
+      'isPopular': recipes[index].isPopular,
+    };
+
+    db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("saved recipes")
+        .doc(recipes[index].name)
+        .set(savedRecipe);
+
+    if (index >= lastIndex) {
+      index = 0;
+      getRecipes(selectedTag?.toLowerCase());
+      print('Getting : ${selectedTag} recipes');
+      ;
+    } else {
+      recipes.removeAt(index);
+      index++;
+      setState(
+        () {
+          index = index;
+        },
+      );
+    }
+    return true;
   }
 }
