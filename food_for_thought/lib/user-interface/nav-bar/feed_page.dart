@@ -152,30 +152,31 @@ class FeedPageState extends State<FeedPage> {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 18, vertical: 1),
-            width: MediaQuery.of(context).size.width,
-            height: 340,
+          SizedBox(
+            // margin: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+            width: MediaQuery.of(super.context).size.width,
+            height: (MediaQuery.of(super.context).size.width)*.85,
             child: Expanded(
               child: CardSwiper(
-                cardBuilder: (context, index) => SizedBox(
-                  child: RecipeCard(
-                    id: recipes[index].id,
-                    title: recipes[index].name,
-                    servings: recipes[index].servings,
-                    ingredients: recipes[index].ingredients,
-                    preparationSteps: recipes[index].preparationSteps,
-                    cookTime: recipes[index].totalTime,
-                    thumbnailUrl: recipes[index].images,
-                    isVegetarian: recipes[index].isVegetarian,
-                    isDairyFree: recipes[index].isDairyFree,
-                    isPopular: recipes[index].isPopular,
-                    isGlutenFree: recipes[index].isGlutenFree,
-                    isVegan: recipes[index].isVegan,
-                    isVeryHealthy: recipes[index].isVeryHealthy,
-                  ),
+                cardBuilder: (context, index) => RecipeCard(
+                  id: recipes[index].id,
+                  title: recipes[index].name,
+                  servings: recipes[index].servings,
+                  ingredients: recipes[index].ingredients,
+                  preparationSteps: recipes[index].preparationSteps,
+                  cookTime: recipes[index].totalTime,
+                  thumbnailUrl: recipes[index].images,
+                  isVegetarian: recipes[index].isVegetarian,
+                  isDairyFree: recipes[index].isDairyFree,
+                  isPopular: recipes[index].isPopular,
+                  isGlutenFree: recipes[index].isGlutenFree,
+                  isVegan: recipes[index].isVegan,
+                  isVeryHealthy: recipes[index].isVeryHealthy,
                 ),
+
                 cardsCount: recipes.length,
+                padding: const EdgeInsets.all(0.0),
+
                 // layout: SwiperLayout.STACK,
                 // itemWidth: 300,
                 // itemHeight: 400,
