@@ -120,131 +120,137 @@ class RecommendationPageState extends State<RecommendationPage> {
         scrollDirection: Axis.vertical,
         itemCount: 3,
         itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            child: Column(
-              children: [
-                RecipeCard(
-                  id: recommendedRecipes[index].id,
-                  title: recommendedRecipes[index].name,
-                  servings: recommendedRecipes[index].servings,
-                  ingredients: recommendedRecipes[index].ingredients,
-                  preparationSteps: recommendedRecipes[index].preparationSteps,
-                  cookTime: recommendedRecipes[index].totalTime,
-                  thumbnailUrl: recommendedRecipes[index].images,
-                  isVegetarian: recommendedRecipes[index].isVegetarian,
-                  isDairyFree: recommendedRecipes[index].isDairyFree,
-                  isPopular: recommendedRecipes[index].isPopular,
-                  isGlutenFree: recommendedRecipes[index].isGlutenFree,
-                  isVegan: recommendedRecipes[index].isVegan,
-                  isVeryHealthy: recommendedRecipes[index].isVeryHealthy,
-                ),
-                Container(
-                  width: 145,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 244, 4, 4),
-                    borderRadius: BorderRadius.circular(30),
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: GestureDetector(
+              child: Column(
+                children: [
+                  RecipeCard(
+                    id: recommendedRecipes[index].id,
+                    title: recommendedRecipes[index].name,
+                    servings: recommendedRecipes[index].servings,
+                    ingredients: recommendedRecipes[index].ingredients,
+                    preparationSteps: recommendedRecipes[index].preparationSteps,
+                    cookTime: recommendedRecipes[index].totalTime,
+                    thumbnailUrl: recommendedRecipes[index].images,
+                    isVegetarian: recommendedRecipes[index].isVegetarian,
+                    isDairyFree: recommendedRecipes[index].isDairyFree,
+                    isPopular: recommendedRecipes[index].isPopular,
+                    isGlutenFree: recommendedRecipes[index].isGlutenFree,
+                    isVegan: recommendedRecipes[index].isVegan,
+                    isVeryHealthy: recommendedRecipes[index].isVeryHealthy,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.star_rate,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      Text(
-                        'Recommended',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                      )
-                    ],
+                  SizedBox(
+                    height: 12,
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 375,
-                  child: Divider(
-                    thickness: 2,
+                  Container(
+                    width: 145,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 244, 4, 4),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.star_rate,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          'Recommended',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        )
+                      ],
+                    ),
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 375,
+                    child: Divider(
+                      thickness: 2,
+                    ),
+                  )
+                ],
+              ),
+              onDoubleTap: () {
+                print(recommendedRecipes[index].name);
+          
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Confirm'),
+                      content: Text(
+                          'Do you want to add ${recommendedRecipes[index].name} to your liked recipes?'),
+                      actions: [
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 244, 4, 4)),
+                          child: Text(
+                            "Confirm",
+                            style: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            print(recommendedRecipes[index].name);
+                            Navigator.pop(context);
+                            Map<String, dynamic> savedRecipe = {
+                              'id': recommendedRecipes[index].id,
+                              'title': recommendedRecipes[index].name,
+                              'servings': recommendedRecipes[index].servings,
+                              'ingredients':
+                                  recommendedRecipes[index].ingredients,
+                              'preparationSteps':
+                                  recommendedRecipes[index].preparationSteps,
+                              'cookTime': recommendedRecipes[index].totalTime,
+                              'thumbnailUrl': recommendedRecipes[index].images,
+                              'isVegetarian':
+                                  recommendedRecipes[index].isVegetarian,
+                              'isVegan': recommendedRecipes[index].isVegan,
+                              'isGlutenFree':
+                                  recommendedRecipes[index].isGlutenFree,
+                              'isDairyFree':
+                                  recommendedRecipes[index].isDairyFree,
+                              'isVeryHealthy':
+                                  recommendedRecipes[index].isVeryHealthy,
+                              'isPopular': recommendedRecipes[index].isPopular
+                            };
+                            FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(uid)
+                                .collection('saved recipes')
+                                .doc(recommendedRecipes[index].name)
+                                .set(savedRecipe);
+          
+                            getRecipes();
+                            setState(() {});
+                          },
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
             ),
-            onDoubleTap: () {
-              print(recommendedRecipes[index].name);
-
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text('Confirm'),
-                    content: Text(
-                        'Do you want to add ${recommendedRecipes[index].name} to your liked recipes?'),
-                    actions: [
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Confirm",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          print(recommendedRecipes[index].name);
-                          Navigator.pop(context);
-                          Map<String, dynamic> savedRecipe = {
-                            'id': recommendedRecipes[index].id,
-                            'title': recommendedRecipes[index].name,
-                            'servings': recommendedRecipes[index].servings,
-                            'ingredients':
-                                recommendedRecipes[index].ingredients,
-                            'preparationSteps':
-                                recommendedRecipes[index].preparationSteps,
-                            'cookTime': recommendedRecipes[index].totalTime,
-                            'thumbnailUrl': recommendedRecipes[index].images,
-                            'isVegetarian':
-                                recommendedRecipes[index].isVegetarian,
-                            'isVegan': recommendedRecipes[index].isVegan,
-                            'isGlutenFree':
-                                recommendedRecipes[index].isGlutenFree,
-                            'isDairyFree':
-                                recommendedRecipes[index].isDairyFree,
-                            'isVeryHealthy':
-                                recommendedRecipes[index].isVeryHealthy,
-                            'isPopular': recommendedRecipes[index].isPopular
-                          };
-                          FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(uid)
-                              .collection('saved recipes')
-                              .doc(recommendedRecipes[index].name)
-                              .set(savedRecipe);
-
-                          getRecipes();
-                          setState(() {});
-                        },
-                      )
-                    ],
-                  );
-                },
-              );
-            },
           );
         },
       ),
