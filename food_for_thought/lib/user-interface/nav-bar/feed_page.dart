@@ -61,14 +61,26 @@ class FeedPageState extends State<FeedPage> {
     if (selectedTag == "Random") {
       //default - if choice is random, show random recipes
       print('getting random recipes');
-      recipes = await RecipeApi.getRecipes();
+      try {
+        recipes = await RecipeApi.getRecipes();
+      } on Exception {
+        recipes = await RecipeApi.getRecipes();
+      }
     } else if (selectedTag == "random") {
       print('getting random recipes');
-      recipes = await RecipeApi.getRecipes();
+      try {
+        recipes = await RecipeApi.getRecipes();
+      } on Exception {
+        recipes = await RecipeApi.getRecipes();
+      }
     } else {
       //if filter is selected, display recipes that match the given filter
       print('getting $tag recipes');
-      recipes = await RecipeApi.getRecipesByTag(tag!);
+      try {
+        recipes = await RecipeApi.getRecipesByTag(tag!);
+      } on Exception {
+        recipes = await RecipeApi.getRecipesByTag(tag!);
+      }
       print(recipes[index].name);
     }
 
