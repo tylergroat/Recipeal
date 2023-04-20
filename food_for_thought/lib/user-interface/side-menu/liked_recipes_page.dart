@@ -20,6 +20,7 @@ class ViewSavedRecipesPage extends StatefulWidget {
 class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   late List<Recipe> recipes = [];
   late List<PublicCreatedRecipe> publicRecipes = [];
+  late List<String> names = [];
   String uid = FirebaseAuth.instance.currentUser!.uid;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -48,8 +49,14 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   Future<void> getUserCreatedRecipes() async {
     publicRecipes =
         await DatabaseService.getPublicCreatedRecipes(uid, likedRecipes);
+
+    for (int i = 0; i < publicRecipes.length; i++) {
+      String name = await DatabaseService.getUsersName(publicRecipes[i].userId);
+      names.add(name);
+    }
     setState(() {
       publicRecipes;
+      names;
       _showingFeedLikes = false;
       loaded = false;
     });
@@ -129,7 +136,7 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
-      body: body(),
+      body: _showingFeedLikes ? apiFeedBody() : createdRecipesBody(),
       floatingActionButton: Container(
         width: 50,
         height: 50,
@@ -157,7 +164,39 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
     );
   }
 
-  RefreshIndicator body() {
+  RefreshIndicator apiFeedBody() {
+    return RefreshIndicator(
+      onRefresh: _showingFeedLikes ? getRecipes : getUserCreatedRecipes,
+      child: Scaffold(
+          appBar: AppBar(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(80),
+              ),
+            ),
+            backgroundColor: Colors.grey,
+            toolbarHeight: 30,
+            centerTitle: true,
+            title: Text(
+              'Feed',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+            ),
+            automaticallyImplyLeading: false,
+          ),
+          body: loaded
+              ? loadingIndicator()
+              : (recipes.isEmpty
+                  ? Center(
+                      child: Text('No Liked Recipes',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )))
+                  : showSystemRecipes())),
+    );
+  }
+
+  RefreshIndicator createdRecipesBody() {
     return RefreshIndicator(
         onRefresh: _showingFeedLikes ? getRecipes : getUserCreatedRecipes,
         child: Scaffold(
@@ -170,41 +209,25 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
             backgroundColor: Colors.grey,
             toolbarHeight: 30,
             centerTitle: true,
-            title: _showingFeedLikes
-                ? Text(
-                    'Feed',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 247, 247, 247),
-                        fontSize: 20),
-                  )
-                : Text(
-                    'User Created',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 247, 247, 247),
-                        fontSize: 20),
-                  ),
+            title: Text(
+              'User Created',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 247, 247, 247), fontSize: 20),
+            ),
             automaticallyImplyLeading: false,
           ),
           body: loaded
               ? loadingIndicator()
-              : _showingFeedLikes
-                  ? (recipes.isEmpty
-                      ? Center(
-                          child: Text('No Liked Recipes',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              )))
-                      : showSystemRecipes())
-                  : (publicRecipes.isEmpty
-                      ? Center(
-                          child: Text(
-                            'No Liked Community Recipes',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      : showCommuityRecipes()),
+              : (publicRecipes.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No Liked Community Recipes',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : showCommuityRecipes()),
         ));
   }
 
@@ -218,8 +241,8 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
         scrollDirection: Axis.vertical,
         itemCount: publicRecipes.length,
         itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            child: PublicCreatedRecipeCard(
+          return Column(children: [
+            PublicCreatedRecipeCard(
               title: publicRecipes[index].name,
               servings: publicRecipes[index].servings,
               ingredients: publicRecipes[index].ingredients,
@@ -228,54 +251,47 @@ class ViewSavedRecipesPageState extends State<ViewSavedRecipesPage> {
               thumbnailUrl: publicRecipes[index].image,
               userId: publicRecipes[index].userId,
             ),
-            onLongPress: () {
-              print(publicRecipes[index].name);
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Confirm"),
-                    content: Text(
-                        "Are you sure you want to remove ${publicRecipes[index].name} from your liked community recipes?"),
-                    actions: [
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+            Container(
+              height: 50,
+              width: 220,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Color.fromARGB(255, 244, 4, 4),
+              ),
+              child: SizedBox(
+                width: 300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Center(
+                      child: Text(
+                        'Created By: @${names[index]}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
                       ),
-                      TextButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 244, 4, 4)),
-                        child: Text(
-                          "Delete",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          db
-                              .collection("users")
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .collection("liked recipe (user)")
-                              .doc(publicRecipes[index].name)
-                              .delete();
-                          getUserCreatedRecipes();
-                          setState(() {});
-                        },
-                      )
-                    ],
-                  );
-                },
-              );
-            },
-          );
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              width: 375,
+              child: Divider(
+                thickness: 2,
+              ),
+            )
+          ]);
         },
       ),
     );
