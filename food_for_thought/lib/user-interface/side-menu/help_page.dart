@@ -98,7 +98,7 @@ class HelpPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             Text(
-              'This is the main page of our application. \n\nHere, you will be greeted with varying types of recipes. Liking the recipe will add it to your liked recipes, and disliking it will simply remove it from your feed.\n\nThe filter option will allow you to find recipes specific to the chosen filter.\n\nTo view more information about the recipe, simply press the recipe card.',
+              'This is the main page of our application. \n\nHere, you will be greeted with varying types of recipes. To like a recipe, simply swipe it right and the recipe will be added to your liked recipes. To dislike a recipe, simply swipe it left, which will remove it from your feed.\n\nThe filter option will allow you to find recipes specific to the chosen filter.\n\nTo view more information about the recipe, simply press the recipe card.',
               style: TextStyle(
                   fontSize: 15,
                   color: Colors.white,

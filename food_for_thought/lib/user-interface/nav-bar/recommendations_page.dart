@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:food_for_thought/back-end/database.dart';
 import 'package:food_for_thought/classes/recipe_class.dart';
 import 'package:food_for_thought/user-interface/cards/recipe_card.dart';
@@ -99,7 +100,12 @@ class RecommendationPageState extends State<RecommendationPage> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: IconButton(
-        onPressed: getRecipes,
+        onPressed: () {
+          setState(() {
+            _isLoading = true;
+          });
+          getRecipes();
+        },
         icon: Icon(
           Icons.refresh,
           color: Colors.white,
@@ -130,7 +136,8 @@ class RecommendationPageState extends State<RecommendationPage> {
                     title: recommendedRecipes[index].name,
                     servings: recommendedRecipes[index].servings,
                     ingredients: recommendedRecipes[index].ingredients,
-                    preparationSteps: recommendedRecipes[index].preparationSteps,
+                    preparationSteps:
+                        recommendedRecipes[index].preparationSteps,
                     cookTime: recommendedRecipes[index].totalTime,
                     thumbnailUrl: recommendedRecipes[index].images,
                     isVegetarian: recommendedRecipes[index].isVegetarian,
@@ -181,7 +188,7 @@ class RecommendationPageState extends State<RecommendationPage> {
               ),
               onDoubleTap: () {
                 print(recommendedRecipes[index].name);
-          
+
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -196,7 +203,8 @@ class RecommendationPageState extends State<RecommendationPage> {
                           child: Text(
                             "Cancel",
                             style: TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.bold),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
                             Navigator.pop(context);
@@ -208,7 +216,8 @@ class RecommendationPageState extends State<RecommendationPage> {
                           child: Text(
                             "Confirm",
                             style: TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.bold),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
                             print(recommendedRecipes[index].name);
@@ -240,7 +249,7 @@ class RecommendationPageState extends State<RecommendationPage> {
                                 .collection('saved recipes')
                                 .doc(recommendedRecipes[index].name)
                                 .set(savedRecipe);
-          
+
                             getRecipes();
                             setState(() {});
                           },

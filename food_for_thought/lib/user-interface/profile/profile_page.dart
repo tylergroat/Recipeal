@@ -447,7 +447,7 @@ class ProfilePageState extends State<ProfilePage> {
                                                               passwordFieldController
                                                                   .value.text);
                                                       if (user != null) {
-                                                        deleteUser(user!, uid);
+                                                        deleteUser(user, uid);
                                                         // ignore: use_build_context_synchronously
                                                         Navigator.push(
                                                             context,

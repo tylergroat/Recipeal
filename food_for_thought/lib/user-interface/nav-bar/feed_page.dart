@@ -100,9 +100,6 @@ class FeedPageState extends State<FeedPage> {
     setState(() {
       isLoading = false;
     });
-    for (int i = 0; i < recipes.length; i++) {
-      print(recipes[i].name);
-    }
   }
 
   @override
@@ -121,9 +118,11 @@ class FeedPageState extends State<FeedPage> {
   SingleChildScrollView body(List<DropdownMenuItem<String>> dropDownMenuItems) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 10,
+            height: 20,
           ),
           Align(
             alignment: Alignment(.75, 0),
@@ -131,24 +130,25 @@ class FeedPageState extends State<FeedPage> {
               height: 40,
               width: 150,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 190, 189, 189),
-                borderRadius: BorderRadius.circular(15),
-              ),
+                  color: Color.fromARGB(255, 211, 211, 211),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.grey)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.filter_list,
-                    color: Colors.white,
+                    color: Colors.black,
                     weight: 40,
                   ),
                   SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
                   StatefulBuilder(
                     builder: (context, setState) {
                       return Center(
                         child: DropdownButton<String>(
+                          underline: Text(''),
                           onChanged: (s) {
                             print(s?.toLowerCase());
                             setState(() {
@@ -171,134 +171,134 @@ class FeedPageState extends State<FeedPage> {
           ),
           // Formatting the Recipe card with the swiping functionality
           SizedBox(
-            width: MediaQuery.of(super.context).size.width,
-            height: (MediaQuery.of(super.context).size.width) * .85,
-            child: Expanded(
-              child: CardSwiper(
-                cardBuilder: (context, index) => RecipeCard(
-                  id: recipes[index].id,
-                  title: recipes[index].name,
-                  servings: recipes[index].servings,
-                  ingredients: recipes[index].ingredients,
-                  preparationSteps: recipes[index].preparationSteps,
-                  cookTime: recipes[index].totalTime,
-                  thumbnailUrl: recipes[index].images,
-                  isVegetarian: recipes[index].isVegetarian,
-                  isDairyFree: recipes[index].isDairyFree,
-                  isPopular: recipes[index].isPopular,
-                  isGlutenFree: recipes[index].isGlutenFree,
-                  isVegan: recipes[index].isVegan,
-                  isVeryHealthy: recipes[index].isVeryHealthy,
-                ),
-                scale: .82,
-                cardsCount: recipes.length,
-                padding: const EdgeInsets.all(5.0),
-                isVerticalSwipingEnabled: false,
-                isLoop: false,
-                // Onswipe is the like feature which saves the recipe to the database
-                onSwipe: _onSwipe,
+            width: 550,
+            //MediaQuery.of(super.context).size.width,
+            height: 400,
+            //(MediaQuery.of(super.context).size.width) * .85,
+            child: CardSwiper(
+              cardBuilder: (context, index) => RecipeCard(
+                id: recipes[index].id,
+                title: recipes[index].name,
+                servings: recipes[index].servings,
+                ingredients: recipes[index].ingredients,
+                preparationSteps: recipes[index].preparationSteps,
+                cookTime: recipes[index].totalTime,
+                thumbnailUrl: recipes[index].images,
+                isVegetarian: recipes[index].isVegetarian,
+                isDairyFree: recipes[index].isDairyFree,
+                isPopular: recipes[index].isPopular,
+                isGlutenFree: recipes[index].isGlutenFree,
+                isVegan: recipes[index].isVegan,
+                isVeryHealthy: recipes[index].isVeryHealthy,
               ),
+              scale: .82,
+              cardsCount: recipes.length,
+              padding: const EdgeInsets.all(5.0),
+              isVerticalSwipingEnabled: false,
+              isLoop: false,
+              // Onswipe is the like feature which saves the recipe to the database
+              onSwipe: _onSwipe,
             ),
           ),
           SizedBox(
             height: 15,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Material(
-                borderRadius: BorderRadius.circular(30),
-                color: Color.fromARGB(255, 244, 4, 4),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(30),
-                  radius: 30,
-                  onTap: () {
-                    if (index >= lastIndex) {
-                      index = 0;
-                      getRecipes(selectedTag?.toLowerCase());
-                      print('Getting ${selectedTag} recipes');
-                    } else {
-                      index++;
-                      recipes.removeAt(index);
-                      setState(() {});
-                    }
-                  },
-                  splashColor: Colors.white,
-                  highlightColor: Colors.grey,
-                  child: Container(
-                    height: 65,
-                    width: 100,
-                    child: Icon(
-                      Icons.thumb_down_alt,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Material(
-                borderRadius: BorderRadius.circular(30),
-                color: Color.fromARGB(255, 244, 4, 4),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(30),
-                  radius: 30,
-                  // Like button saves recipe to database when tapped upon
-                  onTap: () {
-                    Map<String, dynamic> savedRecipe = {
-                      'id': recipes[index].id,
-                      'title': recipes[index].name,
-                      'servings': recipes[index].servings,
-                      'ingredients': recipes[index].ingredients,
-                      'preparationSteps': recipes[index].preparationSteps,
-                      'cookTime': recipes[index].totalTime,
-                      'thumbnailUrl': recipes[index].images,
-                      'isVegetarian': recipes[index].isVegetarian,
-                      'isVegan': recipes[index].isVegan,
-                      'isGlutenFree': recipes[index].isGlutenFree,
-                      'isDairyFree': recipes[index].isDairyFree,
-                      'isVeryHealthy': recipes[index].isVeryHealthy,
-                      'isPopular': recipes[index].isPopular,
-                    };
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Material(
+          //       borderRadius: BorderRadius.circular(30),
+          //       color: Color.fromARGB(255, 244, 4, 4),
+          //       child: InkWell(
+          //         borderRadius: BorderRadius.circular(30),
+          //         radius: 30,
+          //         onTap: () {
+          //           if (index >= lastIndex) {
+          //             index = 0;
+          //             getRecipes(selectedTag?.toLowerCase());
+          //             print('Getting ${selectedTag} recipes');
+          //           } else {
+          //             index++;
+          //             recipes.removeAt(index);
+          //             setState(() {});
+          //           }
+          //         },
+          //         splashColor: Colors.white,
+          //         highlightColor: Colors.grey,
+          //         child: Container(
+          //           height: 65,
+          //           width: 100,
+          //           child: Icon(
+          //             Icons.thumb_down_alt,
+          //             color: Colors.white,
+          //             size: 35,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       width: 30,
+          //     ),
+          //     Material(
+          //       borderRadius: BorderRadius.circular(30),
+          //       color: Color.fromARGB(255, 244, 4, 4),
+          //       child: InkWell(
+          //         borderRadius: BorderRadius.circular(30),
+          //         radius: 30,
+          //         // Like button saves recipe to database when tapped upon
+          //         onTap: () {
+          //           Map<String, dynamic> savedRecipe = {
+          //             'id': recipes[index].id,
+          //             'title': recipes[index].name,
+          //             'servings': recipes[index].servings,
+          //             'ingredients': recipes[index].ingredients,
+          //             'preparationSteps': recipes[index].preparationSteps,
+          //             'cookTime': recipes[index].totalTime,
+          //             'thumbnailUrl': recipes[index].images,
+          //             'isVegetarian': recipes[index].isVegetarian,
+          //             'isVegan': recipes[index].isVegan,
+          //             'isGlutenFree': recipes[index].isGlutenFree,
+          //             'isDairyFree': recipes[index].isDairyFree,
+          //             'isVeryHealthy': recipes[index].isVeryHealthy,
+          //             'isPopular': recipes[index].isPopular,
+          //           };
 
-                    db
-                        .collection("users")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("saved recipes")
-                        .doc(recipes[index].name)
-                        .set(savedRecipe);
+          //           db
+          //               .collection("users")
+          //               .doc(FirebaseAuth.instance.currentUser!.uid)
+          //               .collection("saved recipes")
+          //               .doc(recipes[index].name)
+          //               .set(savedRecipe);
 
-                    if (index >= lastIndex) {
-                      index = 0;
-                      getRecipes(selectedTag?.toLowerCase());
-                      print('Getting : $selectedTag recipes');
-                    } else {
-                      recipes.removeAt(index);
-                      // index++;
-                      setState(
-                        () {
-                          index = index;
-                        },
-                      );
-                    }
-                  },
-                  splashColor: Colors.white,
-                  highlightColor: Colors.grey,
-                  child: Container(
-                    height: 65,
-                    width: 100,
-                    child: Icon(
-                      Icons.thumb_up_alt,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          //           if (index >= lastIndex) {
+          //             index = 0;
+          //             getRecipes(selectedTag?.toLowerCase());
+          //             print('Getting : $selectedTag recipes');
+          //           } else {
+          //             recipes.removeAt(index);
+          //             // index++;
+          //             setState(
+          //               () {
+          //                 index = index;
+          //               },
+          //             );
+          //           }
+          //         },
+          //         splashColor: Colors.white,
+          //         highlightColor: Colors.grey,
+          //         child: Container(
+          //           height: 65,
+          //           width: 100,
+          //           child: Icon(
+          //             Icons.thumb_up_alt,
+          //             color: Colors.white,
+          //             size: 35,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
@@ -374,7 +374,7 @@ class FeedPageState extends State<FeedPage> {
               return AlertDialog(
                 title: Text("Welcome to Recipeal!"),
                 content: Text(
-                    "This is the feed page. Here, you will find a wide variety of recipes, unless you would like to apply a filter! Simply choose the like or dislike button to begin!"),
+                    "This is the feed page. Here, you will find a wide variety of recipes, unless you would like to apply a filter! Simply swipe left (discard) or right (like) to begin!"),
                 actions: [
                   Container(
                     width: 70,
@@ -408,13 +408,10 @@ class FeedPageState extends State<FeedPage> {
       ),
     );
   }
+
 // onSwipe to like recipe
   bool _onSwipe(
       int previousIndex, int? currentIndex, CardSwiperDirection direction) {
-    print("Previous index - parameter: $previousIndex");
-    print("Current index - parameter: $currentIndex");
-    print("Index: $index");
-    print("Last index: $lastIndex");
     Map<String, dynamic> savedRecipe = {
       'id': recipes[index].id,
       'title': recipes[index].name,

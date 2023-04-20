@@ -59,7 +59,7 @@ class _RecipeCardState extends State<RecipeCard> {
       front: Container(
         margin: EdgeInsets.symmetric(horizontal: 18, vertical: 1),
         width: MediaQuery.of(context).size.width,
-        height: 340,
+        height: 400,
         decoration: BoxDecoration(
           border: Border.all(color: Color.fromARGB(255, 190, 189, 189)),
           color: Colors.black,
@@ -222,7 +222,7 @@ class _RecipeCardState extends State<RecipeCard> {
                           color: Colors.white,
                           size: 18,
                         ),
-                        SizedBox(width: 7),
+                        SizedBox(width: 3),
                         Text(
                           'Serves ${widget.servings}',
                           style: TextStyle(
@@ -278,7 +278,7 @@ class _RecipeCardState extends State<RecipeCard> {
                           color: Colors.white,
                           size: 18,
                         ),
-                        SizedBox(width: 7),
+                        SizedBox(width: 3),
                         Text('${widget.cookTime} min',
                             style: TextStyle(
                                 color: Colors.white,

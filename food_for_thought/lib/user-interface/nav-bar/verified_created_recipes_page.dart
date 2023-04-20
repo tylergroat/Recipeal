@@ -51,7 +51,6 @@ class CommunityFeedPageState extends State<CommunityFeedPage> {
       }
       for (int i = 0; i < recipes.length; i++) {
         String name = await DatabaseService.getUsersName(recipes[i].userId);
-        print(name);
         names.add(name);
       }
       setState(() {
