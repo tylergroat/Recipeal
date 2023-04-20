@@ -23,6 +23,38 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
   String createdRecipes = 'created recipes';
   bool loaded = true;
 
+  Future<void> searchByTitle(String query) async {
+    recipes = await DatabaseService.searchRecipesCreatedRecipe(
+        uid, query, createdRecipes);
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> sortByAlpha() async {
+    recipes =
+        await DatabaseService.sortByAlphaCreatedRecipe(uid, createdRecipes);
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> sortByServings() async {
+    recipes =
+        await DatabaseService.sortByServingsCreatedRecipe(uid, createdRecipes);
+    setState(() {
+      recipes;
+    });
+  }
+
+  Future<void> sortByTime() async {
+    recipes =
+        await DatabaseService.sortByTimeCreatedRecipe(uid, createdRecipes);
+    setState(() {
+      recipes;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -65,7 +97,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                         ),
                         onPressed: () {
                           Navigator.pop(context);
-                          // sortByAlpha();
+                          sortByAlpha();
                         },
                       ),
                       TextButton(
@@ -78,7 +110,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                         ),
                         onPressed: () {
                           Navigator.pop(context);
-                          // sortByTime();
+                          sortByTime();
                         },
                       ),
                       TextButton(
@@ -91,7 +123,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
                         ),
                         onPressed: () {
                           Navigator.pop(context);
-                          // sortByServings();
+                          sortByServings();
                         },
                       ),
                     ],
@@ -110,6 +142,7 @@ class CreatedRecipesPageState extends State<CreatedRecipesPage>
       ),
       onSearch: (value) {
         setState(() => searchValue = value);
+        searchByTitle(value);
         // searchByTitle(value);
       },
     );

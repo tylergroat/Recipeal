@@ -78,10 +78,9 @@ class AboutUs extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
           ),
-          SizedBox(height: 15),
-          SizedBox(height: 15),
+          SizedBox(height: 10),
           Text(
-            'We are students at Wayne State University working on our Senior Capstone Project \n\n As someone who loves to cook, I know how frusterating and convoluted finding recipes has become. \n\nOur goal is to provide you with recipes of all types, in a quick and easy fashion. We hope to replace traditional recipe finding methods, and to become your personal cookbook. \n\nDevelopers: Gavin Fromm, Tyler Groat, Jaideep Chunduri, Waheedalam Laskar\n\nSchool: Wayne State University\n\nClass: CSC 4996 Section 010',
+            'We are students at Wayne State University working on our Senior Capstone Project \n\n As someone who loves to cook, I know how frusterating and convoluted finding recipes has become. \n\nOur goal is to provide you with recipes of all types, in a quick and easy fashion. We hope to replace traditional recipe finding methods, and to become your personal cookbook.\n\nSchool: Wayne State University\n\nClass: CSC 4996 Section 010',
             style: TextStyle(
                 fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
           ),

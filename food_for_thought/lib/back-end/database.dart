@@ -436,4 +436,101 @@ class DatabaseService {
     });
     return count;
   }
+
+  static Future<List<CreatedRecipe>> sortByAlphaCreatedRecipe(
+      String uid, String path) async {
+    late List<CreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection(path)
+        .orderBy('title')
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
+  //sort recipes in reverse aplhpabetical order
+
+  //sort recipes by shortest time cook
+
+  static Future<List<CreatedRecipe>> sortByTimeCreatedRecipe(
+      String uid, String path) async {
+    late List<CreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection(path)
+        .orderBy('cookTime', descending: true)
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
+  //sort recipes by servings
+  static Future<List<CreatedRecipe>> sortByServingsCreatedRecipe(
+      String uid, String path) async {
+    late List<CreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection(path)
+        .orderBy('servings')
+        .get();
+
+    await docs.then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return recipes;
+  }
+
+  static Future<List<CreatedRecipe>> searchRecipesCreatedRecipe(
+      String uid, String search, String path) async {
+    late List<CreatedRecipe> recipes = [];
+    final docs = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection(path)
+        .where('title', isGreaterThanOrEqualTo: search)
+        .where('title', isLessThanOrEqualTo: '$search\uf8ff');
+
+    await docs.get().then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          recipes.add(CreatedRecipe.fromFirestore(docSnapshot));
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    print(recipes);
+    return recipes;
+  }
 }
