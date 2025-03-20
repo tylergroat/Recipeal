@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>287987514435-5fovqseob0kdcof75499117hv0b5u63j.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.287987514435-5fovqseob0kdcof75499117hv0b5u63j</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDTarP8fIQFXSh5Q6kTBfnNMEXFzKDuEec</string>
+	<key>GCM_SENDER_ID</key>
+	<string>287987514435</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.foodForThought</string>
+	<key>PROJECT_ID</key>
+	<string>food-for-thought-wsu</string>
+	<key>STORAGE_BUCKET</key>
+	<string>food-for-thought-wsu.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:287987514435:ios:531762b3f7dc452e26e8f6</string>
+</dict>
+</plist>
